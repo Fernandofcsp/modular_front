@@ -2,6 +2,7 @@
 Documentacion de como ejecutar e interactuar con el proyecto
 
 ### Tecnologia utilizadas:
+* npm
 * React con Vite
 * Typescript
 
