@@ -1,0 +1,20 @@
+/* Variables */
+:root {
+    --primary : #FCFCFC;
+    --white: #FEFEFE;
+    --confirm-color: #159F71;
+    --low-gray: #F3F3F3;
+    --dark-gray: #888888;
+}
+
+html{
+    background-color: var(--primary);
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
