@@ -2,9 +2,10 @@
 :root {
     --primary : #FCFCFC;
     --white: #FEFEFE;
-    --confirm-color: #159F71;
+    --confirm: #159F71;
     --low-gray: #F3F3F3;
     --dark-gray: #888888;
+    --error: #F12727;
 }
 
 html{
