@@ -2,11 +2,20 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 
+// interface User{
+//     name: string;
+//     id: number;
+//     token: string;
+//     rol: number;
+// }
+
 interface UserState{
+    // user: User;
     name: string;
     id: number;
     token: string;
     rol: number;
+    // setUser: (user: User) => void,
     setName: (name: string) => void,
     setId: (id: number) => void,
     setToken: (token: string) => void,
