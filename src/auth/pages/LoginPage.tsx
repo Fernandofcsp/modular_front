@@ -3,6 +3,7 @@ import { useForm } from "../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 import "./LoginStyle.css";
 import "../../style.css";
+import { userStore } from "../../store/userStore";
 
 
 export const LoginPage = () => {
@@ -10,10 +11,15 @@ export const LoginPage = () => {
   const [alert, setAlert] = useState("");
 
   //Navegar
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const setToken = userStore(state => state.setToken);
+  const setName = userStore(state => state.setName);
+  const setId = userStore(state => state.setId);
+  const setRol = userStore(state => state.setRol);
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     
     if(email === '' || password === ''){
@@ -25,6 +31,10 @@ export const LoginPage = () => {
     }else{
       //Colocar código para consultar la api aqui y hacer el inicio de sesión y cambio de contexto
       // Navega al inicio
+      setToken('wkfhbwiufhwiu415648fwef');
+      setName('Francisco');
+      setId(7);
+      setRol(1);
       navigate('/');
 
     }
