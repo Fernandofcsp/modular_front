@@ -1,21 +1,3 @@
-/* Variables */
-:root {
-    --primary : #FCFCFC;
-    --white: #FEFEFE;
-    --confirm: #159F71;
-    --low-gray: #F3F3F3;
-    --dark-gray: #888888;
-    --error: #F12727;
-}
-
-html{
-    background-color: var(--primary);
-}
-
-.container {
-    width: 90%;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
