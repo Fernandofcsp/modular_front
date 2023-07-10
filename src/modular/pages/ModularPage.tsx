@@ -1,6 +1,6 @@
 import { userStore } from "../../store/userStore";
 import { useNavigate } from "react-router-dom";
-import Layout from "../layout/Layout";
+import Layout from "../../ui/layout/Layout";
 
 export const ModularPage = () => {
   const { id, name, rol, token } = userStore((state) => state);
