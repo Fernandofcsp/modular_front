@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
-import "./LoginStyle.css";
-import "../../style.css";
 import { userStore } from "../../store/userStore";
 
 
@@ -17,13 +15,14 @@ export const LoginPage = () => {
   const setName = userStore(state => state.setName);
   const setId = userStore(state => state.setId);
   const setRol = userStore(state => state.setRol);
+  const setEmail = userStore(state => state.setEmail);
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
     if(email === '' || password === ''){
-      setAlert("Llene todos los campos");
+      setAlert("Llene los campos");
       setTimeout(function(){
         setAlert("");
       }, 4000);
@@ -31,8 +30,9 @@ export const LoginPage = () => {
     }else{
       //Colocar código para consultar la api aqui y hacer el inicio de sesión y cambio de contexto
       // Navega al inicio
-      setToken('wkfhbwiufhwiu415648fwef');
+      setToken(password);
       setName('Francisco');
+      setEmail(email)
       setId(7);
       setRol(1);
       navigate('/');
@@ -41,16 +41,64 @@ export const LoginPage = () => {
   }
 
   return (
-    <div className="container">
-      <div className="form-container">
-        <p className="logIn-title">Inicio de sesión</p>
-        <form>
-          <input value={email} onChange={onInputChange} name="email" className="input-logIn" placeholder="Correo" type="email"/>
-          <input value={password} onChange={onInputChange} name="password" className="input-logIn" placeholder="Contraseña" type="password"/>
-          <p className="form-alert">{alert}</p>
-          <input className="button-logIn" type="submit" value="Entrar" onClick={(event) => handleSubmit(event)}/>
-        </form>
+    <div className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <p className="mb-12">Nombre de la empresa</p>
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              LOGIN
+            </h1>
+            <form className="space-y-4 md:space-y-6">
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Correo
+                </label>
+                <input
+                  onChange={onInputChange}
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:border-blue-500"
+                  placeholder="name@company.com"
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Contraseña
+                </label>
+                <input
+                  onChange={onInputChange}
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className="bg-gray-50 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 focus:border-sky-500 focus:ring-sky-500"
+                  required=""
+                />
+              </div>
+              <div>
+                <p className="text-red-700">{alert}</p>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  onClick={handleSubmit}
+                  className="bg-blue-500 py-2 px-5 rounded font-medium"
+                >
+                  Ingresar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }
