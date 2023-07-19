@@ -90,7 +90,7 @@ export const LoginPage = () => {
               <div className="flex justify-center">
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-500 py-2 px-5 rounded font-medium"
+                  className="bg-blue-500 py-2 px-5 rounded font-medium hover:bg-blue-600"
                 >
                   Ingresar
                 </button>
