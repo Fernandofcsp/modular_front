@@ -1,60 +1,39 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-
-// interface User{
-//     name: string;
-//     id: number;
-//     token: string;
-//     rol: number;
-// }
-
-interface UserState{
-    // user: User;
-    name: string;
-    email: string;
-    id: number;
-    token: string;
-    rol: number;
-    // setUser: (user: User) => void,
-    setName: (name: string) => void,
-    setEmail: (email: string) => void,
-    setId: (id: number) => void,
-    setToken: (token: string) => void,
-    setRol: (rol: number) => void,
-    logout: () => void,
+interface IUser {
+	name: string;
+	email: string;
+	id: string;
+	token: string;
+	rol: string;
 }
 
-export const userStore = create(persist<UserState>(
-    (set) => ({
-        //Como se inicializa el estado
-        name: "",
-        email: "",
-        id: null,
-        token: "",
-        rol: null,
-        setName: (name: string) => set((state) => ({
-            name
-        })),
-        setEmail: (email: string) => set((state) => ({
-            email
-        })),
-        setToken: (token: string) => set((state) => ({
-            token
-        })),
-        setId: (id: number) => set((state) => ({
-            id
-        })),
-        setRol: (rol: number) => set((state) => ({
-            rol
-        })),
-        logout: () => set((state) => ({
-            name: '',
-            token: '',
-            id: null,
-            rol: null,
-        })),
-    }), {  //Nombre de como se guarda en localstate
-        name: 'auth'
-    }
-))
+interface IUserState extends IUser {
+	// setUser: (user: User) => void,
+	setValue: (name: string, value: string) => void;
+	logout: () => void;
+}
+
+const initialState: IUser = {
+	id: '',
+	email: '',
+	name: '',
+	rol: '',
+	token: ''
+};
+
+export const userStore = create(
+	persist<IUserState>(
+		(set) => ({
+			//Como se inicializa el estado
+			...initialState,
+			setValue: (name: string, value: string) => set(() => ({ [name]: value })),
+			logout: () => set(() => ({ ...initialState }))
+		}),
+		{
+			//Nombre de como se guarda en localstate
+			name: 'auth'
+		}
+	)
+);
