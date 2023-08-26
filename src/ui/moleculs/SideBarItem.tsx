@@ -7,7 +7,7 @@ interface ISideBarItemProps {
 
 export const SideBarItem : React.FC<ISideBarItemProps> = ({title, imageComponent}) => {
   return (
-    <div className='flex flex-row hover:cursor-pointer py-2'>
+    <div className='flex flex-row gap-1 items-center hover:cursor-pointer py-2'>
         <div>
             {imageComponent}
         </div>
