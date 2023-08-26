@@ -7,10 +7,16 @@ interface IProps {
 
 const Layout = ({children} : IProps) => {
   return(
-    <div className="w-full dark:bg-[#212E36] dark:text-white bg-[#FBFBFE] text-[#1B202D]">
-        <NavBar />
+    <div className="w-full dark:bg-[#212E36] dark:text-white bg-[#FBFBFE] text-[#1B202D] flex flex-row">
         <SideBar />
-        { children }
+        <div className="w-full flex flex-col h-screen">
+          <NavBar />
+          <main className="p-4 h-full overflow-y-auto bg-[#F2F4F4]">
+            { children }
+            
+          </main>
+        </div>
+        
     </div>
   )
 }
