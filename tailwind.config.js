@@ -6,7 +6,7 @@ export default {
     extend: {
 			margin: {
 				'sidebar' : '280px',
-			}
+			},
 		
       colors: {
         logInBackground: "#FFFFEF",
