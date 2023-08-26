@@ -12,11 +12,13 @@ import { persist } from "zustand/middleware";
 interface UserState{
     // user: User;
     name: string;
+    email: string;
     id: number;
     token: string;
     rol: number;
     // setUser: (user: User) => void,
     setName: (name: string) => void,
+    setEmail: (email: string) => void,
     setId: (id: number) => void,
     setToken: (token: string) => void,
     setRol: (rol: number) => void,
@@ -27,11 +29,15 @@ export const userStore = create(persist<UserState>(
     (set) => ({
         //Como se inicializa el estado
         name: "",
+        email: "",
         id: null,
         token: "",
         rol: null,
         setName: (name: string) => set((state) => ({
             name
+        })),
+        setEmail: (email: string) => set((state) => ({
+            email
         })),
         setToken: (token: string) => set((state) => ({
             token
