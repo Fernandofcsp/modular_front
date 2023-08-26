@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { useNavigate } from "react-router-dom";
+import "../../style.css";
 import { userStore } from "../../store/userStore";
 
-
 export const LoginPage = () => {
-  const { email, password, onInputChange } = useForm({email: '', password: ''});
+  const { email, password, onInputChange } = useForm({
+    email: "",
+    password: "",
+  });
   const [alert, setAlert] = useState("");
 
   //Navegar
@@ -20,14 +23,14 @@ export const LoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    if(email === '' || password === ''){
-      setAlert("Llene los campos");
-      setTimeout(function(){
+
+    if (email === "" || password === "") {
+      setAlert("Llene todos los campos");
+      setTimeout(function () {
         setAlert("");
       }, 4000);
       return;
-    }else{
+    } else {
       //Colocar código para consultar la api aqui y hacer el inicio de sesión y cambio de contexto
       // Navega al inicio
       setToken(password);
@@ -35,10 +38,9 @@ export const LoginPage = () => {
       setEmail(email)
       setId(7);
       setRol(1);
-      navigate('/');
-
+      navigate("/");
     }
-  }
+  };
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
@@ -90,7 +92,7 @@ export const LoginPage = () => {
               <div className="flex justify-center">
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-500 py-2 px-5 rounded font-medium"
+                  className="bg-blue-500 py-2 px-5 rounded font-medium hover:bg-blue-600"
                 >
                   Ingresar
                 </button>

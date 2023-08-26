@@ -1,4 +1,5 @@
 import NavBar from "../components/NavBar"
+import { SideBar } from "../components/SideBar"
 
 interface IProps {
   children: JSX.Element
@@ -6,10 +7,17 @@ interface IProps {
 
 const Layout = ({children} : IProps) => {
   return(
-    <main className="w-full h-screen flex flex-col items-left dark:bg-[#212E36] dark:text-white bg-[#FBFBFE] text-[#1B202D]">
-        <NavBar />
-        { children }
-    </main>
+    <div className="w-full dark:bg-[#212E36] dark:text-white bg-[#FBFBFE] text-[#1B202D] flex flex-row">
+        <SideBar />
+        <div className="w-full flex flex-col h-screen">
+          <NavBar />
+          <main className="p-4 h-full overflow-y-auto bg-[#F2F4F4]">
+            { children }
+            
+          </main>
+        </div>
+        
+    </div>
   )
 }
 
