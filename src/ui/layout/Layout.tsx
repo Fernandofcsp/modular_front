@@ -11,7 +11,7 @@ const Layout = ({children} : IProps) => {
         <SideBar />
         <div className="w-full flex flex-col h-screen">
           <NavBar />
-          <main className="p-4 h-full overflow-y-auto bg-[#F2F4F4]">
+          <main className="p-md h-full overflow-y-auto bg-dashboard">
             { children }
             
           </main>

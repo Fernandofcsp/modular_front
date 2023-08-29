@@ -11,7 +11,7 @@ export const SideBarItem : React.FC<ISideBarItemProps> = ({title, imageComponent
         <div>
             {imageComponent}
         </div>
-        <div className='ml-4'>
+        <div className='ml-md'>
             {title}
         </div>
     </div>
