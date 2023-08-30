@@ -7,11 +7,11 @@ interface ISideBarItemProps {
 
 export const SideBarItem : React.FC<ISideBarItemProps> = ({title, imageComponent}) => {
   return (
-    <div className='flex flex-row gap-1 items-center hover:cursor-pointer py-sm'>
+    <div className='w-9/12 m-auto flex flex-row justify-start gap-1 items-center hover:cursor-pointer py-sm'>
         <div>
             {imageComponent}
         </div>
-        <div className='ml-md'>
+        <div className='ml-sm'>
             {title}
         </div>
     </div>

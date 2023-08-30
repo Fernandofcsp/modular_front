@@ -16,7 +16,7 @@ const NavBar = () => {
   return (
     <div className="w-full h-[12vh] p-md flex flex-row items-center bg-white text-[#1B202D] justify-between">
       <div className="gap-x-[45px] text-lg flex flex-row">
-        <p className="text-xl">Bienvenido de vuelta, {name} </p>
+        <p className="text-titleSm">Bienvenido de vuelta, {name} </p>
       </div>
       {/*Contenedor */}
       <Menu as="div" className="relative ml-md">
@@ -43,7 +43,7 @@ const NavBar = () => {
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     active ? "dark:bg-[#0E1117]" : "",
-                    "block px-4 py-2 text-sm text-white-700"
+                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700"
                   )}
                   onClick={() => {
                     navigate("/profile");
@@ -60,7 +60,7 @@ const NavBar = () => {
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     active ? "dark:bg-[#0E1117]" : "",
-                    "block px-4 py-2 text-sm text-white-700"
+                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700"
                   )}
                 >
                   Ajustes
@@ -74,7 +74,7 @@ const NavBar = () => {
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     active ? "dark:bg-[#0E1117]" : "",
-                    "block px-4 py-2 text-sm text-white-700"
+                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700"
                   )}
                   onClick={() => {
                     logout();

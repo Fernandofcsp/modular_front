@@ -14,7 +14,7 @@ export default {
       "2xl": "48px",
       "3xl": "64px",
       "4xl": "80px",
-      sideBar: "170px",
+      sideBar: "200px",
     },
     fontSize: {
       xsm: "11px",
@@ -26,7 +26,7 @@ export default {
       titleSm: "24px",
       titleMd: "32px",
       titleLg: "48px",
-      titleXl: "64px",
+      "titleXl": "64px",
     },
     extend: {
       margin: {

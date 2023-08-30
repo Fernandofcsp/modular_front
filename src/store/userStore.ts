@@ -16,11 +16,11 @@ interface IUserState extends IUser {
 }
 
 const initialState: IUser = {
-	id: '',
-	email: '',
-	name: '',
-	rol: '',
-	token: ''
+	id: null,
+	email: null,
+	name: null,
+	rol: null,
+	token: null
 };
 
 export const userStore = create(
@@ -32,7 +32,7 @@ export const userStore = create(
 			logout: () => set(() => ({ ...initialState }))
 		}),
 		{
-			//Nombre de como se guarda en localstate
+			//Nombre de como se guarda en localState
 			name: 'auth'
 		}
 	)

@@ -2,13 +2,24 @@ import { useState } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../store/userStore';
+import { validateEmail } from '../helpers/emailValidator';
+import { LogInForm } from '../components/LogInForm';
+import axios from 'axios';
+import { apiUrl } from '../../api';
 
+
+interface IUser {
+	email : string,
+	password : string,
+}
+
+const initialState : IUser = {
+	email : "",
+	password : "",
+}
 export const LoginPage = () => {
 	// TODO: REMOVE useForm
-	const { email, password, onInputChange } = useForm({
-		email: '',
-		password: ''
-	});
+	const { email, password, onInputChange } = useForm(initialState);
 	const [alert, setAlert] = useState('');
 
 	//Navegar
@@ -20,81 +31,49 @@ export const LoginPage = () => {
 
 		if (email === '' || password === '') {
 			setAlert('Llene los campos');
-			setTimeout(function () {
+			setTimeout(() => {
 				setAlert('');
 			}, 4000);
 			return;
 		} else {
-			//Colocar código para consultar la api aqui y hacer el inicio de sesión y cambio de contexto
-			// Navega al inicio
-			setValue('id', '1234');
-			setValue('email', email);
-			setValue('name', 'Fernando');
-			setValue('rol', 'Admin');
-			setValue('token', 'shfkbdfjvbjdsfbvjsdfv');
-			navigate('/');
+			if(!validateEmail(email)){
+				setAlert('Ingrese un email válido');
+				setTimeout(() => {
+					setAlert('');
+				}, 4000);
+				return;
+			}
+
+			try {
+				const { data } = await axios.get(`${apiUrl}/auth/login`, { params: { email, password } });
+				const { token, user } = data;
+				console.log(user);
+				setValue('token', token);
+				setValue('id', user.user_id);
+				setValue('email', email);
+				setValue('name', user.nickname);
+				setValue('rol', user.role);
+				navigate('/');
+			} catch (error) {
+				setAlert('Correo o contraseña inválidos');
+				setTimeout(() => {
+					setAlert('');
+				}, 4000);
+				return;
+			}
 		}
 	};
 
 	return (
 		<div className='bg-gray-50'>
 			<div className='flex flex-col items-center justify-center px-md py-lg mx-auto md:h-screen lg:py-0'>
-				<p className='mb-lg text-titleLg'>Nombre de la empresa</p>
+				<p className='mb-lg text-titleMd uppercase'>Nombre de la empresa</p>
 				<div className='w-full bg-white rounded-md shadow dark:border md:mt-0 sm:max-w-md xl:p-0'>
 					<div className='p-md space-y-sm md:space-y-md sm:p-lg'>
 						<p className='text-2xl font-bold text-gray-900'>
 							LOGIN
 						</p>
-						<form
-							className='space-y-md md:space-y-6'
-							onSubmit={(e) => handleSubmit(e)}
-						>
-							<div className='space-y-sm'>
-								<label
-									htmlFor='email'
-									className='block mb-2 text-xl font-medium text-gray-900 dark:text-white'
-								>
-									Correo
-								</label>
-								<input
-									onChange={onInputChange}
-									type='email'
-									name='email'
-									id='email'
-									className='bg-gray-50 text-gray-900 text-lg rounded-lg block w-full p-sm focus:border-blue-500'
-									placeholder='name@company.com'
-									required
-								/>
-							</div>
-							<div className='space-y-sm'>
-								<label
-									htmlFor='password'
-									className='block mb-2 text-xl font-medium text-gray-900 dark:text-white'
-								>
-									Contraseña
-								</label>
-								<input
-									onChange={onInputChange}
-									type='password'
-									name='password'
-									id='password'
-									placeholder='••••••••'
-									className='bg-gray-50 text-gray-900 text-lg rounded-lg block w-full p-sm focus:border-sky-500 focus:ring-sky-500'
-									required
-								/>
-							</div>
-							<div>
-								<p className='text-red-700'>{alert}</p>
-							</div>
-							<div className='flex justify-center'>
-								<button
-									type='submit'
-									className='bg-blue-500 py-xsm px-md rounded font-medium hover:bg-blue-600'
-								>
-									Ingresar
-								</button>
-							</div>
-						</form>
+						<LogInForm handleSubmit={handleSubmit} onInputChange={onInputChange} alert={alert}/>
 					</div>
 				</div>
 			</div>
