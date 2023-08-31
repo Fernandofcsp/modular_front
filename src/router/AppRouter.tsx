@@ -6,7 +6,6 @@ import { userStore } from "../store/userStore";
 
 export const AppRouter = () => {
   const id = userStore((state) => state.id);
-
   return (
     <Routes>
         {/* Login */}
