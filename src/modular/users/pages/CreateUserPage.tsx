@@ -1,9 +1,13 @@
-import Layout from "../../../ui/layout/Layout"
+import Layout from "../../../ui/layout/Layout";
+import { CreateUserForm } from "../components";
 
 export const CreateUserPage = () => {
-  return (
-    <Layout>
-        <div>CreateUserPage</div>
-    </Layout>
-  )
+	return (
+		<Layout>
+			<div>
+				<p className="text-titleSm uppercase">Crear usuario</p>
+				<CreateUserForm />
+			</div>
+		</Layout>
+	)
 }

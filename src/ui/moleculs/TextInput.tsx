@@ -16,27 +16,27 @@ export enum TypesInput {
 }
 
 const TextInput: FC<IPropsInput> = ({
-	label,
-	onChange,
-	placeHolder,
-	type,
-	value
+  label,
+  onChange,
+  placeHolder,
+  type,
+  value
 }) => {
-	return (
-		<>
-			<label htmlFor={label}>{label}</label>
-			<input
-				type={type}
-				placeholder={placeHolder}
-				value={value}
-				id={label}
-				onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-					onChange(target.name, target.value)
-				}
-			/>
-			<input type='file' name='' id='' multiple />
-		</>
-	);
+  return (
+    <>
+      <label htmlFor={label}>{label}</label>
+      <input
+        type={type}
+        placeholder={placeHolder}
+        value={value}
+        id={label}
+        onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+          onChange(target.name, target.value)
+        }
+      />
+      <input type='file' name='' id='' multiple />
+    </>
+  );
 };
 
 export default TextInput;
