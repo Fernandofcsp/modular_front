@@ -67,7 +67,7 @@ export const LoginPage = () => {
   return (
     <div className='bg-gray-50'>
       <div className='flex flex-col items-center justify-center px-md py-lg mx-auto md:h-screen lg:py-0'>
-        <p className='mb-lg text-titleMd uppercase'>Nombre de la empresa</p>
+        <p className='mb-lg text-titleMd uppercase'>RICDSA MOTION SA DE CV</p>
         <div className='w-full bg-white rounded-md shadow dark:border md:mt-0 sm:max-w-md xl:p-0'>
           <div className='p-md space-y-sm md:space-y-md sm:p-lg'>
             <p className='text-2xl font-bold text-gray-900'>
