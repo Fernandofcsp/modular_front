@@ -16,14 +16,14 @@ const NavBar = () => {
   return (
     <div className="w-full h-[12vh] p-md flex flex-row items-center bg-white text-[#1B202D] justify-between">
       <div className="gap-x-[45px] text-lg flex flex-row">
-        <p className="text-titleSm">Bienvenido de vuelta, {name} </p>
+        <p className="text-xl">Bienvenido {name} </p>
       </div>
       {/*Contenedor */}
       <Menu as="div" className="relative ml-md">
         <div>
-          <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+          <Menu.Button className="flex rounded-full bg-white text-sm focus:ring-2 focus:ring-gray  ">
             <span className="sr-only">Open user menu</span>
-            <img className="h-2xl w-h-2xl rounded-full" src={profile} alt="" />
+            <img className="h-2xl w-h-2xl rounded-full ring-1 ring-gray-800" src={profile} alt="" />
           </Menu.Button>
         </div>
         <Transition
@@ -49,21 +49,7 @@ const NavBar = () => {
                     navigate("/profile");
                   }}
                 >
-                  Perfil
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href=""
-                  className={classNames(
-                    active ? "bg-gray-100" : "",
-                    active ? "dark:bg-[#0E1117]" : "",
-                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700"
-                  )}
-                >
-                  Ajustes
+                  Cuenta
                 </a>
               )}
             </Menu.Item>
