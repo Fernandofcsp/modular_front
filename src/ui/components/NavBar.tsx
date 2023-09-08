@@ -14,16 +14,20 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[12vh] p-md flex flex-row items-center bg-white text-[#1B202D] justify-between">
+    <div className="w-full h-[12vh] p-md flex flex-row items-center bg-white text-[#1B202D] justify-between border-y-2 rounded-lg">
       <div className="gap-x-[45px] text-lg flex flex-row">
-        <p className="text-xl">Bienvenido {name} </p>
+        <h2 className="text-xl">¡BIENVENIDO DE VUELTA! {name} </h2>
       </div>
       {/*Contenedor */}
       <Menu as="div" className="relative ml-md">
         <div>
           <Menu.Button className="flex rounded-full bg-white text-sm focus:ring-2 focus:ring-gray  ">
             <span className="sr-only">Open user menu</span>
-            <img className="h-2xl w-h-2xl rounded-full ring-1 ring-gray-800" src={profile} alt="" />
+            <img
+              className="w-2xl rounded-full ring-1 ring-gray-800"
+              src={profile}
+              alt=""
+            />
           </Menu.Button>
         </div>
         <Transition

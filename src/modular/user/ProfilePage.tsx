@@ -2,17 +2,18 @@ import { userStore } from "../../store/userStore";
 import Layout from "../../ui/layout/Layout";
 import { useState } from "react";
 import { apiUrl } from "../../api";
-import axios from "axios";
 import edit from "../../../public/assets/icons/editar.png";
 import save from "../../../public/assets/icons/salvar.png";
+import cancel from "../../../public/assets/icons/cancel.png";
 import { FormField, inputType } from "../users/moleculs/FormField";
 
 export const ProfilePage = () => {
   const { id, name, email, rol } = userStore((state) => state);
   const token = userStore((state) => state.token);
+  const setValue = userStore((state) => state.setValue);
 
-  const [newName, setNewName] = useState("");
-  const [newEmail, setNewEmail] = useState("");
+  const [newName, setNewName] = useState(name);
+  const [newEmail, setNewEmail] = useState(email);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -28,33 +29,36 @@ export const ProfilePage = () => {
 
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = JSON.stringify({
-      nickname: newName,
-      email: newEmail,
-      
-    });
-
-    const config = {
-      method: "post",
-      url: `${apiUrl}/users/update/${id}`,
-      
+    fetch(`${apiUrl}/users/update/${id}`, {
       headers: {
-		    'Authorization': `Bearer ${token}`
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      data: data,
-    };
+      method: "PATCH",
 
-    try {
-      const { data } = await axios.request(config);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
+      // Fields that to be updated are passed
+      body: JSON.stringify({
+        nickname: newName,
+        email: newEmail,
+      }),
+    })
+      .then(function (response) {
+        setValue("email", newEmail);
+        setValue("name", newName);
+        // console.log(response);
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      });
   };
 
   return (
     <Layout>
+      
       <form onSubmit={(event) => updateUser(event)} className="w-9/12 mt-sm">
+      <h3 className="text-titleMd mb-xl">INFORMACIÓN DE TU CUENTA</h3>
         <div className="flex flex-row -mx-sm mb-md">
           <FormField
             label="Nombre"
@@ -105,11 +109,11 @@ export const ProfilePage = () => {
           <button
             type="button"
             onClick={() => handleReset()}
-            className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md ${
-              isDisabled && "hidden"
-            }`}
+            className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            flex items-center gap-sm ${isDisabled && "hidden"}`}
           >
-            Cancelar
+            <span>Cancelar</span>
+            <img src={cancel} className="w-md "></img>
           </button>
           <button
             type={isDisabled ? "submit" : "button"}
@@ -117,7 +121,7 @@ export const ProfilePage = () => {
             className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
           >
             <span>{!isDisabled ? "Guardar" : "Editar"}</span>
-            <img src={!isDisabled ? save : edit} className="w-md " ></img>
+            <img src={!isDisabled ? save : edit} className="w-md "></img>
           </button>
         </div>
       </form>

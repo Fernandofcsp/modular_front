@@ -1,9 +1,10 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
+import save from "../../../../public/assets/icons/salvar.png";
+import cancel from "../../../../public/assets/icons/cancel.png";
 import { FormField, inputType } from "../moleculs/FormField";
 
 export const CreateUserForm = () => {
@@ -29,9 +30,9 @@ export const CreateUserForm = () => {
       method: "post",
       url: `${apiUrl}/users/create`,
       headers: {
-        'Accept-Encoding': 'application/json',
-		'Content-Type': 'application/json',
-		'Authorization': `Bearer ${token}`
+        "Accept-Encoding": "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       data: data,
     };
@@ -101,15 +102,17 @@ export const CreateUserForm = () => {
       <div className="flex justify-end space-x-sm">
         <button
           onClick={() => navigate("/users")}
-          className="bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md"
+          className="bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
         >
-          Cancelar
+          <span>Cancelar</span>
+		  <img src={cancel} className="w-md "></img>
         </button>
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md"
+          className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
         >
-          Guardar
+          <span>Guardar</span>
+		  <img src={save} className="w-md "></img>
         </button>
       </div>
     </form>
