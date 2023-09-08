@@ -14,6 +14,7 @@ export default {
       "2xl": "48px",
       "3xl": "64px",
       "4xl": "80px",
+      "5xl": "96px",
       sideBar: "200px",
     },
     fontSize: {
