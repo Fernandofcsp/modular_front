@@ -10,7 +10,7 @@ enum TableHeaders {
     creationDate = "Fecha de creación",
     ver = "Ver"
 }
-
+ 
 interface IUsers {
     data: Array
 }
