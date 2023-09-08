@@ -4,8 +4,10 @@ import { AdminOptions, EmployeesTable } from "../components";
 export const UsersPage = () => {
   return (
     <Layout>
-      <AdminOptions />
-      <EmployeesTable />
+			<div>
+				<AdminOptions />
+				<EmployeesTable />
+			</div>
     </Layout>
   )
 }

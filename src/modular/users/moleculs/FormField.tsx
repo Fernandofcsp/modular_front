@@ -4,6 +4,7 @@ export enum inputType {
   number = "number",
   file = "file",
   password = "password",
+	date = "date",
 }
 
 interface IField {
@@ -12,7 +13,7 @@ interface IField {
   label: string;
   value: string;
   disabled?: boolean;
-  onChange: (event: any) => void;
+	onChange: (value: string) => void;
 }
 
 export const FormField = (props: IField) => {

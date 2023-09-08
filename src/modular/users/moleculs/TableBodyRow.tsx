@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 interface IBodyItem {
     id: string,
     name: string,
-    email: string,
+    email?: string, 
     rol: string,
     creationDate: string
 }
