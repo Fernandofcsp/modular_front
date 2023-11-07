@@ -5,6 +5,7 @@ export enum inputType {
   file = "file",
   password = "password",
 	date = "date",
+	dateTime = "datetime-local"
 }
 
 interface IField {

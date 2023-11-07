@@ -12,38 +12,40 @@ export const CreateEmployeeForm = () => {
 	const token = userStore((state) => state.token);
 
 	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
+	const [lastName1, setLastName1] = useState("");
+	const [lastName2, setLastName2] = useState("");
 	const [dailySalary, setDailySalary] = useState("");
 	const [admissionDate, setAdmissionDate] = useState("");
 
 	const saveEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		console.log("Submiting");
-		// const data = JSON.stringify({
-		// 	firstName: firstName,
-		// 	lastName: lastName,
-		// 	dailySalary: dailySalary,
-		// 	admissionDate:	admissionDate,
-		// });
+		const data = JSON.stringify({
+			first_name: firstName,
+			last_name1: lastName1,
+			last_name2: lastName2,
+			daily_salary: parseInt(dailySalary),
+			admision_date:	admissionDate,
+		});
 
-		// const config = {
-		// 	method: "post",
-		// 	url: `${apiUrl}/employees/create`,
-		// 	headers: {
-		// 		"Accept-Encoding": "application/json",
-		// 		"Content-Type": "application/json",
-		// 		Authorization: `Bearer ${token}`,
-		// 	},
-		// 	data: data,
-		// };
+		const config = {
+			method: "post",
+			url: `${apiUrl}/employees/create`,
+			headers: {
+				"Accept-Encoding": "application/json",
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			data: data,
+		};
 
-		// try {
-		// 	const { data } = await axios.request(config);
-		// 	console.log(data);
-		// 	navigate("/employees");
-		// } catch (error) {
-		// 	console.log(error);
-		// }
+		try {
+			const { data } = await axios.request(config);
+			console.log(data);
+			navigate("/employees");
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
@@ -57,11 +59,18 @@ export const CreateEmployeeForm = () => {
 					type={inputType.text}
 				/>
 				<FormField
-					label="Apellidos"
-					value={lastName}
-					placeholder="Apellidos"
-					onChange={setLastName}
-					type={inputType.email}
+					label="Primer apellido"
+					value={lastName1}
+					placeholder="Primer apellido"
+					onChange={setLastName1}
+					type={inputType.text}
+				/>
+				<FormField
+					label="Segundo apellido"
+					value={lastName2}
+					placeholder="Segundo apellido"
+					onChange={setLastName2}
+					type={inputType.text}
 				/>
 			</div>
 			<div className="flex flex-row -mx-sm mb-md">

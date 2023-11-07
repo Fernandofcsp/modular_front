@@ -1,14 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { IEmployee } from "../components";
 
 interface IBodyItem {
-	id: string,
+	employee: IEmployee,
+	id: number,
 	name: string,
-	creationDate: string
-	job: string,
+	admision_date: Date,
+	status: boolean,
 }
 
 export const TableBodyRow = (props: IBodyItem) => {
-	const { id, name, job, creationDate } = props;
+	const { id, name, status, admision_date, employee } = props;
 	return (
 		<tr className="bg-white border-b">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
@@ -18,13 +20,16 @@ export const TableBodyRow = (props: IBodyItem) => {
 				{name}
 			</th>
 			<td className="px-md py-md">
-				{creationDate}
+				{admision_date.toString().split("T")[0]}
 			</td>
+			{
+				!status ? 
+					<td className="px-md py-md text-red-500">Inactivo</td> 
+					: <td className="px-md py-md text-green-600">Activo</td>
+			}
+
 			<td className="px-md py-md">
-				{job}
-			</td>
-			<td className="px-md py-md">
-				<NavLink className="text-blue-700 font-bold" to={`/employee/${id}`}>Detalle</NavLink>
+				<Link className="text-blue-700 font-bold" state={employee} to={`/employee`}>Detalle</Link>
 			</td>
 		</tr>
 	)

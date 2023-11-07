@@ -3,6 +3,7 @@ import { HomePage } from '../home/HomePage';
 import { ProfilePage } from "../user/ProfilePage";
 import { UserPage, UsersPage, CreateUserPage } from "../users/pages";
 import { EmployeePage, EmployeesPage, NewEmployeePage } from '../employees/pages';
+import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
 
 
 export const ModularRoutes = () => {
@@ -21,7 +22,10 @@ export const ModularRoutes = () => {
 			<Route path="/employees" element={<EmployeesPage />} />
 
       {/* Página de detalle de empleado */}
-			<Route path="/employee/:id" element={<EmployeePage />} />
+			<Route path="/employee" element={<EmployeePage />} />
+
+      {/* Página de checador de empleado */}
+			<Route path="/employees-check" element={<EmployessCheckPage />} />
 
       {/* Página de nuevo empleado */}
 			<Route path="/newEmployee" element={<NewEmployeePage />} />

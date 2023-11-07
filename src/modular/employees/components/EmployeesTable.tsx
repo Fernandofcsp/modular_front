@@ -1,41 +1,58 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TableHeadItem } from '../../users/moleculs';
 import { TableBodyRow } from '../moleculs';
-
-interface IEmployee {
-	id: string,
-	name: string,
-	admisionDate: string,
-	position: string,
-}
+import axios from 'axios';
+import { apiUrl } from '../../../api';
+import { userStore } from '../../../store/userStore';
 
 enum TableHeaders {
 	id = "ID",
 	name = "Nombre",
 	admisionDate = "Fecha de ingreso",
-	job = "Puesto",
+	status = "Status",
 	ver = "Ver"
 }
 
-
-const initialState : IEmployee[] = [{id: "2", name: "Name name", admisionDate: "04/05/2020", position: "JEFE"}];
-
+export interface IEmployee {
+	employee_id: number;
+	first_name: string;
+	last_name1: string;
+	last_name2: string;
+	daily_salary: number;
+	admision_date: Date;
+	status: boolean;
+	created_date: Date | null;
+	created_user_id: number;
+	updated_date: Date | null;
+	updated_user_id: number;
+	benefits?: number[];
+	position?: number[];
+}
 
 export const EmployeesTable = () => {
-	const [employees, setEmployees] = useState(initialState);
+	const token = userStore(state => state.token);
+	const [employees, setEmployees] = useState<IEmployee[]>([]);
 
-	// const getUsers = async () => {
-	// 	try {
-	// 		const { data } = await axios.get(`${apiUrl}/users`, { params: { take: 20, skip: 0 } });
-	// 		setUsers(data);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// }
+	const getUsers = async () => {
+		try {
+			//const { data } = await axios.request<IEmployeesResponse>(config);
+			const { data } = await axios.get<IEmployee[]>(`${apiUrl}/employees`, {
+				headers: {
+					"Accept-Encoding": "application/json",
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				}, params: { take: 20, skip: 0 }
+			});
+			setEmployees(data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
-	// useEffect(() => {
-	// 	getUsers();
-	// }, []);
+	useEffect(() => {
+		getUsers();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
@@ -55,12 +72,18 @@ export const EmployeesTable = () => {
 				<tbody>
 					{
 						employees.map((employee, i) => {
-							return <TableBodyRow key={i} id={employee.id} name={employee.name} creationDate={employee.admisionDate} job={employee.position} />
+							return <TableBodyRow
+								key={i}
+								id={employee.employee_id}
+								admision_date={employee.admision_date}
+								name={`${employee.first_name} ${employee.last_name1} ${employee.last_name2}`}
+								status={employee.status}
+								employee={employee}
+							/>
 						})
 					}
 				</tbody>
 			</table>
 		</div>
-
 	)
 }
