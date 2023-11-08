@@ -33,6 +33,11 @@ export const NewInconsistenciaForm = ({ setShow } : INewInconsistency) => {
 	const cancel = (e: React.SyntheticEvent) => {
 		e.preventDefault();
 		setShow(false);
+		setTypeExit(-1);
+		setInconsistency(-1)
+		setInitialDate("");
+		setEndDate("");
+		setDifference(0);
 	}
 
 	const [inconsistency, setInconsistency] = useState(-1);
