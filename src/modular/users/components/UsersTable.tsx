@@ -10,16 +10,17 @@ enum TableHeaders {
     creationDate = "Fecha de creación",
     ver = "Ver"
 }
- 
-interface IUsers {
-    data: Array
+
+interface IUser {
+	user_id : string,
+	nickname : string,
+	email : string,
+	role : string,
+	created_date : string
 }
 
-const initialState : IUsers = [{}];
-
-
 export const EmployeesTable = () => {
-  const [users, setUsers] = useState(initialState);
+  const [users, setUsers] = useState<IUser[]>([]);
 
   const getUsers = async () => {
     try {

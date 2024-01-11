@@ -16,9 +16,17 @@ export const CreateUserForm = () => {
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("");
 	const [role, setRole] = useState("");
+	const [errors, setErrors] = useState([]);
+	const [saved, setSaved] = useState(false);
 
 	const saveUser = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if(password !== password2){
+			setErrors([]);
+			setErrors(errors => [...errors, { msg: "Passwords do not match", path: "password" }]);
+			return;
+		}
+		
 		const data = JSON.stringify({
 			nickname: name,
 			email: email,
@@ -40,11 +48,23 @@ export const CreateUserForm = () => {
 		try {
 			const { data } = await axios.request(config);
 			console.log(data);
-			navigate("/users");
-		} catch (error) {
-			console.log(error);
+			setErrors([]);
+			setSaved(true);
+			setTimeout(() => {
+				navigate("/users");
+			}, 3000);
+		} catch (error : any) {
+			console.log(error.response.data.message);
+			if(error.response.data.message){
+				setErrors(errors => [...errors, { msg: error.response.data.message, path: "User" }]);
+				return;
+			}
+
+			setErrors(error.response.data.errors);
+
 		}
-	};
+	}
+
 	return (
 		<form onSubmit={(event) => saveUser(event)} className="w-9/12 mt-sm">
 			<div className="flex flex-row -mx-sm mb-md">
@@ -99,6 +119,15 @@ export const CreateUserForm = () => {
 					</select>
 				</div>
 			</div>
+			{
+				errors.length > 0 &&
+					errors.map((error : any, i) => 
+						<p key={i} className="text-red-500 text-end my-sm"><span className="capitalize">{ error.path }</span> : {error.msg}</p>
+					)
+			}
+			{
+				saved && <p className="text-green-600 text-end my-sm">Creado con éxito</p>
+			}
 			<div className="flex justify-end space-x-sm">
 				<button
 					onClick={() => navigate("/users")}
