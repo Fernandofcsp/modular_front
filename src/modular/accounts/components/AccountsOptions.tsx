@@ -1,0 +1,9 @@
+import { NavLink } from 'react-router-dom';
+
+export const AccountsOptions = () => {
+	return (
+		<div className="flex justify-end items-center py-md">
+			<NavLink to={"/newAccount"} className="text-white text-lg uppercase bg-blue-500 hover:font-semibold px-md py-xsm rounded-md hover:bg-blue-600">Agregar ingreso o egreso</NavLink>
+		</div>
+	)
+}

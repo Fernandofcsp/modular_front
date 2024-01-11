@@ -1,12 +1,38 @@
 import { userStore } from "../../store/userStore";
 import Layout from "../../ui/layout/Layout";
 import { useState } from "react";
+import axios from "axios";
 import { apiUrl } from "../../api";
 import edit from "../../../public/assets/icons/editar.png";
 import save from "../../../public/assets/icons/salvar.png";
 import cancel from "../../../public/assets/icons/cancel.png";
 import { FormField, inputType } from "../users/moleculs/FormField";
+import React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+export const notify = (type: any) => {
+  switch (type) {
+    case "WARN":
+      toast.error("Contraseña actual no coincide", {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "mt-3xl",
+      });
+      break;
+    case "ERROR":
+      toast.error(
+        "Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
+        { position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
+      );
+      break;
+    case "SUCCESS":
+      toast.success("Datos de usuario actualizados", {
+        position: toast.POSITION.TOP_RIGHT,
+        className: "mt-3xl",
+      });
+      break;
+  }
+};
 export const ProfilePage = () => {
   const { id, name, email, rol } = userStore((state) => state);
   const token = userStore((state) => state.token);
@@ -20,8 +46,8 @@ export const ProfilePage = () => {
   const [isDisabled, setDisabled] = useState(true);
 
   const handleReset = () => {
-    setNewName("");
-    setNewEmail("");
+    setNewName(name);
+    setNewEmail(email);
     setOldPassword("");
     setNewPassword("");
     setDisabled(true);
@@ -29,36 +55,38 @@ export const ProfilePage = () => {
 
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch(`${apiUrl}/users/update/${id}`, {
+    const data = JSON.stringify({
+      nickname: newName ? newName : undefined,
+      email: newEmail ? newEmail : undefined,
+    });
+
+    const config = {
+      method: "patch",
+      url: `${apiUrl}/users/update/${id}`,
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      method: "PATCH",
+      data: data,
+    };
 
-      // Fields that to be updated are passed
-      body: JSON.stringify({
-        nickname: newName,
-        email: newEmail,
-      }),
-    })
-      .then(function (response) {
+    try {
+      const { status } = await axios.request(config);
+      if (status == 200) {
+        notify("SUCCESS");
         setValue("email", newEmail);
         setValue("name", newName);
-        // console.log(response);
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-      });
+      }
+    } catch (error) {
+      console.log(error);
+      notify("ERROR");
+    }
   };
 
   return (
     <Layout>
-      
       <form onSubmit={(event) => updateUser(event)} className="w-9/12 mt-sm">
-      <h3 className="text-titleMd mb-xl">INFORMACIÓN DE TU CUENTA</h3>
+        <h3 className="text-titleMd mb-xl">INFORMACIÓN DE TU CUENTA</h3>
         <div className="flex flex-row -mx-sm mb-md">
           <FormField
             label="Nombre"
@@ -123,6 +151,9 @@ export const ProfilePage = () => {
             <span>{!isDisabled ? "Guardar" : "Editar"}</span>
             <img src={!isDisabled ? save : edit} className="w-md "></img>
           </button>
+        </div>
+        <div>
+          <ToastContainer />
         </div>
       </form>
     </Layout>
