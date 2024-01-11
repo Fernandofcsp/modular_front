@@ -1,12 +1,29 @@
+import React from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ILogInForm {
-	handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
-	onInputChange: (event: string) => void,
-	alert: string,
+    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void,
+    onInputChange: (event: React.FormEvent<HTMLInputElement>) => void,
 }
 
+export const notify = (type: string) => {
+  switch (type){
+    case ";":
+      toast.error("Contraseña o correo incorrectos", {position: toast.POSITION.TOP_RIGHT});
+      break;
+    case "ERROR":
+      toast.error("Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.", {position: toast.POSITION.TOP_RIGHT});
+      break;
+    case "SUCCESS":
+      toast.success("Ingreso exitoso", {position: toast.POSITION.TOP_RIGHT});
+      break;
+  }
+}
+
+
 export const LogInForm = (props: ILogInForm) => {
-	const { handleSubmit, onInputChange, alert } = props;
+	const { handleSubmit, onInputChange } = props;
 	return (
 		<form
 			className='space-y-md md:space-y-6'
@@ -47,7 +64,7 @@ export const LogInForm = (props: ILogInForm) => {
 				/>
 			</div>
 			<div>
-				<p className='font-bold text-red-600'>{alert}</p>
+				<ToastContainer />
 			</div>
 			<div className='flex justify-center'>
 				<button

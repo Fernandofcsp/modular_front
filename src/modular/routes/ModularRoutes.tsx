@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { HomePage } from '../home/HomePage';
+import { HomePage } from "../home/HomePage";
 import { ProfilePage } from "../user/ProfilePage";
 import { UserPage, UsersPage, CreateUserPage } from "../users/pages";
-import { EmployeePage, EmployeesPage, NewEmployeePage } from '../employees/pages';
-import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
+import { EmployeePage, EmployeesPage, NewEmployeePage} from "../employees/pages";
+import { AccountPage, AccountsPage, NewAccountPage } from "../accounts/pages";import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
 import AccountsPage from "../accounts/pages/AccountsPage";
 import { NewAccountPage } from "../accounts/pages/NewAccountPage";
 
@@ -20,8 +20,14 @@ export const ModularRoutes = () => {
       {/* Página de usuarios */}
       <Route path="/users" element={<UsersPage />} />
 
+      {/* Página de detalle de un usuario */}
+      <Route path="/user/:id" element={<UserPage />} />
+
+      {/* Página para crear nuevo usuario */}
+      <Route path="/createUser" element={<CreateUserPage />} />
+
       {/* Página de empleados */}
-			<Route path="/employees" element={<EmployeesPage />} />
+      <Route path="/employees" element={<EmployeesPage />} />
 
       {/* Página de detalle de empleado */}
 			<Route path="/employee" element={<EmployeePage />} />
@@ -29,11 +35,14 @@ export const ModularRoutes = () => {
       {/* Página de checador de empleado */}
 			<Route path="/employees-check" element={<EmployessCheckPage />} />
 
-      {/* Página de nuevo empleado */}
-			<Route path="/newEmployee" element={<NewEmployeePage />} />
+      {/* Página para crear nuevo empleado */}
+      <Route path="/newEmployee" element={<NewEmployeePage />} />
 
-      {/* Página de solo un empleado */}
-      <Route path="/user/:id" element={<UserPage />} />
+      {/* Página de cuentas o gastos */}
+      <Route path="/accounts" element={<AccountsPage />} />
+
+      {/* Página para editar una cuenta */}
+      <Route path="/account/:id" element={<AccountPage />} />
 
       {/* Página para crear usuario */}
       <Route path="/createUser" element={<CreateUserPage />} />
@@ -45,7 +54,7 @@ export const ModularRoutes = () => {
       <Route path="/new-account" element={<NewAccountPage />} />
 
       {/* <Route path="*" element={<NotFoundPage />} /> */}
-      <Route path="/*" element={ <Navigate to="/" /> } />
+      <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
-  )
-} 
+  );
+};

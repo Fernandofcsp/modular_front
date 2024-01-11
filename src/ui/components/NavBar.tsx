@@ -47,7 +47,7 @@ const NavBar = () => {
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     active ? "dark:bg-[#0E1117]" : "",
-                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700"
+                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700 rounded-md"
                   )}
                   onClick={() => {
                     navigate("/profile");
@@ -64,7 +64,7 @@ const NavBar = () => {
                   className={classNames(
                     active ? "bg-gray-100" : "",
                     active ? "dark:bg-[#0E1117]" : "",
-                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700"
+                    "block px-lg py-sm text-md hover:bg-blue-600 hover:text-white text-white-700 rounded-md"
                   )}
                   onClick={() => {
                     logout();
