@@ -3,9 +3,8 @@ import { HomePage } from "../home/HomePage";
 import { ProfilePage } from "../user/ProfilePage";
 import { UserPage, UsersPage, CreateUserPage } from "../users/pages";
 import { EmployeePage, EmployeesPage, NewEmployeePage} from "../employees/pages";
-import { AccountPage, AccountsPage, NewAccountPage } from "../accounts/pages";import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
-import AccountsPage from "../accounts/pages/AccountsPage";
-import { NewAccountPage } from "../accounts/pages/NewAccountPage";
+import { AccountPage, NewAccountPage, AccountsPage } from "../accounts/pages";
+import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
 
 
 export const ModularRoutes = () => {

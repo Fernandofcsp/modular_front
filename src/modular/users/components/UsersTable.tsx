@@ -24,7 +24,7 @@ export const EmployeesTable = () => {
 
   const getUsers = async () => {
     try {
-      const { data } = await axios.get(`${apiUrl}/users`, { params: {take: 20, skip: 0} });
+      const { data } = await axios.get(`${apiUrl}/users`, { params: {take: 100, skip: 0} });
       setUsers(data);
     } catch (error) {
       console.log(error);

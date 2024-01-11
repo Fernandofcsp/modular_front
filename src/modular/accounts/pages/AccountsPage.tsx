@@ -8,7 +8,7 @@ import { inputType } from "../../users/moleculs";
 import { accountsData } from "../data";
 
 
-export default function AccountsPage() {
+export function AccountsPage() {
 	const navigate = useNavigate();
 
 	const [initialDateToFilter, setInitialDateToFilter] = useState("");

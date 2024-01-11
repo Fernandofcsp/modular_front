@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Layout from "../../../ui/layout/Layout";
 import axios from "axios";
 import { apiUrl } from "../../../api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { userStore } from "../../../store/userStore";
 import cancel from "../../../../public/assets/icons/cancel.png";
 import save from "../../../../public/assets/icons/salvar.png";
