@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { userStore } from "../../store/userStore";
 import Layout from "../../ui/layout/Layout";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { apiUrl } from "../../api";
 import edit from "../../../public/assets/icons/editar.png";
 import save from "../../../public/assets/icons/salvar.png";
 import cancel from "../../../public/assets/icons/cancel.png";
+import back from "../../../public/assets/icons/back.png";
 import { FormField, inputType } from "../users/moleculs/FormField";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -14,7 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 export const notify = (type: any) => {
   switch (type) {
     case "WARN":
-      toast.error("Contraseña actual no coincide", {
+      toast.error("Las contraseñas no coinciden o no contienen mayusculas y/o caracteres especiales ", {
         position: toast.POSITION.TOP_RIGHT,
         className: "mt-3xl",
       });
@@ -36,11 +38,12 @@ export const notify = (type: any) => {
 export const ProfilePage = () => {
   const { id, name, email, rol } = userStore((state) => state);
   const token = userStore((state) => state.token);
+  const navigate = useNavigate();
   const setValue = userStore((state) => state.setValue);
 
   const [newName, setNewName] = useState(name);
   const [newEmail, setNewEmail] = useState(email);
-  const [oldPassword, setOldPassword] = useState("");
+  const [rePassword, setrePassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
   const [isDisabled, setDisabled] = useState(true);
@@ -48,7 +51,7 @@ export const ProfilePage = () => {
   const handleReset = () => {
     setNewName(name);
     setNewEmail(email);
-    setOldPassword("");
+    setrePassword("");
     setNewPassword("");
     setDisabled(true);
   };
@@ -58,6 +61,7 @@ export const ProfilePage = () => {
     const data = JSON.stringify({
       nickname: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
+      password: newPassword ? rePassword : undefined,
     });
 
     const config = {
@@ -77,9 +81,17 @@ export const ProfilePage = () => {
         setValue("email", newEmail);
         setValue("name", newName);
       }
-    } catch (error) {
+    } catch (error : any) {
+      console.log("Este es el error");
       console.log(error);
-      notify("ERROR");
+      
+      if (error.message == "Request failed with status code 400"){
+        notify("WARN");
+      }
+      else{
+        notify("ERROR");
+      }
+      
     }
   };
 
@@ -107,18 +119,18 @@ export const ProfilePage = () => {
         </div>
         <div className="flex flex-row -mx-sm mb-md">
           <FormField
-            label="Contraseña Actual"
-            value={oldPassword}
-            placeholder="********"
-            onChange={setOldPassword}
+            label="Contraseña Nueva"
+            value={newPassword}
+            placeholder=""
+            onChange={setNewPassword}
             disabled={isDisabled}
             type={inputType.password}
           />
           <FormField
-            label="Contraseña Nueva"
-            value={newPassword}
-            placeholder="Ingrese la contraseña"
-            onChange={setNewPassword}
+            label="Repetir Contraseña"
+            value={rePassword}
+            placeholder=""
+            onChange={setrePassword}
             type={inputType.password}
             disabled={isDisabled}
           />
@@ -134,6 +146,17 @@ export const ProfilePage = () => {
           </div>
         </div>
         <div className="flex justify-end space-x-sm">
+        <button
+            type={isDisabled ? "submit" : "button"}
+            onClick={() => {
+              navigate("/");
+            }}
+            className={`bg-blue-500 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            flex items-center gap-sm ${!isDisabled && "hidden"}`}
+          >
+            <span>Volver</span>
+            <img src={back} className="w-md "></img>
+          </button>
           <button
             type="button"
             onClick={() => handleReset()}

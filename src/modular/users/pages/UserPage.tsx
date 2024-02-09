@@ -16,10 +16,13 @@ import "react-toastify/dist/ReactToastify.css";
 export const notify = (type: any) => {
   switch (type) {
     case "WARN":
-      toast.error("Contraseña actual no coincide", {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "mt-3xl",
-      });
+      toast.error(
+        "Las contraseñas no coinciden o no contienen mayusculas y/o caracteres especiales ",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "mt-3xl",
+        }
+      );
       break;
     case "ERROR":
       toast.error(
@@ -46,9 +49,10 @@ export const UserPage = () => {
   const navigate = useNavigate();
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
+  const [rePassword, setrePassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isDisabled, setDisabled] = useState(true);
+  const [changePassword, setChangePassword] = useState(false);
 
   const getUser = async () => {
     try {
@@ -69,9 +73,10 @@ export const UserPage = () => {
   const handleReset = () => {
     setNewName(`${user.nickname}`);
     setNewEmail(`${user.email}`);
-    setOldPassword("");
+    setrePassword("");
     setNewPassword("");
     setDisabled(true);
+    setChangePassword(false);
   };
 
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,6 +84,7 @@ export const UserPage = () => {
     const data = JSON.stringify({
       nickname: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
+      password: newPassword ? rePassword : undefined,
     });
 
     const config = {
@@ -96,10 +102,17 @@ export const UserPage = () => {
       console.log(data);
       if (status == 200) {
         notify("SUCCESS");
+        handleReset();
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.log("Este es el error");
       console.log(error);
-      notify("ERROR");
+
+      if (error.message == "Request failed with status code 400") {
+        notify("WARN");
+      } else {
+        notify("ERROR");
+      }
     }
   };
 
@@ -108,7 +121,7 @@ export const UserPage = () => {
       <form onSubmit={(event) => updateUser(event)} className="w-9/12 mt-sm">
         <h3 className="text-titleMd mb-xl">INFORMACIÓN DE LA CUENTA</h3>
 
-        <div className="flex flex-row -mx-sm mb-md">
+        <div className="flex flex-row -mx-sm py-sm">
           <FormField
             label="Nombre"
             value={newName}
@@ -126,24 +139,36 @@ export const UserPage = () => {
             disabled={isDisabled}
           />
         </div>
-        <div className="flex flex-row -mx-sm mb-md">
-          <FormField
-            label="Contraseña Actual"
-            value={oldPassword}
-            placeholder="********"
-            onChange={setOldPassword}
-            disabled={isDisabled}
-            type={inputType.password}
-          />
-          <FormField
-            label="Contraseña Nueva"
-            value={newPassword}
-            placeholder="Ingrese la contraseña"
-            onChange={setNewPassword}
-            type={inputType.password}
-            disabled={isDisabled}
-          />
-        </div>
+        {!isDisabled && (
+          <p
+            className="py-sm text-blue-700 cursor-pointer"
+            onClick={() => setChangePassword((value) => !value)}
+          >
+            {changePassword ? "Cancelar cambio de contraseña " : "Cambiar contraseña de usuario"}
+          </p>
+        )}
+
+        {changePassword && (
+          <div className="flex flex-row -mx-sm mb-md">
+            <FormField
+              label="Contraseña nueva"
+              value={newPassword}
+              placeholder=""
+              onChange={setNewPassword}
+              disabled={isDisabled}
+              type={inputType.password}
+            />
+            <FormField
+              label="Repetir contraseña"
+              value={rePassword}
+              placeholder=""
+              onChange={setrePassword}
+              type={inputType.password}
+              disabled={isDisabled}
+            />
+          </div>
+        )}
+
         <div className="flex flex-row -mx-sm mb-md">
           <div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
             <p className="block mb-sm text-lg font-bold uppercase text-gray-900">
@@ -184,6 +209,17 @@ export const UserPage = () => {
           >
             <span>{!isDisabled ? "Guardar" : "Editar"}</span>
             <img src={!isDisabled ? save : edit} className="w-md "></img>
+          </button>
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={() => handleReset()}
+            className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            flex items-center gap-sm ${isDisabled && "hidden"}`}
+          >
+            <span>{!isDisabled ? "Eliminar Usuario" : ""}</span>
+            <img src={!isDisabled ? cancel : ""} className="w-md "></img>
           </button>
         </div>
         <ToastContainer />
