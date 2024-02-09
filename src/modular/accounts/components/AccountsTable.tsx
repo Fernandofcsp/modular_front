@@ -7,7 +7,8 @@ enum TableHeaders {
 	date = "Fecha",
 	referency = "Referencia",
 	concept = "Concepto",
-	total = "Total"
+	total = "Total",
+	mas = "Más"
 }
 
 interface ITableProps{
