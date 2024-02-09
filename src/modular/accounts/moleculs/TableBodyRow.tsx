@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 interface IAccountRow {
@@ -26,6 +27,9 @@ export const TableBodyRow = (props: IAccountRow) => {
 			</td>
 			<td className="px-md py-md">
 				${new Intl.NumberFormat().format(total)}
+			</td>
+			<td className="px-md py-md">
+				<Link to={`/account`} state={id}><p className="text-blue-600">Más</p></Link>
 			</td>
 		</tr>
 	)
