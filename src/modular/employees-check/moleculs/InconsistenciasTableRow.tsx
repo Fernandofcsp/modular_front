@@ -1,26 +1,39 @@
+import { Link } from "react-router-dom";
 
 interface IRow {
-	tipo : string
-	fechaInicio : Date
-	fechaFin : Date
-	tiempo : string
+	id : number,
+	tipo : number,
+	fechaInicio : Date,
+	fechaFin : Date | string,
+	minutes : number | null
 }
 
+const tiposInconsistencia = ["Falta", "Retardo", "Vacaciones", "Incapacidad"];
+
 export const EmployeesTableRow = ( props : IRow ) => {
-	const { fechaInicio, fechaFin, tiempo, tipo } = props;
+	const { fechaInicio, fechaFin, minutes, tipo } = props;
 	return (
 		<tr className="bg-white border-b">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
-				{tipo}
+				{tiposInconsistencia[tipo]}
 			</th>
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
 				{fechaInicio.toString()}
 			</th>
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
-				{fechaFin.toString()}
+				{
+					tipo === 0 || tipo === 1 ?
+						"N/A" :
+						fechaFin.toString()
+				}
 			</th>
 			<td className="px-md py-md">
-				{tiempo}
+				{
+					tipo === 1 ? minutes : "N/A"
+				}
+			</td>
+			<td className="px-md py-md text-blue-700">
+				<Link className="text-blue-700 font-bold" state={props} to={`/inconsistency-detail`}>Detalle</Link>
 			</td>
 		</tr>
 	)

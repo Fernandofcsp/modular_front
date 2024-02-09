@@ -5,6 +5,7 @@ import { UserPage, UsersPage, CreateUserPage } from "../users/pages";
 import { EmployeePage, EmployeesPage, NewEmployeePage} from "../employees/pages";
 import { AccountPage, NewAccountPage, AccountsPage } from "../accounts/pages";
 import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
+import { InconsistencyPage } from '../employees-check/pages/InconsistencyPage';
 
 
 export const ModularRoutes = () => {
@@ -34,6 +35,9 @@ export const ModularRoutes = () => {
       {/* Página de checador de empleado */}
 			<Route path="/employees-check" element={<EmployessCheckPage />} />
 
+      {/* Página de detalle de inconsistencia */}
+			<Route path="/inconsistency-detail" element={<InconsistencyPage />} />
+
       {/* Página para crear nuevo empleado */}
       <Route path="/newEmployee" element={<NewEmployeePage />} />
 
@@ -41,7 +45,7 @@ export const ModularRoutes = () => {
       <Route path="/accounts" element={<AccountsPage />} />
 
       {/* Página para editar una cuenta */}
-      <Route path="/account/:id" element={<AccountPage />} />
+      <Route path="/account" element={<AccountPage />} />
 
       {/* Página para crear usuario */}
       <Route path="/createUser" element={<CreateUserPage />} />

@@ -8,14 +8,16 @@ interface IValidateFields {
 export const validateFields = (
   inconsistencyType: number,
   initialDate: string,
-  endDate?: string,
-  exitType?: number
+	minutes: number,
+  endDate?: string | undefined,
 ): IValidateFields => {
   const errors = [];
   let reset = false;
 
+	console.log(inconsistencyType);
   switch (inconsistencyType) {
     case 0:
+			console.log(initialDate);
       //Revisar
       if (initialDate === "") errors.push("Debes seleccionar una fecha");
 
@@ -25,20 +27,14 @@ export const validateFields = (
       }
       break;
     case 1:
-      if (initialDate === "" || endDate === "")
-        errors.push("Debes seleccionar fechas válidas");
-      if (moment(initialDate).isSameOrAfter(moment(endDate))) {
-        errors.push("La fecha inicial debe ser menor a la final");
+			console.log(moment(initialDate));
+      if (initialDate === "")
+        errors.push("Debes seleccionar una fecha válida");
+			if (minutes <= 0)
+				errors.push("Ingrese un numero de minutos correcto");
+      if (moment(initialDate).isSameOrAfter(moment())) {
+        errors.push("La fecha no puede ser del futuro");
         reset = true;
-        break;
-      }
-      if (
-        moment(initialDate).isAfter(moment()) ||
-        moment(endDate).isAfter(moment())
-      ) {
-        errors.push("Las fechas no pueden ser del futuro");
-        reset = true;
-        break;
       }
       break;
     case 2:
@@ -63,7 +59,6 @@ export const validateFields = (
       console.log("Default case");
   }
 
-  if (exitType === -1) errors.push("Debes elegir un tipo de entrada");
   return {
     errors,
     reset,
