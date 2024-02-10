@@ -4,7 +4,7 @@ import axios from "axios";
 import { apiUrl } from "../../../api";
 import { useEffect, useState } from "react";
 import { userStore } from "../../../store/userStore";
-import { FormField, RoleSelector, inputType } from "../moleculs";
+import { FormField, inputType } from "../moleculs";
 import cancel from "../../../../public/assets/icons/cancel.png";
 import save from "../../../../public/assets/icons/salvar.png";
 import edit from "../../../../public/assets/icons/editar.png";
@@ -53,6 +53,7 @@ export const UserPage = () => {
   const [newPassword, setNewPassword] = useState("");
   const [isDisabled, setDisabled] = useState(true);
   const [changePassword, setChangePassword] = useState(false);
+  const [role, setRole] = useState("");
 
   const getUser = async () => {
     try {
@@ -61,6 +62,7 @@ export const UserPage = () => {
       setUser(data);
       setNewName(`${data.nickname}`);
       setNewEmail(`${data.email}`);
+      setRole(`${data.role}`);
     } catch (error) {
       console.log(error);
     }
@@ -85,6 +87,7 @@ export const UserPage = () => {
       nickname: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
       password: newPassword ? rePassword : undefined,
+      role: role,
     });
 
     const config = {
@@ -105,9 +108,6 @@ export const UserPage = () => {
         handleReset();
       }
     } catch (error: any) {
-      console.log("Este es el error");
-      console.log(error);
-
       if (error.message == "Request failed with status code 400") {
         notify("WARN");
       } else {
@@ -139,14 +139,6 @@ export const UserPage = () => {
             disabled={isDisabled}
           />
         </div>
-        {!isDisabled && (
-          <p
-            className="py-sm text-blue-700 cursor-pointer"
-            onClick={() => setChangePassword((value) => !value)}
-          >
-            {changePassword ? "Cancelar cambio de contraseña " : "Cambiar contraseña de usuario"}
-          </p>
-        )}
 
         {changePassword && (
           <div className="flex flex-row -mx-sm mb-md">
@@ -171,13 +163,44 @@ export const UserPage = () => {
 
         <div className="flex flex-row -mx-sm mb-md">
           <div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
-            <p className="block mb-sm text-lg font-bold uppercase text-gray-900">
-              Rol del usuario
-            </p>
-            <p className="focus:bg-white bg-gray-50 text-gray-800 text-md rounded-md block w-full p-sm">
-              {user.role}
-            </p>
+            <label className="block mb-sm text-lg font-bold uppercase text-gray-900">
+              Rol de usuario
+            </label>
+            <select
+              disabled={isDisabled}
+              onChange={({ target }) => setRole(target.value)}
+              value={role}
+              className="focus:bg-white bg-gray-50 text-gray-800 text-md rounded-md block w-full p-sm"
+            >
+              <option value="INOPERATIVE">Inoperativo</option>
+              <option value="READ">Sólo lectura</option>
+              <option value="WRITE">Lectura y escritura</option>
+              <option value="OVERWRITE">
+                Lectura, escritura y modificar datos
+              </option>
+            </select>
           </div>
+        </div>
+        <div className="flex justify-end space-x-md py-sm">
+          <button
+            type="button"
+            onClick={() => {
+              setChangePassword((value) => !value);
+            }}
+            className={`bg-gray-700 hover:bg-gray-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
+              isDisabled && "hidden"
+            }`}
+          >
+            <span>
+              {!changePassword
+                ? "Cambiar contraseña de usuario"
+                : "Cancelar cambio de contraseña"}
+            </span>
+            <img
+              src={!changePassword ? edit : cancel}
+              className={`w-md ${isDisabled && "hidden"}`}
+            ></img>
+          </button>
         </div>
         <div className="flex justify-end space-x-sm">
           <button
@@ -185,7 +208,7 @@ export const UserPage = () => {
             onClick={() => {
               navigate("/users");
             }}
-            className={`bg-blue-500 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
             flex items-center gap-sm ${!isDisabled && "hidden"}`}
           >
             <span>Volver</span>
@@ -194,7 +217,7 @@ export const UserPage = () => {
           <button
             type="button"
             onClick={() => handleReset()}
-            className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
             flex items-center gap-sm ${isDisabled && "hidden"}`}
           >
             <span>Cancelar</span>
@@ -205,21 +228,14 @@ export const UserPage = () => {
             onClick={() => {
               setDisabled((value) => !value);
             }}
-            className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
+            className={` hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
+              !isDisabled
+                ? `bg-green-800 hover:bg-green-600`
+                : `bg-gray-800 hover:bg-gray-600 `
+            }`}
           >
             <span>{!isDisabled ? "Guardar" : "Editar"}</span>
             <img src={!isDisabled ? save : edit} className="w-md "></img>
-          </button>
-        </div>
-        <div>
-          <button
-            type="button"
-            onClick={() => handleReset()}
-            className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-            flex items-center gap-sm ${isDisabled && "hidden"}`}
-          >
-            <span>{!isDisabled ? "Eliminar Usuario" : ""}</span>
-            <img src={!isDisabled ? cancel : ""} className="w-md "></img>
           </button>
         </div>
         <ToastContainer />

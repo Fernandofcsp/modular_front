@@ -1,7 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { userStore } from "../../store/userStore";
 import Layout from "../../ui/layout/Layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../api";
 import edit from "../../../public/assets/icons/editar.png";
@@ -16,10 +16,13 @@ import "react-toastify/dist/ReactToastify.css";
 export const notify = (type: any) => {
   switch (type) {
     case "WARN":
-      toast.error("Las contraseñas no coinciden o no contienen mayusculas y/o caracteres especiales ", {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "mt-3xl",
-      });
+      toast.error(
+        "Las contraseñas no coinciden o no contienen mayusculas y/o caracteres especiales ",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "mt-3xl",
+        }
+      );
       break;
     case "ERROR":
       toast.error(
@@ -36,7 +39,7 @@ export const notify = (type: any) => {
   }
 };
 export const ProfilePage = () => {
-  const { id, name, email, rol } = userStore((state) => state);
+  const { id, name, email } = userStore((state) => state);
   const token = userStore((state) => state.token);
   const navigate = useNavigate();
   const setValue = userStore((state) => state.setValue);
@@ -45,8 +48,25 @@ export const ProfilePage = () => {
   const [newEmail, setNewEmail] = useState(email);
   const [rePassword, setrePassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-
   const [isDisabled, setDisabled] = useState(true);
+  const [changePassword, setChangePassword] = useState(false);
+  const [role, setRole] = useState("");
+
+  const getUser = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/users/${id}`);
+      console.log(data);
+      setNewName(`${data.nickname}`);
+      setNewEmail(`${data.email}`);
+      setRole(`${data.role}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   const handleReset = () => {
     setNewName(name);
@@ -54,6 +74,7 @@ export const ProfilePage = () => {
     setrePassword("");
     setNewPassword("");
     setDisabled(true);
+    setChangePassword(false);
   };
 
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,6 +83,7 @@ export const ProfilePage = () => {
       nickname: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
       password: newPassword ? rePassword : undefined,
+      role: role,
     });
 
     const config = {
@@ -81,17 +103,15 @@ export const ProfilePage = () => {
         setValue("email", newEmail);
         setValue("name", newName);
       }
-    } catch (error : any) {
+    } catch (error: any) {
       console.log("Este es el error");
       console.log(error);
-      
-      if (error.message == "Request failed with status code 400"){
+
+      if (error.message == "Request failed with status code 400") {
         notify("WARN");
-      }
-      else{
+      } else {
         notify("ERROR");
       }
-      
     }
   };
 
@@ -117,41 +137,75 @@ export const ProfilePage = () => {
             disabled={isDisabled}
           />
         </div>
-        <div className="flex flex-row -mx-sm mb-md">
-          <FormField
-            label="Contraseña Nueva"
-            value={newPassword}
-            placeholder=""
-            onChange={setNewPassword}
-            disabled={isDisabled}
-            type={inputType.password}
-          />
-          <FormField
-            label="Repetir Contraseña"
-            value={rePassword}
-            placeholder=""
-            onChange={setrePassword}
-            type={inputType.password}
-            disabled={isDisabled}
-          />
-        </div>
+
+        {changePassword && (
+          <div className="flex flex-row -mx-sm mb-md">
+            <FormField
+              label="Contraseña nueva"
+              value={newPassword}
+              placeholder=""
+              onChange={setNewPassword}
+              disabled={isDisabled}
+              type={inputType.password}
+            />
+            <FormField
+              label="Repetir contraseña"
+              value={rePassword}
+              placeholder=""
+              onChange={setrePassword}
+              type={inputType.password}
+              disabled={isDisabled}
+            />
+          </div>
+        )}
         <div className="flex flex-row -mx-sm mb-md">
           <div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
-            <p className="block mb-sm text-lg font-bold uppercase text-gray-900">
-              Rol del usuario
-            </p>
-            <p className="focus:bg-white bg-gray-50 text-gray-800 text-md rounded-md block w-full p-sm">
-              {rol}
-            </p>
+            <label className="block mb-sm text-lg font-bold uppercase text-gray-900">
+              Rol de usuario
+            </label>
+            <select
+              disabled={isDisabled}
+              onChange={({ target }) => setRole(target.value)}
+              value={role}
+              className="focus:bg-white bg-gray-50 text-gray-800 text-md rounded-md block w-full p-sm"
+            >
+              <option value="INOPERATIVE">Inoperativo</option>
+              <option value="READ">Sólo lectura</option>
+              <option value="WRITE">Lectura y escritura</option>
+              <option value="OVERWRITE">
+                Lectura, escritura y modificar datos
+              </option>
+            </select>
           </div>
         </div>
+        <div className="flex justify-end space-x-md py-sm">
+          <button
+            type="button"
+            onClick={() => {
+              setChangePassword((value) => !value);
+            }}
+            className={`bg-gray-700 hover:bg-gray-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
+              isDisabled && "hidden"
+            }`}
+          >
+            <span>
+              {!changePassword
+                ? "Cambiar contraseña de usuario"
+                : "Cancelar cambio de contraseña"}
+            </span>
+            <img
+              src={!changePassword ? edit : cancel}
+              className={`w-md ${isDisabled && "hidden"}`}
+            ></img>
+          </button>
+        </div>
         <div className="flex justify-end space-x-sm">
-        <button
+          <button
             type={isDisabled ? "submit" : "button"}
             onClick={() => {
               navigate("/");
             }}
-            className={`bg-blue-500 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
             flex items-center gap-sm ${!isDisabled && "hidden"}`}
           >
             <span>Volver</span>
@@ -160,7 +214,7 @@ export const ProfilePage = () => {
           <button
             type="button"
             onClick={() => handleReset()}
-            className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
             flex items-center gap-sm ${isDisabled && "hidden"}`}
           >
             <span>Cancelar</span>
@@ -169,7 +223,11 @@ export const ProfilePage = () => {
           <button
             type={isDisabled ? "submit" : "button"}
             onClick={() => setDisabled((value) => !value)}
-            className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
+            className={` hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
+              !isDisabled
+                ? `bg-green-800 hover:bg-green-600`
+                : `bg-gray-800 hover:bg-gray-600 `
+            }`}
           >
             <span>{!isDisabled ? "Guardar" : "Editar"}</span>
             <img src={!isDisabled ? save : edit} className="w-md "></img>

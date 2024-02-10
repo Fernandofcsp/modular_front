@@ -25,7 +25,7 @@ export const TableBodyRow = (props: IBodyItem) => {
 			{
 				!status ? 
 					<td className="px-md py-md text-red-500">Inactivo</td> 
-					: <td className="px-md py-md text-green-600">Activo</td>
+					: <td className="px-md py-md text-green-500">Activo</td>
 			}
 
 			<td className="px-md py-md">
