@@ -4,9 +4,32 @@ import { userStore } from "../../../store/userStore";
 import { useState } from 'react';
 import { apiUrl } from "../../../api";
 import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
 import cancel from "../../../../public/assets/icons/cancel.png";
 import save from "../../../../public/assets/icons/salvar.png";
 
+export const notify = (type: any) => {
+	switch (type) {
+	  case "WARN":
+		toast.error("Datos incompletos o incorrectos", {
+		  position: toast.POSITION.TOP_RIGHT,
+		  className: "mt-3xl",
+		});
+		break;
+	  case "ERROR":
+		toast.error(
+		  "Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
+		  { position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
+		);
+		break;
+	  case "SUCCESS":
+		toast.success("Creación de empleado exitoso", {
+		  position: toast.POSITION.TOP_RIGHT,
+		  className: "mt-3xl",
+		});
+		break;
+	}
+  };
 export const CreateEmployeeForm = () => {
 	const navigate = useNavigate();
 	const token = userStore((state) => state.token);
@@ -16,6 +39,14 @@ export const CreateEmployeeForm = () => {
 	const [lastName2, setLastName2] = useState("");
 	const [dailySalary, setDailySalary] = useState("");
 	const [admissionDate, setAdmissionDate] = useState("");
+
+	const handleReset = () => {
+		setFirstName("");
+		setLastName1("");
+		setLastName2("");
+		setDailySalary("");
+		setAdmissionDate("");
+	  };
 
 	const saveEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -40,13 +71,20 @@ export const CreateEmployeeForm = () => {
 		};
 
 		try {
-			const { data } = await axios.request(config);
+			const { data, status } = await axios.request(config);
 			console.log(data);
-			navigate("/employees");
-		} catch (error) {
-			console.log(error);
-		}
-	};
+			if (status == 200) {
+			  notify("SUCCESS");
+			  handleReset();
+			}
+		  } catch (error: any) {
+			if (error.message == "Request failed with status code 400") {
+			  notify("WARN");
+			} else {
+			  notify("ERROR");
+			}
+		  }
+		};
 
 	return (
 		<form onSubmit={(event) => saveEmployee(event)} className="w-9/12 mt-sm">
@@ -92,19 +130,20 @@ export const CreateEmployeeForm = () => {
 			<div className="flex justify-end space-x-sm">
 				<button
 					onClick={() => navigate("/employees")}
-					className="bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
+					className="bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
 				>
 					<span>Cancelar</span>
 					<img src={cancel} className="w-md "></img>
 				</button>
 				<button
 					type="submit"
-					className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
+					className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
 				>
-					<span>Guardar</span>
+					<span>Crear</span>
 					<img src={save} className="w-md "></img>
 				</button>
 			</div>
+			<ToastContainer />
 		</form>
 	);
 }

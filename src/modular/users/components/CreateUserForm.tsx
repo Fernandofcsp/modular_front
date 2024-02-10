@@ -71,20 +71,20 @@ export const CreateUserForm = () => {
     };
 
     try {
-      const { data, status } = await axios.request(config);
-      if (status == 200) {
-        notify("SUCCESS");
-        handleReset();
-      }
-
-      console.log(data);
-    } catch (error) {
-      if (error instanceof Error)
-        if (error.message == "Request failed with status code 400") {
-          notify("WARN");
-        }
-    }
-  };
+			const { data, status } = await axios.request(config);
+			console.log(data);
+			if (status == 200) {
+			  notify("SUCCESS");
+			  handleReset();
+			}
+		  } catch (error: any) {
+			if (error.message == "Request failed with status code 400") {
+			  notify("WARN");
+			} else {
+			  notify("ERROR");
+			}
+		  }
+		};
   return (
     <form onSubmit={(event) => saveUser(event)} className="w-9/12 mt-sm">
       <div className="flex flex-row -mx-sm mb-md">
@@ -142,16 +142,16 @@ export const CreateUserForm = () => {
       <div className="flex justify-end space-x-sm">
         <button
           onClick={() => navigate("/users")}
-          className="bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
+          className="bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
         >
           <span>Cancelar</span>
           <img src={cancel} className="w-md "></img>
         </button>
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
+          className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
         >
-          <span>Guardar</span>
+          <span>Crear</span>
           <img src={save} className="w-md "></img>
         </button>
       </div>
