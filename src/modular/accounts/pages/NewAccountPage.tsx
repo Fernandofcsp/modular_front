@@ -11,31 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { BackButton } from "../../../ui/moleculs/BackButton";
 import { ToastContainer, toast } from "react-toastify";
 
-export const notify = (type: any) => {
-  switch (type) {
-    case "WARN":
-      toast.error(
-        "Datos incompletos ",
-        {
-          position: toast.POSITION.TOP_RIGHT,
-          className: "mt-3xl",
-        }
-      );
-      break;
-    case "ERROR":
-      toast.error(
-        "Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
-        { position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
-      );
-      break;
-    case "SUCCESS":
-      toast.success("Datos de cuenta actualizados", {
-        position: toast.POSITION.TOP_RIGHT,
-        className: "mt-3xl",
-      });
-      break;
-  }
-};
+
 export const NewAccountPage = () => {
   const token = userStore((state) => state.token);
   const navigate = useNavigate();
@@ -44,6 +20,32 @@ export const NewAccountPage = () => {
   const [reference, setReference] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [date, setDate] = useState("");
+
+  const notify = (type: any) => {
+    switch (type) {
+      case "WARN":
+        toast.error(
+          errors,
+          {
+            position: toast.POSITION.TOP_RIGHT,
+            className: "mt-3xl",
+          }
+        );
+        break;
+      case "ERROR":
+        toast.error(
+          "Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
+          { position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
+        );
+        break;
+      case "SUCCESS":
+        toast.success("Datos de cuenta actualizados", {
+          position: toast.POSITION.TOP_RIGHT,
+          className: "mt-3xl",
+        });
+        break;
+    }
+  };
 
   const handleReset  = () =>{
 	setConcept("");
@@ -136,11 +138,14 @@ export const NewAccountPage = () => {
             type={inputType.date}
           />
         </div>
+        
         {errors.length > 0 &&
           errors.map((error) => (
+            
             <p key={error} className="text-red-600 text-end mb-sm mt-md">
               {error}
             </p>
+            
           ))}
         <div className="flex justify-end space-x-sm">
           <BackButton onClick={() => navigate("/accounts")} />

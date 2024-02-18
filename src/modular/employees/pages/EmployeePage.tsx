@@ -76,18 +76,18 @@ export const EmployeePage = () => {
     setLastName2(lastName2);
     setDailySalary(daily_salary);
     setJob("");
-	setDisabled(true);
+    setDisabled(true);
   };
 
   const saveEmployeeData = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const date = new Date(admisionDate);
+    const date = new Date(admisionDate);
     const data = JSON.stringify({
       first_name: name,
       last_name1: lastName1,
       last_name2: lastName2,
       daily_salary: parseInt(dailySalary),
-      // admision_date: date,
+      //admision_date: date,
       status: newStatus,
     });
 
@@ -201,7 +201,7 @@ export const EmployeePage = () => {
           <div className="flex flex-row -mx-sm mb-md">
             <FormField
               label="Fecha de ingreso"
-              value={admisionDate}
+              value={admision_date.toString().split("T")[0]}
               placeholder="Fecha de ingreso"
               onChange={setAdmisionDate}
               disabled={isDisabled}
@@ -247,10 +247,10 @@ export const EmployeePage = () => {
               type={isDisabled ? "submit" : "button"}
               onClick={() => setDisabled((value) => !value)}
               className={` hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
-				!isDisabled
-				  ? `bg-green-800 hover:bg-green-600`
-				  : `bg-gray-800 hover:bg-gray-600 `
-			  }`}
+                !isDisabled
+                  ? `bg-green-800 hover:bg-green-600`
+                  : `bg-gray-800 hover:bg-gray-600 `
+              }`}
             >
               <span>{!isDisabled ? "Guardar" : "Editar"}</span>
               <img src={!isDisabled ? save : edit} className="w-md "></img>

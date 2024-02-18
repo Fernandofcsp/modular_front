@@ -53,10 +53,7 @@ export const CreateEmployeeForm = () => {
     setDailySalary("");
     setAdmissionDate("");
   };
-  const validateDate = async (e: React.FormEvent<HTMLFormElement>) => {
-	e.preventDefault();
-	
-  };
+  
   const saveEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     var todayDate = new Date().toISOString().slice(0, 10);

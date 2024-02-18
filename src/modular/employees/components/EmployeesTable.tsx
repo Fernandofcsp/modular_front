@@ -28,10 +28,14 @@ export interface IEmployee {
 	benefits?: number[];
 	position?: number[];
 }
+interface IEmployeesTableProps {
+	filter: number;
+  }
 
-export const EmployeesTable = () => {
+export const EmployeesTable = ({filter} : IEmployeesTableProps) => {
 	const token = userStore(state => state.token);
 	const [employees, setEmployees] = useState<IEmployee[]>([]);
+	
 
 	const getUsers = async () => {
 		try {
@@ -54,6 +58,8 @@ export const EmployeesTable = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const employeesFilteredByStatus = employees.filter(element => element.status === (Boolean(filter)));
+	console.log(employeesFilteredByStatus+"hola")
 	return (
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
 			<table className="w-full text-md text-left text-gray-500">
