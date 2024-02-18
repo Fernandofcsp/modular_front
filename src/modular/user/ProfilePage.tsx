@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../store/userStore";
 import Layout from "../../ui/layout/Layout";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../api";
 import edit from "../../../public/assets/icons/editar.png";
@@ -12,6 +12,7 @@ import { FormField, inputType } from "../users/moleculs/FormField";
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { validateUserFields } from "./helpers/validateUserFields";
 
 export const notify = (type: any) => {
   switch (type) {
@@ -39,23 +40,22 @@ export const notify = (type: any) => {
   }
 };
 export const ProfilePage = () => {
-  const { id, name, email } = userStore((state) => state);
+  const { id, name, email, rol } = userStore((state) => state);
   const token = userStore((state) => state.token);
   const navigate = useNavigate();
   const setValue = userStore((state) => state.setValue);
 
   const [newName, setNewName] = useState(name);
   const [newEmail, setNewEmail] = useState(email);
-  const [rePassword, setrePassword] = useState("");
+  const [role, setRole] = useState(rol);
   const [newPassword, setNewPassword] = useState("");
-  const [isDisabled, setDisabled] = useState(true);
+  const [rePassword, setrePassword] = useState("");
+  const [isDisabled, setIsDisabled] = useState(true);
   const [changePassword, setChangePassword] = useState(false);
-  const [role, setRole] = useState("");
 
-  const getUser = async () => {
+  /*const getUser = async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/${id}`);
-      console.log(data);
       setNewName(`${data.nickname}`);
       setNewEmail(`${data.email}`);
       setRole(`${data.role}`);
@@ -66,19 +66,31 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); */
 
   const handleReset = () => {
     setNewName(name);
     setNewEmail(email);
+		setRole(rol);
     setrePassword("");
     setNewPassword("");
-    setDisabled(true);
+		setIsDisabled(true);
     setChangePassword(false);
   };
 
-  const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
+	const updateUser = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+
+		const	errors = validateUserFields(newName, newEmail, role, changePassword, newPassword, rePassword);
+
+
+		if (errors.length > 0) {
+			errors.map(error => toast.error(error));
+
+			return;
+		}
+
     const data = JSON.stringify({
       nickname: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
@@ -102,6 +114,7 @@ export const ProfilePage = () => {
         notify("SUCCESS");
         setValue("email", newEmail);
         setValue("name", newName);
+        setValue("rol", role);
       }
     } catch (error: any) {
       console.log("Este es el error");
@@ -117,7 +130,7 @@ export const ProfilePage = () => {
 
   return (
     <Layout>
-      <form onSubmit={(event) => updateUser(event)} className="w-9/12 mt-sm">
+      <form className="w-9/12 mt-sm">
         <h3 className="text-titleMd mb-xl">INFORMACIÓN DE TU CUENTA</h3>
         <div className="flex flex-row -mx-sm mb-md">
           <FormField
@@ -200,38 +213,48 @@ export const ProfilePage = () => {
           </button>
         </div>
         <div className="flex justify-end space-x-sm">
-          <button
-            type={isDisabled ? "submit" : "button"}
-            onClick={() => {
-              navigate("/");
-            }}
-            className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-            flex items-center gap-sm ${!isDisabled && "hidden"}`}
-          >
-            <span>Volver</span>
-            <img src={back} className="w-md "></img>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleReset()}
-            className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-            flex items-center gap-sm ${isDisabled && "hidden"}`}
-          >
-            <span>Cancelar</span>
-            <img src={cancel} className="w-md "></img>
-          </button>
-          <button
-            type={isDisabled ? "submit" : "button"}
-            onClick={() => setDisabled((value) => !value)}
-            className={` hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
-              !isDisabled
-                ? `bg-green-800 hover:bg-green-600`
-                : `bg-gray-800 hover:bg-gray-600 `
-            }`}
-          >
-            <span>{!isDisabled ? "Guardar" : "Editar"}</span>
-            <img src={!isDisabled ? save : edit} className="w-md "></img>
-          </button>
+					{
+						isDisabled &&
+							<button
+								onClick={() => {
+									navigate("/");
+								}}
+								className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+								flex items-center gap-sm`}
+							>
+								<span>Volver</span>
+								<img src={back} className="w-md "></img>
+							</button>
+					}
+					{
+						!isDisabled &&
+							<button
+								onClick={() => handleReset()}
+								className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+								flex items-center gap-sm`}
+							>
+								<span>Cancelar</span>
+								<img src={cancel} className="w-md "></img>
+							</button>
+					}
+					{
+						isDisabled ?
+							<button
+								onClick={(event) => {event.preventDefault(); setIsDisabled(false)}}
+								className={'hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'}
+							>
+								<span>Editar</span>
+								<img src={edit} className="w-md "></img>
+							</button>
+						:
+							<button
+								onClick={(event) => updateUser(event)}
+								className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'
+							>
+								<span>{"Guardar"}</span>
+								<img src={save} className="w-md "></img>
+							</button>
+					}
         </div>
         <div>
           <ToastContainer />
