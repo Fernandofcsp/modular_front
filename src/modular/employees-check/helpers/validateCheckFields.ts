@@ -5,33 +5,32 @@ interface IValidateFields {
   reset: boolean;
 }
 
-export const validateFields = (
+export const validateCheckFields = (
   inconsistencyType: number,
   initialDate: string,
-	minutes: number,
-  endDate?: string | undefined,
+  minutes: number,
+  endDate?: string | undefined
 ): IValidateFields => {
   const errors = [];
   let reset = false;
 
-	console.log(inconsistencyType);
   switch (inconsistencyType) {
     case 0:
-			console.log(initialDate);
-      //Revisar
       if (initialDate === "") errors.push("Debes seleccionar una fecha");
 
       if (moment(initialDate).isAfter(moment())) {
         errors.push("La fecha no debe de ser del futuro");
         reset = true;
       }
+
+      if (moment(initialDate).day() === 6 || moment(initialDate).day() === 0) {
+        errors.push("No se capturan faltas en fin de semana");
+        reset = true;
+      }
       break;
     case 1:
-			console.log(moment(initialDate));
-      if (initialDate === "")
-        errors.push("Debes seleccionar una fecha válida");
-			if (minutes <= 0)
-				errors.push("Ingrese un numero de minutos correcto");
+      if (initialDate === "") errors.push("Debes seleccionar una fecha válida");
+      if (minutes <= 0) errors.push("Ingrese un numero de minutos correcto");
       if (moment(initialDate).isSameOrAfter(moment())) {
         errors.push("La fecha no puede ser del futuro");
         reset = true;

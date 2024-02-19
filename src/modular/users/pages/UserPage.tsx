@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../ui/layout/Layout";
 import axios from "axios";
@@ -9,9 +10,9 @@ import cancel from "../../../../public/assets/icons/cancel.png";
 import save from "../../../../public/assets/icons/salvar.png";
 import edit from "../../../../public/assets/icons/editar.png";
 import back from "../../../../public/assets/icons/back.png";
-import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { validateUserFields } from "../helpers/validateUserFields";
 
 export const notify = (type: any) => {
   switch (type) {
@@ -70,6 +71,7 @@ export const UserPage = () => {
 
   useEffect(() => {
     getUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleReset = () => {
@@ -83,6 +85,14 @@ export const UserPage = () => {
 
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+		const errors = validateUserFields(newName, newEmail, role, newPassword, rePassword);
+
+		if (errors.length > 0) {
+			errors.map(error => toast.error(error));
+
+			return;
+		}
+
     const data = JSON.stringify({
       nickname: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
