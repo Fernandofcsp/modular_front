@@ -13,6 +13,7 @@ export const EmployessCheckPage = () => {
 
 	useEffect(() => {
 		setId(employeeId);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ employeeId ])
 	
 	return (
