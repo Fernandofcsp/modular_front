@@ -7,6 +7,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import cancel from "../../../../public/assets/icons/cancel.png";
 import save from "../../../../public/assets/icons/salvar.png";
+import { validateEmployeeFields } from "../helpers/validateEmployeeFields";
 
 const notify = (type: string) => {
 	switch (type) {
@@ -53,58 +54,55 @@ export const CreateEmployeeForm = () => {
 		setDailySalary("");
 		setAdmissionDate("");
 	};
-	const validateDate = async (e: React.FormEvent<HTMLFormElement>) => {
+
+
+	const saveEmployee = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
+		const errors = validateEmployeeFields(firstName, lastName1, lastName2, dailySalary, admissionDate);
 
-	};
+		if (errors.length > 0) {
+			errors.map(error => toast.error(error));
+			return;
+		}
 
-	const saveEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const todayDate = new Date().toISOString().slice(0, 10);
-		if (admissionDate < todayDate) {
-			const data = JSON.stringify({
-				first_name: firstName,
-				last_name1: lastName1,
-				last_name2: lastName2,
-				daily_salary: parseInt(dailySalary),
-				admision_date: admissionDate,
-			});
+		const data = JSON.stringify({
+			first_name: firstName,
+			last_name1: lastName1,
+			last_name2: lastName2,
+			daily_salary: parseInt(dailySalary),
+			admision_date: admissionDate,
+		});
 
-			const config = {
-				method: "post",
-				url: `${apiUrl}/employees/create`,
-				headers: {
-					"Accept-Encoding": "application/json",
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				data: data,
-			};
+		const config = {
+			method: "post",
+			url: `${apiUrl}/employees/create`,
+			headers: {
+				"Accept-Encoding": "application/json",
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${token}`,
+			},
+			data: data,
+		};
 
-			try {
-				const { data, status } = await axios.request(config);
-				console.log(data);
-				if (status == 200) {
-					notify("SUCCESS");
-					handleReset();
-				}
-			} catch (error: any) {
-				if (error.message == "Request failed with status code 400") {
-					notify("WARN");
-				} else {
-					notify("ERROR");
-				}
+		try {
+			const { data, status } = await axios.request(config);
+			console.log(data);
+			if (status == 200) {
+				notify("SUCCESS");
+				handleReset();
 			}
-
-		} else {
-
-			notify("INVALIDDATE");
+		} catch (error: any) {
+			if (error.message == "Request failed with status code 400") {
+				notify("WARN");
+			} else {
+				notify("ERROR");
+			}
 		}
 
 	};
 
 	return (
-		<form onSubmit={(event) => saveEmployee(event)} className="w-9/12 mt-sm">
+		<form className="w-9/12 mt-sm">
 			<div className="flex flex-row -mx-sm mb-md">
 				<FormField
 					label="Nombre"
@@ -153,10 +151,10 @@ export const CreateEmployeeForm = () => {
 					<img src={cancel} className="w-md "></img>
 				</button>
 				<button
-					type="submit"
+					onClick={(event) => saveEmployee(event)}
 					className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
 				>
-					<span>Crear</span>
+					<span>Guardar</span>
 					<img src={save} className="w-md "></img>
 				</button>
 			</div>
