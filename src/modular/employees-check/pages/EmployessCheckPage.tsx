@@ -1,17 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../../ui/layout/Layout";
 import { InconsistenciasTable, NewInconsistencia } from "../components";
 import { EmployeesSelector, NewInconsistencyButton } from "../moleculs";
+import { selectedUserStore } from "../../../store/selectedUserStore";
 
 
 export const EmployessCheckPage = () => {
-	const [employeeId, setEmployeeId] = useState(-1);
+	const {id: idSelectedUser, setId} = selectedUserStore((state) => state);
+	const [employeeId, setEmployeeId] = useState(idSelectedUser);
+	console.log(employeeId)
 	const [showNewInconsistencia, setShowNewInconsistencia] = useState(false);
 
+	useEffect(() => {
+		setId(employeeId);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ employeeId ])
+	
 	return (
 		<Layout>
 			<div className="flex flex-col justify-end">
-				<EmployeesSelector id={employeeId} setId={setEmployeeId} />
+				<EmployeesSelector employee_id={employeeId} setId={setEmployeeId} />
 				{
 					employeeId !== -1 && <NewInconsistencyButton setShowNewInconsistencia={setShowNewInconsistencia} showInconsistencia={showNewInconsistencia} />
 				}

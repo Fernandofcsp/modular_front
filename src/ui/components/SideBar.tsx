@@ -99,7 +99,7 @@ export const SideBar = () => {
               }
             />
             <SideBarItem
-              to={"/bonus"}
+							to={"/bonuses"}
               title="Bonos"
               imageComponent={
                 <svg

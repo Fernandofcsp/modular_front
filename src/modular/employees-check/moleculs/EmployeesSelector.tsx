@@ -2,21 +2,29 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
-interface IEmployeeSelector {
+
+interface IEmployee {
   employee_id: number;
   first_name: string;
   last_name1: string;
+}
+
+interface IEmployeeSelectProps {
+  employee_id: number;
   setId: (employee_id: number) => void;
 }
 
-export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelector) => {
+export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) => {
   const token = userStore((state) => state.token);
-  const [employees, setEmployees] = useState<IEmployeeSelector[]>([]);
+	const [employees, setEmployees] = useState<IEmployee[]>([]);
 
   const getUsers = async () => {
-    try {
+		setEmployees([{ employee_id: 1, first_name: "Francisco", last_name1: "Saldivar" }, { employee_id: 2, first_name: "Raul", last_name1: "Saldivar" }, { employee_id: 3, first_name: "Omar", last_name1: "Saldivar" }])
+
+    /*try {
+			
       //const { data } = await axios.request<IEmployeesResponse>(config);
-      const { data } = await axios.get<IEmployeeSelector[]>(
+			const { data } = await axios.get<IEmployee[]>(
         `${apiUrl}/employees`,
         {
           headers: {
@@ -27,10 +35,11 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelector) => 
           params: { take: 20, skip: 0 },
         }
       );
-      setEmployees(data);
+			setEmployees([{ employee_id: 1, first_name: "Francisco", last_name1: "Saldivar" }])
+      //setEmployees(data);
     } catch (error) {
       console.log(error);
-    }
+    }*/
   };
 
   useEffect(() => {
@@ -43,7 +52,7 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelector) => 
       <select
         className="py-sm px-md rounded-md"
         value={employee_id}
-        onChange={({ target }) => setId(parseInt(target.value))}
+        onChange={({ target }) => {setId(parseInt(target.value))}}
       >
         <option defaultChecked value={-1}>
           Seleccione
