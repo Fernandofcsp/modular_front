@@ -2,11 +2,11 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface IUser {
-	name: string;
-	email: string;
-	id: string;
-	token: string;
-	rol: string;
+	name: string | null;
+	email: string | null;
+	id: string | null;
+	token: string | null;
+	rol: string | null;
 }
 
 interface IUserState extends IUser {

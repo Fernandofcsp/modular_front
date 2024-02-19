@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../../../ui/layout/Layout";
 import { InconsistenciasTable, NewInconsistencia } from "../components";
 import { EmployeesSelector, NewInconsistencyButton } from "../moleculs";
+import { selectedUserStore } from "../../../store/selectedUserStore";
 
 
 export const EmployessCheckPage = () => {
-	const [employeeId, setEmployeeId] = useState(-1);
+	const {id: idSelectedUser, setId} = selectedUserStore((state) => state);
+	const [employeeId, setEmployeeId] = useState(idSelectedUser);
+	console.log(employeeId)
 	const [showNewInconsistencia, setShowNewInconsistencia] = useState(false);
 
+	useEffect(() => {
+		setId(employeeId);
+	}, [ employeeId ])
+	
 	return (
 		<Layout>
 			<div className="flex flex-col justify-end">

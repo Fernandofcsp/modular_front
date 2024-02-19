@@ -19,7 +19,7 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) 
 	const [employees, setEmployees] = useState<IEmployee[]>([]);
 
   const getUsers = async () => {
-		setEmployees([{ employee_id: 1, first_name: "Francisco", last_name1: "Saldivar" }])
+		setEmployees([{ employee_id: 1, first_name: "Francisco", last_name1: "Saldivar" }, { employee_id: 2, first_name: "Raul", last_name1: "Saldivar" }, { employee_id: 3, first_name: "Omar", last_name1: "Saldivar" }])
 
     /*try {
 			
@@ -52,7 +52,7 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) 
       <select
         className="py-sm px-md rounded-md"
         value={employee_id}
-        onChange={({ target }) => setId(parseInt(target.value))}
+        onChange={({ target }) => {setId(parseInt(target.value))}}
       >
         <option defaultChecked value={-1}>
           Seleccione
