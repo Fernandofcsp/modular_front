@@ -39,7 +39,6 @@ export const notify = (type: any) => {
 export const NewAccountPage = () => {
 	const token = userStore((state) => state.token);
 	const navigate = useNavigate();
-	const [errors, setErrors] = useState<string[]>([]);
 	const [concept, setConcept] = useState("");
 	const [reference, setReference] = useState("");
 	const [quantity, setQuantity] = useState(0);
@@ -59,8 +58,8 @@ export const NewAccountPage = () => {
 		const result = validateAccountFields(concept, reference, quantity, date);
 
 		if (result.length > 0) {
-			setErrors(result);
-			setTimeout(() => setErrors([]), 4000);
+			result.map(error => toast.error(error));
+			return;
 		} else {
 			const data = JSON.stringify({
 				concept: concept,
@@ -136,12 +135,6 @@ export const NewAccountPage = () => {
 						type={inputType.date}
 					/>
 				</div>
-				{errors.length > 0 &&
-					errors.map((error) => (
-						<p key={error} className="text-red-600 text-end mb-sm mt-md">
-							{error}
-						</p>
-					))}
 				<div className="flex justify-end space-x-sm">
 					<BackButton onClick={() => navigate("/accounts")} />
 					<button

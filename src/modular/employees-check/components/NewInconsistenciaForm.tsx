@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
 import { FormButtons, FormField, InconsistenciesSelector } from "../moleculs";
 import { inputType } from "../../users/moleculs";
-import { validateFields } from "../helpers/validateFields";
+import { validateCheckFields } from "../helpers/validateCheckFields";
 import { INewInconsistency } from ".";
 import moment from "moment";
 import { apiUrl } from "../../../api";
 //import axios from "axios";
 import { userStore } from "../../../store/userStore";
+import { ToastContainer, toast } from "react-toastify";
 
 export const NewInconsistenciaForm = ({ setShow }: INewInconsistency) => {
 	const token = userStore(state => state.token);
 
 	const save = async (e: React.SyntheticEvent) => {
 		e.preventDefault();
-		console.log(inconsistency);
-		const validate = validateFields(inconsistency, initialDate, minutes, endDate);
-		const { errors, reset } = validate;
+
+		const { errors, reset } = validateCheckFields(inconsistency, initialDate, minutes, endDate);
 
 		if (errors.length > 0) {
-			setAlert(errors);
-
-			setTimeout(() => {
-				setAlert([]);
-			}, 5000);
+			errors.map(error => toast.error(error));
 
 			if (reset) {
 				setInitialDate("");
@@ -77,8 +73,6 @@ export const NewInconsistenciaForm = ({ setShow }: INewInconsistency) => {
 	const [difference, setDifference] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 
-	const [alert, setAlert] = useState<string[]>([]);
-
 
 	useEffect(() => {
 		if (initialDate === "" || endDate === "")
@@ -122,17 +116,10 @@ export const NewInconsistenciaForm = ({ setShow }: INewInconsistency) => {
 						: ""
 				}
 				{
-					alert.length > 0 &&
-					<div className="text-red-500">
-						{
-							alert.map((error, i) => <p className="text-end" key={i}>{error}</p>)
-						}
-					</div>
-				}
-				{
 					inconsistency !== -1 &&
 					<FormButtons cancel={cancel} save={save} />
 				}
+				<ToastContainer />
 			</form>
 		</div>
 	)

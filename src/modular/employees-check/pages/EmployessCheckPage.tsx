@@ -11,7 +11,7 @@ export const EmployessCheckPage = () => {
 	return (
 		<Layout>
 			<div className="flex flex-col justify-end">
-				<EmployeesSelector id={employeeId} setId={setEmployeeId} />
+				<EmployeesSelector employee_id={employeeId} setId={setEmployeeId} />
 				{
 					employeeId !== -1 && <NewInconsistencyButton setShowNewInconsistencia={setShowNewInconsistencia} showInconsistencia={showNewInconsistencia} />
 				}
