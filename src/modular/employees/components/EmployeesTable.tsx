@@ -4,7 +4,7 @@ import { TableHeadItem } from '../../users/moleculs';
 import { TableBodyRow } from '../moleculs/TableBodyRow';
 import { apiUrl } from '../../../api';
 import { userStore } from '../../../store/userStore';
-import { EmployeesOptions } from './EmployeesOptions';
+
 enum TableHeaders {
 	id = "ID",
 	name = "Nombre",
@@ -29,14 +29,10 @@ export interface IEmployee {
 	position?: number[];
 }
 
-
-interface EmployeesTableProps {
-  filter: string;
-}
-
-export const EmployeesTable: React.FC<EmployeesTableProps> = ({ filter }) => {
+export const EmployeesTable = () => {
   const token = userStore(state => state.token);
   const [employees, setEmployees] = useState<IEmployee[]>([]);
+  
 
   const getUsers = async () => {
     try {
@@ -57,7 +53,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({ filter }) => {
     getUsers();
   }, []); // Solo se ejecuta al montar el componente, no es necesario volver a ejecutarlo cuando cambia el filtro
 
-  const employeesFilteredByStatus = employees.filter(element => String(element.status) === filter);
+  //const employeesFilteredByStatus = employees.filter(element => String(element.status) === selectedValue);
 
   return (
     <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
@@ -76,7 +72,7 @@ export const EmployeesTable: React.FC<EmployeesTableProps> = ({ filter }) => {
         </thead>
         <tbody>
           {
-            employeesFilteredByStatus.map((employee, i) => {
+            employees.map((employee, i) => {
               return <TableBodyRow
                 key={i}
                 id={employee.employee_id}

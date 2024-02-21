@@ -7,6 +7,7 @@ import { AccountPage, NewAccountPage, AccountsPage } from "../accounts/pages";
 import { EmployessCheckPage } from "../employees-check/pages/EmployessCheckPage";
 import { InconsistencyPage } from '../employees-check/pages/InconsistencyPage';
 import { BonusesPage } from "../bonuses/pages/BonusesPage";
+import { BonusePage } from "../bonuses/pages";
 
 
 export const ModularRoutes = () => {
@@ -59,6 +60,8 @@ export const ModularRoutes = () => {
 
       {/* Página de bonos */}
 			<Route path="/bonuses" element={<BonusesPage />} />
+      {/* Página para ver bonos completos */}
+      <Route path="/bonuse" element={<BonusePage />} />
 
       {/* <Route path="*" element={<NotFoundPage />} /> */}
       <Route path="/*" element={<Navigate to="/" />} />

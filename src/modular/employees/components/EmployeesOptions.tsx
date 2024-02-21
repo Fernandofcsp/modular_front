@@ -1,23 +1,20 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
-interface EmployeesOptionsProps {
-  onFilterChange: (filter: string) => void;
-}
-
-export const EmployeesOptions: React.FC<EmployeesOptionsProps> = ({ onFilterChange }) => {
-  const [filter, setFilter] = useState("");
-
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    setFilter(value);
-    onFilterChange(value); // Llama a la función de devolución de llamada con el valor seleccionado
-  };
+export const EmployeesOptions: React.FC<{ onSelect: (value: string) => void }> = ({ onSelect }) => {
+	const [selectedValue, setSelectedValue] = useState('');
+	const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const value = event.target.value;
+		setSelectedValue(value);
+		onSelect(value); // Llama a la función onSelect y pasa el valor seleccionado
+	  };
+  
 
   return (
     <div className="flex justify-end items-center py-md">
       <div className="px-md">
         <select
+		  value={selectedValue} 
           onChange={handleSelectChange}
           className="text-white text-lg uppercase bg-gray-800 hover:font-semibold px-md py-xsm rounded-md hover:bg-gray-600"
         >
@@ -38,4 +35,5 @@ export const EmployeesOptions: React.FC<EmployeesOptionsProps> = ({ onFilterChan
       </div>
     </div>
   );
+
 };
