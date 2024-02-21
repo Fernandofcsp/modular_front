@@ -4,7 +4,6 @@ import { TableHeadItem } from '../../users/moleculs';
 import { TableBodyRow } from '../moleculs/TableBodyRow';
 import { apiUrl } from '../../../api';
 import { userStore } from '../../../store/userStore';
-
 enum TableHeaders {
 	id = "ID",
 	name = "Nombre",
@@ -29,7 +28,11 @@ export interface IEmployee {
 	position?: number[];
 }
 
-export const EmployeesTable = () => {
+interface IEmployeeFilter{
+  filterEmployee : boolean;
+}
+
+export const EmployeesTable = ({filterEmployee} : IEmployeeFilter) => {
   const token = userStore(state => state.token);
   const [employees, setEmployees] = useState<IEmployee[]>([]);
   
@@ -53,8 +56,8 @@ export const EmployeesTable = () => {
     getUsers();
   }, []); // Solo se ejecuta al montar el componente, no es necesario volver a ejecutarlo cuando cambia el filtro
 
-  //const employeesFilteredByStatus = employees.filter(element => String(element.status) === selectedValue);
-
+  const employeesFilteredByStatus = employees.filter(element => (element.status) === !filterEmployee);
+console.log(filterEmployee+"hola")
   return (
     <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
       <table className="w-full text-md text-left text-gray-500">
@@ -72,8 +75,10 @@ export const EmployeesTable = () => {
         </thead>
         <tbody>
           {
-            employees.map((employee, i) => {
+            
+            employeesFilteredByStatus.map((employee, i) => {
               return <TableBodyRow
+                
                 key={i}
                 id={employee.employee_id}
                 admision_date={employee.admision_date}

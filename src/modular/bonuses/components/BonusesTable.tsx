@@ -13,15 +13,20 @@ enum TableHeaders {
 }
 
 interface ITableProps{
-	bonusesData: IBonusesData[]
+	bonusesData: IBonusesData[];
+    selectedYear: number | null;
 }
 
-export const BonusesTable = ({ bonusesData } : ITableProps) => {
+
+
+export const BonusesTable = ({ bonusesData, selectedYear } : ITableProps) => {
 	
 	return (
-		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg h-[400px]">
-			<table className="w-full relative text-md text-left text-gray-500">
-				
+		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg h-[400px] mt-md mb-md rounded-lg">
+			<table className="w-full relative text-md text-left text-gray-500 ">
+				<caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
+					Bonos del {selectedYear}
+				</caption>
 				<thead className="text-md text-gray-700 uppercase bg-gray-50 sticky top-0">
 					<tr>
 						{

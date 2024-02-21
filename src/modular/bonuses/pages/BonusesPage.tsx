@@ -51,26 +51,24 @@ export function BonusesPage() {
           filteredData.length > 0 ? (
             filteredData.length > 12 ? (
               uniqueYears.map((selectedYear) => (
-                <div key={selectedYear} className="mt-8">
-                  <h3 className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white rounded-lg mt-sm">
-                    {"Bonos del " + selectedYear}
-                  </h3>
+                
                   <BonusesTable
+				  selectedYear={selectedYear}
                     bonusesData={filteredData.filter(
                       (item) =>
                         moment(item.fechaCreacion, "DD/MM/YYYY").year() ===
                         selectedYear
                     )}
                   />
-                </div>
+                
               ))
             ) : (
-              <div key={selectedYear} className="mt-8">
-                <h3 className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white rounded-lg mt-sm">
-                  {"Bonos del " + selectedYear}
-                </h3>
-                <BonusesTable bonusesData={filteredData} />
-              </div>
+             
+                
+                <BonusesTable 
+				selectedYear={selectedYear}
+				bonusesData={filteredData} />
+              
             )
           ) : (
             <p className="text-red-600">No hay registros</p>
