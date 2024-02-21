@@ -8,7 +8,7 @@ import { inputType } from "../../users/moleculs";
 import { BonusesData } from "../data";
 
 export function BonusesPage() {
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedYear, setSelectedYear] = useState<number | null>(0);
   const filteredData = selectedYear
     ? BonusesData.filter(
         (item) =>
@@ -38,8 +38,8 @@ export function BonusesPage() {
             className="border rounded p-2"
             onChange={(e) => setSelectedYear(Number(e.target.value))}
           >
-            <option disabled value="" selected></option>
-            <option value={0}>Todos</option>
+            
+            <option value={0} selected>Todos</option>
             {uniqueYears.map((year) => (
               <option key={year} value={year}>
                 {year}
