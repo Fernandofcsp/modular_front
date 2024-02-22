@@ -5,7 +5,7 @@ interface IBodyItem {
 	employee: IEmployee,
 	id: number,
 	name: string,
-	admision_date: Date,
+	admision_date: string,
 	status: boolean,
 }
 

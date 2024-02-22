@@ -8,7 +8,7 @@ import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { BackButton } from "../../../ui/moleculs/BackButton";
+import { NavigateButton } from "../../../ui/moleculs";
 import { ToastContainer, toast } from "react-toastify";
 
 export const notify = (type: any) => {
@@ -136,7 +136,7 @@ export const NewAccountPage = () => {
 					/>
 				</div>
 				<div className="flex justify-end space-x-sm">
-					<BackButton onClick={() => navigate("/accounts")} />
+					<NavigateButton title="Volver" onClick={() => navigate("/accounts")} />
 					<button
 						onClick={(event) => saveAccount(event)}
 						className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"

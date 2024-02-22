@@ -4,7 +4,7 @@ export const FormField = (props: IField) => {
 	const { type, placeholder, label, value, onChange: setVal, disabled = false } = props;
 	return (
 		<div className="flex flex-col items-start w-full pb-md md:mb-0 space-y-sm">
-			<label className="block uppercase tracking-wide text-gray-900 text-lg font-bold">
+			<label className="block tracking-wide text-gray-900 text-lg ">
 				{label}
 			</label> 
 			<input

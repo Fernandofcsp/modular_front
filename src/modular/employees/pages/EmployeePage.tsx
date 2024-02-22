@@ -13,6 +13,7 @@ import save from "../../../../public/assets/icons/salvar.png";
 import edit from "../../../../public/assets/icons/editar.png";
 import { useNavigate } from "react-router-dom";
 import { validateEmployeeFields } from "../helpers/validateEmployeeFields";
+import { BenefitsTable } from "../components/BenefitsTable";
 /*
 interface IErrorResponse {
 	location: string;
@@ -57,6 +58,7 @@ export const EmployeePage = () => {
 		created_date,
 		updated_date,
 		created_user_id,
+		benefits
 	} = state;
 
 	const navigate = useNavigate();
@@ -70,7 +72,7 @@ export const EmployeePage = () => {
 	const [isDisabled, setDisabled] = useState(true);
 
 	const handleReset = () => {
-		setDisabled(!isDisabled);
+		setDisabled(true);
 		setName(first_name);
 		setLastName1(last_name1);
 		setLastName2(lastName2);
@@ -135,78 +137,81 @@ export const EmployeePage = () => {
 	};*/
 	return (
 		<Layout>
-			<div>
+			<div className="w-9/12">
+				<h3 className="text-titleMd mb-xl uppercase">
+					información del empleado: {`${first_name} ${lastName1} ${lastName2}`}
+				</h3>
+				<EmployeeInformation
+					created_date={created_date}
+					created_user_id={created_user_id}
+					updated_date={updated_date}
+				/>
 				<form
 					onSubmit={(event) => saveEmployeeData(event)}
-					className="w-9/12 mt-sm"
+					className="mt-sm"
 				>
-					<h3 className="text-titleMd mb-xl uppercase">
-						información del empleado: {`${first_name} ${lastName1} ${lastName2}`}
-					</h3>
-					<EmployeeInformation
-						created_date={created_date}
-						created_user_id={created_user_id}
-						updated_date={updated_date}
-					/>
-					<div className="flex flex-row -mx-sm mb-md">
-						<FormField
-							label="Nombre"
-							value={name}
-							placeholder={first_name}
-							onChange={setName}
-							type={inputType.text}
-							disabled={isDisabled}
-						/>
-						<FormField
-							label="Primer apellido"
-							value={lastName1}
-							placeholder={last_name1}
-							onChange={setLastName1}
-							type={inputType.text}
-							disabled={isDisabled}
-						/>
-						<FormField
-							label="Segundo apellido"
-							value={lastName2}
-							placeholder={last_name2}
-							onChange={setLastName2}
-							type={inputType.text}
-							disabled={isDisabled}
-						/>
-					</div>
-					<div className="flex flex-row -mx-sm mb-md">
-						<FormField
-							label="Salario diario"
-							value={dailySalary}
-							placeholder="Salario diario"
-							onChange={setDailySalary}
-							disabled={isDisabled}
-							type={inputType.number}
-						/>
-					</div>
-					<div className="flex flex-row -mx-sm mb-md">
-						<FormField
-							label="Fecha de ingreso"
-							value={admisionDate}
-							placeholder="Fecha de ingreso"
-							onChange={setAdmisionDate}
-							disabled={isDisabled}
-							type={inputType.date}
-						/>
-						<div className="flex flex-col items-start px-sm w-full mb-sm md:mb-0">
-							<label className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">
-								ESTADO
-							</label>
-							<select
-								disabled={isDisabled}
-								value={newStatus}
-								onChange={({ target }) => setNewStatus(target.value)}
-								className="block w-full bg-gray-50 text-gray-800 border rounded-md py-sm px-md mb-xsm leading-tight focus:outline-none focus:bg-white"
-							>
-								<option value={1}>ACTIVO</option>
-								<option value={0}>INACTIVO</option>
-							</select>
+					<div className="flex w-full space-x-3xl mb-lg">
+						<div className="flex-1">
+							<div className="flex flex-row -mx-sm mb-md">
+								<FormField
+									label="Nombre"
+									value={name}
+									placeholder={first_name}
+									onChange={setName}
+									type={inputType.text}
+									disabled={isDisabled}
+								/>
+								<FormField
+									label="Primer apellido"
+									value={lastName1}
+									placeholder={last_name1}
+									onChange={setLastName1}
+									type={inputType.text}
+									disabled={isDisabled}
+								/>
+								<FormField
+									label="Segundo apellido"
+									value={lastName2}
+									placeholder={last_name2}
+									onChange={setLastName2}
+									type={inputType.text}
+									disabled={isDisabled}
+								/>
+							</div>
+							<div className="flex flex-row -mx-sm mb-md">
+								<FormField
+									label="Salario diario"
+									value={dailySalary}
+									placeholder="Salario diario"
+									onChange={setDailySalary}
+									disabled={isDisabled}
+									type={inputType.number}
+								/>
+								<FormField
+									label="Fecha de ingreso"
+									value={admisionDate}
+									placeholder="Fecha de ingreso"
+									onChange={setAdmisionDate}
+									disabled={isDisabled}
+									type={inputType.date}
+								/>
+								<div className="flex flex-col items-start px-sm w-full mb-sm md:mb-0">
+									<label className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">
+										ESTADO
+									</label>
+									<select
+										disabled={isDisabled}
+										value={newStatus}
+										onChange={({ target }) => setNewStatus(target.value)}
+										className="block w-full bg-gray-50 text-gray-800 border rounded-md py-sm px-md mb-xsm leading-tight focus:outline-none focus:bg-white"
+									>
+										<option value={1}>ACTIVO</option>
+										<option value={0}>INACTIVO</option>
+									</select>
+								</div>
+							</div>
 						</div>
+						<BenefitsTable edit={isDisabled} benefits={benefits} />
 					</div>
 					<div className="flex justify-end space-x-sm">
 						<button
@@ -233,8 +238,8 @@ export const EmployeePage = () => {
 							type={isDisabled ? "submit" : "button"}
 							onClick={() => setDisabled((value) => !value)}
 							className={` hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${!isDisabled
-									? `bg-green-800 hover:bg-green-600`
-									: `bg-gray-800 hover:bg-gray-600 `
+								? `bg-green-800 hover:bg-green-600`
+								: `bg-gray-800 hover:bg-gray-600 `
 								}`}
 						>
 							<span>{!isDisabled ? "Guardar" : "Editar"}</span>

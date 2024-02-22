@@ -27,7 +27,9 @@ export default {
       titleSm: "24px",
       titleMd: "32px",
       titleLg: "48px",
-      "titleXl": "64px",
+      headerTitle: "30px",
+      titleXl: "64px",
+			buttons: "18px"
     },
     extend: {
       margin: {
@@ -37,6 +39,7 @@ export default {
       colors: {
         logInBackground: "#FFFFEF",
         dashboard: "#F2F4F4",
+        blueLetter: "#0D5AFF",
       },
     },
   },

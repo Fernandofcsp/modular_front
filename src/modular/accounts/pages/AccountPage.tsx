@@ -10,7 +10,7 @@ import edit from "../../../../public/assets/icons/editar.png";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { validateAccountFields } from "../helpers/ValidateFields";
-import { BackButton } from "../../../ui/moleculs/BackButton";
+import { NavigateButton } from "../../../ui/moleculs";
 import { toast } from "react-toastify";
 
 interface IAccount {
@@ -163,7 +163,7 @@ export const AccountPage = () => {
 						</>
 					) : (
 						<>
-							<BackButton onClick={() => navigate("/accounts")} />
+							<NavigateButton title="Volver" onClick={() => navigate("/accounts")} />
 							<button
 								type="button"
 								onClick={() => setDisabled(false)}
