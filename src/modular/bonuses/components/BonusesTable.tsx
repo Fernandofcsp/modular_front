@@ -3,10 +3,10 @@ import { TableBodyRow } from "../moleculs";
 import { IBonusesData } from '../data';
 
 enum TableHeaders {
-    mes = "No.",
-    numeroMes = "Mes",
-    anio = "Año",
-    fechaCreacion = "Fecha de creacion",
+    
+    numeroMes = "No.",
+    mes = "Mes",
+    fechaCreacion = "Fecha",
     totalVentas = "Total de ventas",
     totalBonos = "Total de bonos",
     mas = "Más"
@@ -41,9 +41,10 @@ export const BonusesTable = ({ bonusesData, selectedYear } : ITableProps) => {
 						bonusesData.map((data, i) => {
 							return <TableBodyRow
 								key={i}
+                                numeroMes={data.numeroMes}
 								mes={data.mes}
-								numeroMes={data.numeroMes}
-								anio={data.anio}
+								bonuses_id={data.bonuses_id}
+                                anio={data.anio}
 								fechaCreacion={data.fechaCreacion}
 								totalVentas={data.totalVentas}
                                 totalBonos={data.totalBonos}

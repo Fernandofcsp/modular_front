@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Layout from "../../../ui/layout/Layout";
 import { BonusesTable } from "../components/BonusesTable";
-import { FormField } from "../../employees-check/moleculs";
-import { inputType } from "../../users/moleculs";
+
 import { BonusesData } from "../data";
 
 export function BonusesPage() {
   const [selectedYear, setSelectedYear] = useState<number | null>(0);
+  
   const filteredData = selectedYear
     ? BonusesData.filter(
         (item) =>
@@ -29,19 +29,21 @@ export function BonusesPage() {
         <div className="flex flex-row space-x-md justify-end">
           <label
             htmlFor="yearSelect"
-            className="block uppercase tracking-wide text-gray-900 text-lg font-bold"
+            className="block uppercase tracking-wide text-gray-900 text-lg font-normal py-xsm px-xsm justify-center"
           >
             Seleccione el año:
           </label>
           <select
             id="yearSelect"
-            className="border rounded p-2"
+            className="border rounded-lg p-2 justify-center py-sm px-md"
             onChange={(e) => setSelectedYear(Number(e.target.value))}
+            value={uniqueYears[-1]} // Aquí seleccionamos el primer valor
+        
           >
             
-            <option value={0} selected>Todos</option>
+            <option value={0} >Todos</option>
             {uniqueYears.map((year) => (
-              <option key={year} value={year}>
+              <option  key={year} value={year}>
                 {year}
               </option>
             ))}

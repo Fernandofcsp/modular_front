@@ -14,31 +14,28 @@ export const EmployeesPage = () => {
   return (
     <Layout>
       <div>
-        <div className="flex justify-end items-center py-md">
-          <div className="px-md">
-            <select
-              onChange={handleSelectChange}
-              className="text-white text-lg uppercase bg-gray-800 hover:font-semibold px-md py-xsm rounded-md hover:bg-gray-600"
-            >
-              <option value={"1"} selected disabled>
-                Filtrar
-              </option>
-              <option value={"0"}>Activos</option>
-              <option value={"1"}>Inactivos</option>
-            </select>
-          </div>
-
-          <div>
-            <NavLink
-              to={"/newEmployee"}
-              className="text-white text-lg uppercase bg-blue-800 hover:font-semibold px-md py-xsm rounded-md hover:bg-blue-600"
-            >
-              Nuevo empleado
-            </NavLink>
-          </div>
+        <div className="flex justify-end items-center py-md gap-md">
+          <select
+            onChange={handleSelectChange}
+            className="text-black text-lg uppercase px-md py-xsm bg-white rounded-md "
+          >
+            <option value={"1"} selected disabled>
+              Filtrar
+            </option>
+            <option value={"0"}>Activos</option>
+            <option value={"1"}>Inactivos</option>
+          </select>
           
+          <button className="text-white text-lg uppercase bg-blue-800  px-md py-xsm rounded-md hover:bg-blue-600">
+          <NavLink
+            to={"/newEmployee"}
+            
+          >
+            Nuevo empleado
+          </NavLink>
+          </button>
         </div>
-		<EmployeesTable filterEmployee={filterEmployee} />
+        <EmployeesTable filterEmployee={filterEmployee} />
       </div>
     </Layout>
   );

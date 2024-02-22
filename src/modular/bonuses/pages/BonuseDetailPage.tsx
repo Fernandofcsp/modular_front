@@ -3,13 +3,12 @@ import axios from "axios";
 import { apiUrl } from "../../../api";
 import { useEffect, useState } from "react";
 import { userStore } from "../../../store/userStore";
-
 import Layout from "../../../ui/layout/Layout";
-import { BonuseTable } from "../components/BonuseTable";
-import { BonuseData } from "../dataBonuse";
+import { BonuseDetailTable } from "../components/BonuseDetailTable";
+import { BonuseDetailData } from "../dataDetailBonuse";
 import { BackButton } from "../../../ui/moleculs/BackButton";
 
-interface IBonuse {
+interface IDetailBonuse {
   bonuseDetail_id: string;
   bonuse_id: string;
   employee_id: string;
@@ -30,7 +29,7 @@ interface IBonuse {
   updated_user_id: string;
 }
 
-const initialState: IBonuse = {
+const initialState: IDetailBonuse = {
   bonuseDetail_id: "",
   bonuse_id: "",
   employee_id: "",
@@ -51,15 +50,19 @@ const initialState: IBonuse = {
   updated_user_id: "",
 };
 
-export const BonusePage = () => {
+export const BonuseDetailPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const id = state.bonuse_id;
-  const [bonuse, setBonuse] = useState<IBonuse>(initialState);
+  const id = state.bonuseDetail_id;
+  const [bonuse, setBonuse] = useState<IDetailBonuse>(initialState);
   const token = userStore((state) => state.token);
 
+  const [isDisabled, setDisabled] = useState(true);
 
-  
+  const handleReset = () => {
+    setBonuse(initialState);
+    setDisabled(true);
+  };
 
   const getBonuse = async () => {
     try {
@@ -76,12 +79,13 @@ export const BonusePage = () => {
 
   return (
     <Layout>
-      <div className=" ">
-        <h2 className="text-titleMd">Detalle de bono</h2>
+      <div>
+        <h2 className="text-titleMd">Detalle de bono del empleado</h2>
         <div className="flex justify-end mb-md">
           <BackButton onClick={() => navigate("/bonuses")} />
         </div>
-        <BonuseTable bonuseData={BonuseData} />
+
+        {<BonuseDetailTable bonuseDetailData={BonuseDetailData} />}
       </div>
     </Layout>
   );

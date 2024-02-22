@@ -64,7 +64,7 @@ console.log(filterEmployee+"hola")
         <caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
           Empleados
         </caption>
-        <thead className="text-md text-gray-700 uppercase bg-gray-50">
+        <thead className="text-md text-gray-700 uppercase bg-gray-50 sticky top-0">
           <tr>
             {
               Object.entries(TableHeaders).map((e, i) => {

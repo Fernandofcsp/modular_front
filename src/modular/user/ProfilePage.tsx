@@ -72,24 +72,32 @@ export const ProfilePage = () => {
   const handleReset = () => {
     setNewName(name);
     setNewEmail(email);
-		setRole(rol);
+    setRole(rol);
     setrePassword("");
     setNewPassword("");
-		setIsDisabled(true);
+    setIsDisabled(true);
     setChangePassword(false);
   };
 
-	const updateUser = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const updateUser = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
 
-		const	errors = validateUserFields(newName, newEmail, role, changePassword, newPassword, rePassword);
+    const errors = validateUserFields(
+      newName,
+      newEmail,
+      role,
+      changePassword,
+      newPassword,
+      rePassword
+    );
 
+    if (errors.length > 0) {
+      errors.map((error) => toast.error(error));
 
-		if (errors.length > 0) {
-			errors.map(error => toast.error(error));
-
-			return;
-		}
+      return;
+    }
 
     const data = JSON.stringify({
       nickname: newName ? newName : undefined,
@@ -197,64 +205,64 @@ export const ProfilePage = () => {
             onClick={() => {
               setChangePassword((value) => !value);
             }}
-            className={`bg-gray-700 hover:bg-gray-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
+            className={`bg-gray-700 hover:bg-gray-600 hover:font-bold text-white font-semibold py-0 px-xl rounded-md flex items-center${
               isDisabled && "hidden"
             }`}
           >
-            <span>
-              {!changePassword
-                ? "Cambiar contraseña de usuario"
-                : "Cancelar cambio de contraseña"}
+            <span className={`${isDisabled && "hidden"} ${changePassword ? 'py-xsm px-xl rounded-md flex items-center ml-xsm mr-xsm gap-xsm' : 'py-xsm px-lg rounded-md flex items-center gap-sm'} `}>
+              {!changePassword ? "Cambiar contraseña" : "Cancelar cambio"}
             </span>
             <img
               src={!changePassword ? edit : cancel}
-              className={`w-md ${isDisabled && "hidden"}`}
+              className={`w-md py-sm ${isDisabled && "hidden"}`}
             ></img>
           </button>
         </div>
         <div className="flex justify-end space-x-sm">
-					{
-						isDisabled &&
-							<button
-								onClick={() => {
-									navigate("/");
-								}}
-								className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+          {isDisabled && (
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+              className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
 								flex items-center gap-sm`}
-							>
-								<span>Volver</span>
-								<img src={back} className="w-md "></img>
-							</button>
-					}
-					{
-						!isDisabled &&
-							<button
-								onClick={() => handleReset()}
-								className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
+            >
+              <span>Volver</span>
+              <img src={back} className="w-md "></img>
+            </button>
+          )}
+          {!isDisabled && (
+            <button
+              onClick={() => handleReset()}
+              className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
 								flex items-center gap-sm`}
-							>
-								<span>Cancelar</span>
-								<img src={cancel} className="w-md "></img>
-							</button>
-					}
-					{
-						isDisabled ?
-							<button
-								onClick={(event) => {event.preventDefault(); setIsDisabled(false)}}
-								className={'hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'}
-							>
-								<span>Editar</span>
-								<img src={edit} className="w-md "></img>
-							</button>
-						:
-							<button
-								onClick={(event) => updateUser(event)}
-								className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'
-							>
-								<span>{"Guardar"}</span>
-								<img src={save} className="w-md "></img>
-							</button>
-					}
+            >
+              <span>Cancelar</span>
+              <img src={cancel} className="w-md "></img>
+            </button>
+          )}
+          {isDisabled ? (
+            <button
+              onClick={(event) => {
+                event.preventDefault();
+                setIsDisabled(false);
+              }}
+              className={
+                "hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600"
+              }
+            >
+              <span>Editar</span>
+              <img src={edit} className="w-md "></img>
+            </button>
+          ) : (
+            <button
+              onClick={(event) => updateUser(event)}
+              className="hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600"
+            >
+              <span>{"Guardar"}</span>
+              <img src={save} className="w-md "></img>
+            </button>
+          )}
         </div>
         <div>
           <ToastContainer />
