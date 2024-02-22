@@ -5,14 +5,15 @@ import { IBonuseData } from "../dataBonuse";
 enum TableHeaders {
   first_name = "Nombre",
   daily_salary = "Salario Diario",
-  sum_benefits = "Vales",
-  sum_minutes_delay = "Minutos de retraso",
+  sum_benefits = "Total de Beneficios",
+  sum_minutes_delay = "Total de retrasos en minutos",
   absences = "Incidencias",
   base_calculo = "Base del calculo",
   bono = "Bono",
   bono_completo = "Bono completo",
   diferencia = "Diferencia",
  
+  
 }
 
 interface ITableProps {
@@ -22,9 +23,9 @@ interface ITableProps {
 export const BonuseTable = ({ bonuseData }: ITableProps) => {
   return (
 
-    <div className="overflow-scroll w-full overflow-x-auto shadow-lg sm:rounded-lg h-[400px] mt-md mb-md rounded-lg"
+    <div className="overflow-scroll w-full relative overflow-x-auto shadow-lg sm:rounded-lg h-[400px] mt-md mb-md rounded-lg"
     >
-      <table className="overflow-x-hidden text-md text-left text-gray-500  ">
+      <table className="overflow-x-hidden text-md text-left text-gray-500 ">
         <caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
           Bono del mes
         </caption>
