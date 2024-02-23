@@ -5,11 +5,11 @@ interface IBodyItem {
     name: string,
     email?: string, 
     rol: string,
-    creationDate: string
+    isActive: string
 }
 
 export const TableBodyRow = (props: IBodyItem) => {
-  const { id, name, email, rol, creationDate } = props;
+  const { id, name, email, rol, isActive } = props;
   return (
     <tr className="bg-white border-b">
       <th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
@@ -22,7 +22,7 @@ export const TableBodyRow = (props: IBodyItem) => {
         {rol}
       </td>
       <td className="px-md py-md">
-        {creationDate}
+        {isActive ? "Activo" : "Inactivo"}
       </td>
       <td className="px-md py-md">
         <NavLink className="text-blue-700 font-bold" to={`/user/${id}`}>Detalle</NavLink>

@@ -2,11 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../../api";
-import { userStore } from "../../../store/userStore";
-import save from "../../../../public/assets/icons/salvar.png";
-import cancel from "../../../../public/assets/icons/cancel.png";
+//import { userStore } from "../../../store/userStore";
 import { FormField, inputType } from "../moleculs/FormField";
-import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateUserFields } from "../helpers/validateUserFields";
@@ -36,7 +33,7 @@ export const notify = (type: any) => {
 };
 export const CreateUserForm = () => {
 	const navigate = useNavigate();
-	const token = userStore((state) => state.token);
+	//const token = userStore((state) => state.token);
 
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -61,38 +58,24 @@ export const CreateUserForm = () => {
 			return;
 		}
 
-		const data = JSON.stringify({
-			nickname: name,
+		const data = {
+			username: name,
 			email: email,
 			password: password,
 			role: role,
-		});
-
-		const config = {
-			method: "post",
-			url: `${apiUrl}/users/create`,
-			headers: {
-				"Accept-Encoding": "application/json",
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			data: data,
 		};
 
-		try {
-			const { data, status } = await axios.request(config);
-			console.log(data);
-			if (status == 200) {
-				notify("SUCCESS");
+		axios.post(
+			`${apiUrl}/users/signup/`,
+			data,
+			{ validateStatus: (status: number) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 201) throw ({ ...data, status });
+				toast.success(data.message);
 				handleReset();
-			}
-		} catch (error: any) {
-			if (error.message == "Request failed with status code 400") {
-				notify("WARN");
-			} else {
-				notify("ERROR");
-			}
-		}
+			})
+			.catch(error => toast.error(error.message));
 	};
 	return (
 		<form className="w-9/12 mt-sm">
@@ -130,21 +113,18 @@ export const CreateUserForm = () => {
 			</div>
 			<div className="flex flex-row -mx-sm mb-md">
 				<div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
-					<label className="block mb-sm text-lg font-bold uppercase text-gray-900">
-						Selecciona el rol para el usuario
+					<label className="block mb-sm text-xl capitalize text-gray-900">
+						Rol de usuario
 					</label>
 					<select
+						disabled={false}
 						onChange={({ target }) => setRole(target.value)}
 						value={role}
 						className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md block w-full p-sm"
 					>
-						<option value="">Elige un rol</option>
-						<option value="ADMIN">Administrador</option>
-						<option value="READ">Sólo lectura</option>
-						<option value="WRITE">Lectura y escritura</option>
-						<option value="OVERWRITE">
-							Lectura, escritura y modificar datos
-						</option>
+						<option value="write">Escritura</option>
+						<option value="read">Sólo lectura</option>
+						<option value="admin">Administrador</option>
 					</select>
 				</div>
 			</div>
