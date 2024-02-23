@@ -6,7 +6,7 @@ export const NewEmployeePage = () => {
 	return (
 		<Layout>
 			<div>
-				<p>Nuevo empleado</p>
+				<p className="text-left text-headerTitle mb-lg">Nuevo empleado</p>
 				<CreateEmployeeForm />
 			</div>
 		</Layout>

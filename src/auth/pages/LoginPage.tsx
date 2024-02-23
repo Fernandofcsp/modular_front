@@ -5,8 +5,8 @@ import { validateLoginFields } from '../helpers/emailValidator';
 import { LogInForm } from "../components/LogInForm";
 import axios from "axios";
 import { apiUrl } from "../../api";
-import { notify } from "../components/LogInForm";
 import { toast } from "react-toastify";
+import { ILoginResponseUser } from "../interfaces/LoginInterfaces";
 
 interface IUser {
 	email: string;
@@ -17,6 +17,7 @@ const initialState: IUser = {
 	email: "",
 	password: "",
 };
+
 export const LoginPage = () => {
 	// TODO: REMOVE useForm
 	const { email, password, onInputChange } = useForm(initialState);
@@ -29,35 +30,33 @@ export const LoginPage = () => {
 		event.preventDefault();
 		const errors = validateLoginFields(email, password);
 
-		if (errors!.length > 0) {
-			errors?.map(error => toast.error(error));
+		if (errors.length > 0) {
+			errors.map(error => toast.error(error));
 			return;
 		}
 
-		try {
-			const jsonData = {
-				email,
-				password
-			};
+		const jsonData = {
+			email: email,
+			password: password
+		};
 
-			const { data } = await axios.post(`${apiUrl}/users/login/`, jsonData)
-			const { user } = data;
-			//setValue("token", token);
-			// setValue("id", user.user_id);
-			// setValue("email", email);
-			// setValue("user_name", user.nickname);
-			navigate("/");
-		} catch (error) {
-			console.log(error);
-			notify("ERROR");
-			//Borrar
-			setValue("role", "ADMIN");
-			setValue("id", "3");
-			setValue("email", "admin@admin.com");
-			setValue("name", "Administrador");
-			setValue("role", "ADMIN");
-			navigate("/");
-		}
+		await axios.post<ILoginResponseUser>(
+			`${apiUrl}/users/login/`,
+			jsonData,
+			{ validateStatus: (status) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				console.log(data);
+				if (status != 200) throw ({ ...data, status });
+
+				setValue("token", 'HHHH');
+				setValue("id", `${data.user.id}`);
+				setValue("email", data.user.email);
+				setValue("name", data.user.user_name);
+				setValue("rol", data.user.role);
+				navigate("/");
+			})
+			.catch(error => toast.error(error.message + " " + error.status));
 	}
 
 	return (

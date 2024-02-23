@@ -4,27 +4,22 @@ import axios from "axios";
 import { apiUrl } from "../../../api";
 import { useEffect, useState } from "react";
 import { userStore } from "../../../store/userStore";
-import cancel from "../../../../public/assets/icons/cancel.png";
-import save from "../../../../public/assets/icons/salvar.png";
-import edit from "../../../../public/assets/icons/editar.png";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
-import { validateAccountFields } from "../helpers/ValidateFields";
-import { NavigateButton } from "../../../ui/moleculs";
+import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../ui/moleculs";
 import { toast } from "react-toastify";
+import back from "../../../../public/assets/icons/back.png";
+import { AccountMovements, IMovement } from "../components";
+import { movements } from "../helpers/data";
 
 interface IAccount {
-	concept: string;
-	reference: string;
-	quantity: number;
-	date: string;
+	idAccount: number,
+	accountName: string;
 }
 
 const initialState: IAccount = {
-	concept: "",
-	reference: "",
-	quantity: 0,
-	date: "",
+	idAccount: 0,
+	accountName: "",
 };
 
 export const AccountPage = () => {
@@ -32,19 +27,14 @@ export const AccountPage = () => {
 	const { state } = useLocation();
 	const id = state.id;
 	const [account, setAccount] = useState<IAccount>(initialState);
+	const [accountMovements, setAccountMovements] = useState<IMovement[]>([]);
 	const token = userStore((state) => state.token);
 
-	const [concept, setConcept] = useState("");
-	const [reference, setReference] = useState("");
-	const [quantity, setQuantity] = useState(0);
-	const [accountDate, setAccountDate] = useState("");
+	const [accountName, setAccountName] = useState("");
 	const [isDisabled, setDisabled] = useState(true);
 
 	const handleReset = () => {
-		setConcept(account.concept);
-		setReference(account.reference);
-		setQuantity(account.quantity);
-		setAccountDate(account.date);
+		setAccountName(account.accountName);
 		setDisabled(true);
 	};
 
@@ -58,29 +48,24 @@ export const AccountPage = () => {
 	};
 
 	useEffect(() => {
-		getAccount();
+		setAccountMovements(movements);
+		//getAccount();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const updateAccount = async (
-		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-	) => {
-		event.preventDefault();
-		const result = validateAccountFields( concept, reference, quantity, accountDate);
-		if (result.length > 0) {
-			result.map(error => toast.error(error));
+	const updateAccount = async () => {
+		toast.error("Error")
+		if (accountName === "" || accountName.length <= 0) {
+			toast.error("El nombre de la cuenta no puede estar vacío");
 			return;
-		}else {
+		} else {
 			const data = JSON.stringify({
-				concept: concept,
-				reference: reference,
-				quantity: quantity,
-				date: accountDate,
+				accountName
 			});
 
 			const config = {
 				method: "patch",
-				url: `${apiUrl}/account/update`,
+				url: `${apiUrl}/accounts/update/${id}`,
 				headers: {
 					"Accept-Encoding": "application/json",
 					"Content-Type": "application/json",
@@ -103,79 +88,42 @@ export const AccountPage = () => {
 
 	return (
 		<Layout>
-			<form className="w-9/12 mt-sm">
-				<h3 className="text-titleSm mb-xl uppercase">Modificar cuenta</h3>
-				<div className="flex flex-row space-x-sm">
-					<FormField
-						label="Concepto"
-						value={concept}
-						placeholder={"Concepto de la cuenta"}
-						onChange={setConcept}
-						type={inputType.text}
-						disabled={isDisabled}
-					/>
-					<FormField
-						label="Referencia"
-						value={reference}
-						placeholder={"Referencia bancaria"}
-						onChange={setReference}
-						type={inputType.text}
-						disabled={isDisabled}
-					/>
-				</div>
-				<div className="flex flex-row space-x-sm">
-					<FormField
-						label="Cantidad"
-						value={quantity}
-						placeholder="Cantidad de la cuenta"
-						onChange={setQuantity}
-						type={inputType.number}
-						disabled={isDisabled}
-					/>
-					<FormField
-						label="Fecha"
-						value={accountDate}
-						placeholder="Fecha de cuenta"
-						onChange={setAccountDate}
-						type={inputType.date}
-						disabled={isDisabled}
-					/>
-				</div>
-				<div className="flex justify-end space-x-sm">
-					{!isDisabled ? (
-						<>
-							<button
-								type="button"
-								onClick={() => handleReset()}
-								className="bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-							>
-								<span>Cancelar</span>
-								<img src={cancel} className="w-md "></img>
-							</button>
-							<button
-								type="button"
-								onClick={(event) => updateAccount(event)}
-								className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-							>
-								<span>Guardar</span>
-								<img src={save} className="w-md "></img>
-							</button>
-						</>
-					) : (
-						<>
-							<NavigateButton title="Volver" onClick={() => navigate("/accounts")} />
-							<button
-								type="button"
-								onClick={() => setDisabled(false)}
-								className="bg-gray-800 hover:bg-gray-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-							>
-								<span>Editar</span>
-								<img src={edit} className="w-md "></img>
-							</button>
-						</>
-					)}
-				</div>
-			</form>
+			<div>
+				<form className="w-10/12 mt-sm">
+					<h3 className="text-headerTitle mb-xl uppercase">Modificar cuenta</h3>
+					<div className="flex flex-row space-x-sm">
+						<FormField
+							label="Nombre de la cuenta"
+							value={accountName}
+							placeholder={"Nombre de la cuenta"}
+							onChange={setAccountName}
+							type={inputType.text}
+							disabled={isDisabled}
+						/>
+					</div>
+					<div className="flex justify-end space-x-sm">
+						{
+							isDisabled ? (
+								<>
+									<NavigateButton image={back} title="Regresar" onClick={() => navigate("/accounts")} />
+									<EditButton onClick={() => setDisabled(false)} title="Editar" />
+								</>
+							)
+								: (
+									<>
+										<CancelButton onClick={() => handleReset()} title="Cancelar" />
+										<SaveButton onClick={() => updateAccount()} title="Guardar" />
+									</>
+								)
+						}
+					</div>
+				</form>
+				{
+					accountMovements.length > 0 ?
+						<AccountMovements movements={accountMovements} />
+					: <p>Aún no existen movimientos para esta cuenta</p>
+				}
+			</div>
 		</Layout>
 	);
 };

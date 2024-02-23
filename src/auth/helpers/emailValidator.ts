@@ -10,7 +10,7 @@ const validateEmail = (email: string) => {
 
 export const validateLoginFields = ( email: string, password: string ) => {
 	const errors: string[] = [];
-	if(password.length <= 0 || email.length <= 0){ errors.push("Complete todos los campos"); return; }
+	if(password.length <= 0 || email.length <= 0){ errors.push("Complete todos los campos") }
 	if(!validateEmail(email)) errors.push("Ingresa un email válido");
 
 	return errors;
