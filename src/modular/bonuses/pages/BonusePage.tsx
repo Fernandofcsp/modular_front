@@ -7,7 +7,6 @@ import { userStore } from "../../../store/userStore";
 import Layout from "../../../ui/layout/Layout";
 import { BonuseTable } from "../components/BonuseTable";
 import { BonuseData } from "../dataBonuse";
-import { BackButton } from "../../../ui/moleculs/BackButton";
 
 interface IBonuse {
   bonuseDetail_id: string;
@@ -79,7 +78,6 @@ export const BonusePage = () => {
       <div className=" ">
         <h2 className="text-titleMd">Detalle de bono</h2>
         <div className="flex justify-end mb-md">
-          <BackButton onClick={() => navigate("/bonuses")} />
         </div>
         <BonuseTable bonuseData={BonuseData} />
       </div>

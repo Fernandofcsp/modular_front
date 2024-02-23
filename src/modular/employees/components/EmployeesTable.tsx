@@ -73,8 +73,6 @@ export const EmployeesTable = () => {
     getUsers();
   }, []); // Solo se ejecuta al montar el componente, no es necesario volver a ejecutarlo cuando cambia el filtro
 
-  const employeesFilteredByStatus = employees.filter(element => (element.status) === !filterEmployee);
-console.log(filterEmployee+"hola")
   return (
     <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
       <table className="w-full text-md text-left text-gray-500">
@@ -93,7 +91,7 @@ console.log(filterEmployee+"hola")
         <tbody>
           {
             
-            employeesFilteredByStatus.map((employee, i) => {
+            employees.map((employee, i) => {
               return <TableBodyRow
                 
                 key={i}

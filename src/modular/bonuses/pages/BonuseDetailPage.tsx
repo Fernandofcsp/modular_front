@@ -6,7 +6,6 @@ import { userStore } from "../../../store/userStore";
 import Layout from "../../../ui/layout/Layout";
 import { BonuseDetailTable } from "../components/BonuseDetailTable";
 import { BonuseDetailData } from "../dataDetailBonuse";
-import { BackButton } from "../../../ui/moleculs/BackButton";
 
 interface IDetailBonuse {
   bonuseDetail_id: string;
@@ -82,7 +81,6 @@ export const BonuseDetailPage = () => {
       <div>
         <h2 className="text-titleMd">Detalle de bono del empleado</h2>
         <div className="flex justify-end mb-md">
-          <BackButton onClick={() => navigate("/bonuses")} />
         </div>
 
         {<BonuseDetailTable bonuseDetailData={BonuseDetailData} />}
