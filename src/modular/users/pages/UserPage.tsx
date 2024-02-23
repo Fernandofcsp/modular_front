@@ -42,7 +42,7 @@ export const notify = (type: any) => {
 export const UserPage = () => {
   const { id } = useParams();
   const [user, setUser] = useState({
-    nickname: "",
+    user_name: "",
     email: "",
     role: "",
   });
@@ -61,7 +61,7 @@ export const UserPage = () => {
       const { data } = await axios.get(`${apiUrl}/users/${id}`);
       console.log(data);
       setUser(data);
-      setNewName(`${data.nickname}`);
+      setNewName(`${data.user_name}`);
       setNewEmail(`${data.email}`);
       setRole(`${data.role}`);
     } catch (error) {
@@ -75,7 +75,7 @@ export const UserPage = () => {
   }, []);
 
   const handleReset = () => {
-    setNewName(`${user.nickname}`);
+    setNewName(`${user.user_name}`);
     setNewEmail(`${user.email}`);
     setrePassword("");
     setNewPassword("");
@@ -94,7 +94,7 @@ export const UserPage = () => {
 		}
 
     const data = JSON.stringify({
-      nickname: newName ? newName : undefined,
+      user_name: newName ? newName : undefined,
       email: newEmail ? newEmail : undefined,
       password: newPassword ? rePassword : undefined,
       role: role,
@@ -102,7 +102,7 @@ export const UserPage = () => {
 
     const config = {
       method: "patch",
-      url: `${apiUrl}/users/update/${id}`,
+      url: `${apiUrl}/users/update/${id}/`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -135,7 +135,7 @@ export const UserPage = () => {
           <FormField
             label="Nombre"
             value={newName}
-            placeholder={user.nickname}
+            placeholder={user.user_name}
             onChange={setNewName}
             type={inputType.text}
             disabled={isDisabled}
@@ -182,12 +182,12 @@ export const UserPage = () => {
               value={role}
               className="focus:bg-white bg-gray-50 text-gray-800 text-md rounded-md block w-full p-sm"
             >
-              <option value="INOPERATIVE">Inoperativo</option>
-              <option value="READ">Sólo lectura</option>
-              <option value="WRITE">Lectura y escritura</option>
-              <option value="OVERWRITE">
+              <option value="admin">Admin</option>
+              <option value="read">Sólo lectura</option>
+              <option value="write">Lectura y escritura</option>
+              {/* <option value="overwrite">
                 Lectura, escritura y modificar datos
-              </option>
+              </option> */}
             </select>
           </div>
         </div>

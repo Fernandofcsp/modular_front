@@ -4,19 +4,19 @@ import axios from 'axios';
 import { apiUrl } from "../../../api";
 
 enum TableHeaders {
-    name = "Nombre",
+    user_name = "Nombre",
     email = "Correo",
     rol = "Permisos",
-    creationDate = "Fecha de creación",
+    is_active = "Estado",
     ver = "Ver"
 }
 
 interface IUser {
-	user_id : string,
-	nickname : string,
+	id : string,
+	user_name : string,
 	email : string,
 	role : string,
-	created_date : string
+  is_active: boolean,
 }
 
 export const UsersTable = () => {
@@ -24,8 +24,9 @@ export const UsersTable = () => {
 
   const getUsers = async () => {
     try {
-      const { data } = await axios.get(`${apiUrl}/users`, { params: {take: 100, skip: 0} });
+      const { data } = await axios.get(`${apiUrl}/users/`, { params: {take: 100, skip: 0} });
       setUsers(data);
+      console.log(data)
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +54,8 @@ export const UsersTable = () => {
         <tbody>
           {
             users.map((user, i) => {
-              return <TableBodyRow key={i} id={user.user_id}name={user.nickname} email={user.email} rol={user.role} creationDate={user.created_date}/>
+              return <TableBodyRow key={i} id={user.id} user_name={user.user_name} 
+              email={user.email} rol={user.role} is_active={user.is_active}/>
             })
           }
         </tbody>

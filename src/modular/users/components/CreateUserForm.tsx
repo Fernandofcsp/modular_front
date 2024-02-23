@@ -3,10 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
-import save from "../../../../public/assets/icons/salvar.png";
-import cancel from "../../../../public/assets/icons/cancel.png";
 import { FormField, inputType } from "../moleculs/FormField";
-import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateUserFields } from "../helpers/validateUserFields";
@@ -57,24 +54,21 @@ export const CreateUserForm = () => {
 
 		if(errors.length > 0){
 			errors.map(error => toast.error(error));
-
 			return;
 		}
 
-		const data = JSON.stringify({
-			nickname: name,
+		const data = {
+			username: name,
 			email: email,
 			password: password,
 			role: role,
-		});
+		}
 
 		const config = {
 			method: "post",
-			url: `${apiUrl}/users/create`,
+			url: `${apiUrl}/users/signup/`,
 			headers: {
-				"Accept-Encoding": "application/json",
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
+				//Authorization: `Bearer ${token}`,
 			},
 			data: data,
 		};
@@ -82,7 +76,7 @@ export const CreateUserForm = () => {
 		try {
 			const { data, status } = await axios.request(config);
 			console.log(data);
-			if (status == 200) {
+			if (status == 201) {
 				notify("SUCCESS");
 				handleReset();
 			}
@@ -139,12 +133,12 @@ export const CreateUserForm = () => {
 						className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md block w-full p-sm"
 					>
 						<option value="">Elige un rol</option>
-						<option value="ADMIN">Administrador</option>
-						<option value="READ">Sólo lectura</option>
-						<option value="WRITE">Lectura y escritura</option>
-						<option value="OVERWRITE">
+						<option value="admin">Administrador</option>
+						<option value="read">Sólo lectura</option>
+						<option value="write">Lectura y escritura</option>
+						{/* <option value="overwrite">
 							Lectura, escritura y modificar datos
-						</option>
+						</option> */}
 					</select>
 				</div>
 			</div>
