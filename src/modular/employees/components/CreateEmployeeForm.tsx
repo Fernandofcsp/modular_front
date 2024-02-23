@@ -2,12 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { FormField, inputType } from "../../users/moleculs";
 import { userStore } from "../../../store/userStore";
 import { useState } from "react";
-import { apiUrl } from "../../../api";
 import axios from "axios";
+import { apiUrl } from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
-import cancel from "../../../../public/assets/icons/cancel.png";
-import save from "../../../../public/assets/icons/salvar.png";
 import { validateEmployeeFields } from "../helpers/validateEmployeeFields";
+import { CancelButton, SaveButton } from "../../../ui/moleculs";
 
 const notify = (type: string) => {
 	switch (type) {
@@ -56,8 +55,7 @@ export const CreateEmployeeForm = () => {
 	};
 
 
-	const saveEmployee = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		e.preventDefault();
+	const saveEmployee = async () => {
 		const errors = validateEmployeeFields(firstName, lastName1, lastName2, dailySalary, admissionDate);
 
 		if (errors.length > 0) {
@@ -75,7 +73,7 @@ export const CreateEmployeeForm = () => {
 
 		const config = {
 			method: "post",
-			url: `${apiUrl}/employees/create`,
+			url: `${apiUrl}/employees/create/`,
 			headers: {
 				"Accept-Encoding": "application/json",
 				"Content-Type": "application/json",
@@ -143,20 +141,8 @@ export const CreateEmployeeForm = () => {
 				/>
 			</div>
 			<div className="flex justify-end space-x-sm">
-				<button
-					onClick={() => navigate("/employees")}
-					className="bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-				>
-					<span>Cancelar</span>
-					<img src={cancel} className="w-md "></img>
-				</button>
-				<button
-					onClick={(event) => saveEmployee(event)}
-					className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-				>
-					<span>Guardar</span>
-					<img src={save} className="w-md "></img>
-				</button>
+				<CancelButton title="Cancelar" onClick={() => navigate("/employees")} />
+				<SaveButton title="Guardar" onClick={() => saveEmployee()} />
 			</div>
 			<ToastContainer />
 		</form>

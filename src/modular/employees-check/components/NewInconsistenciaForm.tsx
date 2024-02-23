@@ -12,9 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 export const NewInconsistenciaForm = ({ setShow }: INewInconsistency) => {
 	const token = userStore(state => state.token);
 
-	const save = async (e: React.SyntheticEvent) => {
-		e.preventDefault();
-
+	const save = async () => {
 		const { errors, reset } = validateCheckFields(inconsistency, initialDate, minutes, endDate);
 
 		if (errors.length > 0) {
@@ -58,8 +56,7 @@ export const NewInconsistenciaForm = ({ setShow }: INewInconsistency) => {
 		console.log(config);
 	}
 
-	const cancel = (e: React.SyntheticEvent) => {
-		e.preventDefault();
+	const cancel = () => {
 		setShow(false);
 		setInconsistency(-1)
 		setInitialDate("");
@@ -93,8 +90,8 @@ export const NewInconsistenciaForm = ({ setShow }: INewInconsistency) => {
 
 	return (
 		<div>
-			<form onSubmit={save} className="w-3/4 mt-md space-y-sm">
-				<p className="text-titleMd font-bold text-left pb-md">Nueva inconsistencia</p>
+			<form onSubmit={save} className="w-2/4 mt-md space-y-sm">
+				<p className="text-headerTitle text-left pb-md">Nueva inconsistencia</p>
 				<InconsistenciesSelector inconsistency={inconsistency} setInconsistency={setInconsistency} />
 				{
 					inconsistency !== -1 ?

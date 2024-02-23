@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../../../ui/layout/Layout";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
+import { validateAccountFields } from "../helpers/ValidateFields";
 import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
 import axios from "axios";
@@ -38,20 +39,35 @@ export const notify = (type: any) => {
 export const NewAccountPage = () => {
 	const token = userStore((state) => state.token);
 	const navigate = useNavigate();
-	const [accountName, setAccountName] = useState("");
+	const [concept, setConcept] = useState("");
+	const [reference, setReference] = useState("");
+	const [quantity, setQuantity] = useState(0);
+	const [date, setDate] = useState("");
+
+	const handleReset = () => {
+		setConcept("");
+		setReference("");
+		setQuantity(0);
+		setDate("")
+	}
 
 	const saveAccount = async ( ) => {
-		if (accountName.length <= 0) {
-			toast.error("Ingrese un nombre válido para la cuenta");
+		const result = validateAccountFields(concept, reference, quantity, date);
+
+		if (result.length > 0) {
+			result.map(error => toast.error(error));
 			return;
 		} else {
 			const data = JSON.stringify({
-				accountName,
+				concept: concept,
+				reference: reference,
+				quantity: quantity,
+				date: date,
 			});
 
 			const config = {
 				method: "post",
-				url: `${apiUrl}/accounts/create`,
+				url: `${apiUrl}/account/create`,
 				headers: {
 					"Accept-Encoding": "application/json",
 					"Content-Type": "application/json",
@@ -86,11 +102,34 @@ export const NewAccountPage = () => {
 				<h3 className="text-titleSm mb-xl uppercase">Crear nueva cuenta</h3>
 				<div className="flex flex-row space-x-sm">
 					<FormField
-						label="Nombre de la cuenta"
-						value={accountName}
+						label="Concepto"
+						value={concept}
 						placeholder={"Concepto de la cuenta"}
-						onChange={setAccountName}
+						onChange={setConcept}
 						type={inputType.text}
+					/>
+					<FormField
+						label="Referencia"
+						value={reference}
+						placeholder={"Referencia bancaria"}
+						onChange={setReference}
+						type={inputType.text}
+					/>
+				</div>
+				<div className="flex flex-row space-x-sm">
+					<FormField
+						label="Cantidad"
+						value={quantity}
+						placeholder="Cantidad de la cuenta"
+						onChange={setQuantity}
+						type={inputType.number}
+					/>
+					<FormField
+						label="Fecha"
+						value={date}
+						placeholder="Fecha de cuenta"
+						onChange={setDate}
+						type={inputType.date}
 					/>
 				</div>
 				<div className="flex justify-end space-x-sm">

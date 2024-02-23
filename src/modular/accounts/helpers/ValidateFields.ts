@@ -7,7 +7,7 @@ export const validateAccountFields = (concept: string, reference: string, quanti
 	if(reference.length<= 0)
 		errors.push("Debe escribir algo en referencia");
 	if(quantity == 0)
-		errors.push("La cantidad de la cuenta debe de ser diferente de 0");
+		errors.push("La cantidad debe de ser diferente de 0");
 	if(moment(date).isAfter() || date === "")
 		errors.push("Ingrese una fecha válida, la fecha no puede ser del futuro");
 

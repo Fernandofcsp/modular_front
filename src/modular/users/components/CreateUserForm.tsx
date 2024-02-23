@@ -10,6 +10,7 @@ import React from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { validateUserFields } from "../helpers/validateUserFields";
+import { CancelButton, SaveButton } from "../../../ui/moleculs";
 
 export const notify = (type: any) => {
 	switch (type) {
@@ -51,8 +52,7 @@ export const CreateUserForm = () => {
 		setRole("");
 	};
 
-	const saveUser = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const saveUser = async () => {
 		const errors = validateUserFields(name, email, role, password, password2);
 
 		if(errors.length > 0){
@@ -95,7 +95,7 @@ export const CreateUserForm = () => {
 		}
 	};
 	return (
-		<form onSubmit={(event) => saveUser(event)} className="w-9/12 mt-sm">
+		<form className="w-9/12 mt-sm">
 			<div className="flex flex-row -mx-sm mb-md">
 				<FormField
 					label="Nombre"
@@ -136,7 +136,7 @@ export const CreateUserForm = () => {
 					<select
 						onChange={({ target }) => setRole(target.value)}
 						value={role}
-						className="focus:bg-white bg-gray-50 text-gray-800 text-md rounded-md block w-full p-sm"
+						className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md block w-full p-sm"
 					>
 						<option value="">Elige un rol</option>
 						<option value="ADMIN">Administrador</option>
@@ -149,20 +149,8 @@ export const CreateUserForm = () => {
 				</div>
 			</div>
 			<div className="flex justify-end space-x-sm">
-				<button
-					onClick={() => navigate("/users")}
-					className="bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-				>
-					<span>Cancelar</span>
-					<img src={cancel} className="w-md "></img>
-				</button>
-				<button
-					type="submit"
-					className="bg-green-800 hover:bg-green-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm"
-				>
-					<span>Crear</span>
-					<img src={save} className="w-md "></img>
-				</button>
+				<CancelButton title="Cancelar" onClick={() => navigate("/users")}/>
+				<SaveButton title="Guardar" onClick={() => saveUser()} />
 			</div>
 			<ToastContainer />
 		</form>

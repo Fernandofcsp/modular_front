@@ -4,14 +4,13 @@ import { inputType } from "../../users/moleculs";
 import { FormField, InconsistenciesSelector } from "../moleculs";
 import { useEffect, useState } from "react";
 import cancel from "../../../../public/assets/icons/cancel.png";
-import save from "../../../../public/assets/icons/salvar.png";
-import editImage from "../../../../public/assets/icons/editar.png";
 import back from "../../../../public/assets/icons/back.png";
 import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
 import { validateCheckFields } from "../helpers/validateCheckFields";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../ui/moleculs";
 
 interface IInconsistency {
 	tipo: number;
@@ -69,9 +68,7 @@ export const InconsistencyPage = () => {
 		setNewFechaFin(inconsistency.fechaFin);
 	};
 
-	const updateInconsistency = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		event.preventDefault();
-
+	const updateInconsistency = async () => {
 		const validate = validateCheckFields(
 			newTipo,
 			newFechaInicio,
@@ -168,45 +165,12 @@ export const InconsistencyPage = () => {
 				)}
 				<div className="flex justify-end space-x-sm">
 					{
-						edit ?
-							<button
-								type="button"
-								onClick={() => handleReset()}
-								className={`bg-red-500 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-								flex items-center gap-sm ${!edit && "hidden"}`}
-							>
-								<span>Cancelar</span>
-								<img src={cancel} className="w-md " />
-							</button> :
-							<button
-								type={"button"}
-								onClick={() => {
-									navigate("/employees-check");
-								}}
-								className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-									flex items-center gap-sm ${edit && "hidden"}`}
-							>
-								<span>Volver</span>
-								<img src={back} className="w-md " />
-							</button>
+						edit ? <CancelButton title="Cancelar" onClick={() => handleReset()} />
+							: <NavigateButton title="Volver" onClick={() => { navigate("/employees-check") }} />
 					}
 					{
-						edit ?
-							<button
-								onClick={(event) => updateInconsistency(event)}
-								className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'
-							>
-								<span>Guardar</span>
-								<img src={save} className="w-md " />
-							</button>
-							:
-							<button
-								onClick={(event) => { event.preventDefault(); setEdit(true) }}
-								className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-gray-800 hover:bg-gray-600'
-							>
-								<span>Editar</span>
-								<img src={editImage} className="w-md " />
-							</button>
+						edit ? <SaveButton title="Guardar" onClick={() => updateInconsistency()} />
+							: <EditButton title="Editar" onClick={() => setEdit(true)} />
 					}
 				</div>
 				<ToastContainer />

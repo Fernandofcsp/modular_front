@@ -1,6 +1,6 @@
 interface IEmployeeInformation {
 	created_date: string, 
-	updated_date: string,
+	updated_date?: string,
 	created_user_id: number
 }
 
@@ -10,11 +10,14 @@ export const EmployeeInformation = ( props : IEmployeeInformation) => {
 	return (
 		<div className="flex justify-between pb-md">
 			<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">Fecha de creación: 
-				<span className="font-normal ml-sm">{created_date.split("T")[0]}</span>
+				<span className="font-normal ml-sm">{created_date}</span>
 			</p>
-			<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">Fecha de ultima modificación: 
-				<span className="font-normal ml-sm">{updated_date.split("T")[0]}</span>
-			</p>
+			{
+				updated_date &&
+					<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">Fecha de ultima modificación: 
+						<span className="font-normal ml-sm">{updated_date}</span>
+					</p>
+			}
 			<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">ID responsable: 
 				<span className="font-normal ml-sm">{created_user_id}</span>
 			</p>

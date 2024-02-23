@@ -5,7 +5,7 @@ export const CreateUserPage = () => {
 	return (
 		<Layout>
 			<div>
-				<p className="text-titleSm uppercase">Crear usuario</p>
+				<p className="text-headerTitle">Crear usuario</p>
 				<CreateUserForm />
 			</div>
 		</Layout>

@@ -6,6 +6,8 @@ import { AccountsTable } from "../components";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { accountsData } from "../data";
+import { NavigateButton } from "../../../ui/moleculs";
+import { AccountsFormField } from "../moleculs/AccountsFormField";
 
 export function AccountsPage() {
   const navigate = useNavigate();
@@ -31,25 +33,16 @@ export function AccountsPage() {
 
   return (
     <Layout>
-      <div>
-        <h2 className="text-titleMd">Cuentas</h2>
-        <div className="flex justify-end mb-md">
-          <button
-            className="text-white text-lg uppercase bg-blue-800 hover:font-semibold px-md py-sm rounded-md hover:bg-blue-600"
-            onClick={() => navigate("/new-account")}
-          >
-            Nueva cuenta
-          </button>
-        </div>
-        <div className="flex flex-row space-x-md">
-          <FormField
+      <div className="w-full flex flex-col">
+        <div className="flex flex-row space-x-md justify-end items-end">
+          <AccountsFormField
             label="Fecha inicial"
             onChange={setInitialDateToFilter}
             type={inputType.date}
             value={initialDateToFilter}
             placeholder=""
           />
-          <FormField
+					<AccountsFormField
             label="Fecha final"
             onChange={setEndDateToFilter}
             type={inputType.date}
@@ -57,10 +50,13 @@ export function AccountsPage() {
             placeholder=""
           />
         </div>
+				<div className="w-full flex items-end justify-end">
+					<NavigateButton title="Nueva cuenta" onClick={() => navigate("/new-account")} />
+				</div>
         {initialDateToFilter !== "" && endDateToFilter !== "" ? (
           data.length > 0 ? (
             <div className="space-y-md mt-sm">
-              <p>Total de cuentas: {data.length}</p>
+              <p className="text-end">Total de cuentas: {data.length}</p>
               <AccountsTable accountsData={data} />
             </div>
           ) : (

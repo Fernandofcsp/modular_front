@@ -41,7 +41,7 @@ export const LogInForm = (props: ILogInForm) => {
 					type='email'
 					name='email'
 					id='email'
-					className='bg-gray-50 text-gray-900 text-lg rounded-lg block w-full p-sm '
+					className='bg-gray-50 text-gray-900 text-lg rounded-lg block w-full p-sm border-2 border-slate-300 focus:outline-none focus:border-slate-400'
 					placeholder='name@company.com'
 					required
 				/>
@@ -59,7 +59,7 @@ export const LogInForm = (props: ILogInForm) => {
 					name='password'
 					id='password'
 					placeholder='••••••••'
-					className='bg-gray-50 text-gray-900 text-lg rounded-lg block w-full p-sm'
+					className='bg-gray-50 text-gray-900 text-lg rounded-lg block w-full p-sm border-2 border-slate-300 focus:outline-none focus:border-slate-400'
 					required
 				/>
 			</div>
@@ -69,7 +69,7 @@ export const LogInForm = (props: ILogInForm) => {
 			<div className='flex justify-center'>
 				<button
 					type='submit'
-					className='bg-blue-500 py-xsm px-md rounded font-medium hover:bg-blue-600'
+					className='text-white bg-blue-500 py-xsm px-md rounded-lg font-medium hover:bg-blue-600'
 				>
 					Ingresar
 				</button>

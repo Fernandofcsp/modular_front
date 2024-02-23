@@ -1,2 +1,2 @@
 
-export const apiUrl = "http://localhost:3001/api"
+export const apiUrl = "https://backend-modpy.up.railway.app/api";
