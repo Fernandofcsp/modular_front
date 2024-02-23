@@ -53,7 +53,7 @@ export const InconsistenciasTable = ({ id } : IInconsistenciasTable) => {
 			{
 				inconsistenciasFilteredById.length > 0 &&
 				<table className="w-full text-md text-left text-gray-500">
-					<thead className="text-md text-gray-700 uppercase bg-gray-50">
+					<thead className="text-md text-gray-700 uppercase bg-gray-50 sticky top-0">
 						<tr>
 							{
 								Object.entries(TableHeaders).map((e, i) => {

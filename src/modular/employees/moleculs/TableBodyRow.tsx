@@ -11,6 +11,7 @@ interface IBodyItem {
 
 export const TableBodyRow = (props: IBodyItem) => {
 	const { id, name, status, admision_date, employee } = props;
+	
 	return (
 		<tr className="bg-white border-b">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">

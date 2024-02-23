@@ -197,18 +197,16 @@ export const UserPage = () => {
             onClick={() => {
               setChangePassword((value) => !value);
             }}
-            className={`bg-gray-700 hover:bg-gray-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${
+            className={`bg-gray-700 hover:bg-gray-600 hover:font-bold text-white font-semibold py-0 px-xl rounded-md flex items-center${
               isDisabled && "hidden"
             }`}
           >
-            <span>
-              {!changePassword
-                ? "Cambiar contraseña de usuario"
-                : "Cancelar cambio de contraseña"}
+            <span className={`${isDisabled && "hidden"} ${changePassword ? 'py-xsm px-xl rounded-md flex items-center ml-xsm mr-xsm gap-xsm' : 'py-xsm px-lg rounded-md flex items-center gap-sm'} `}>
+              {!changePassword ? "Cambiar contraseña" : "Cancelar cambio"}
             </span>
             <img
               src={!changePassword ? edit : cancel}
-              className={`w-md ${isDisabled && "hidden"}`}
+              className={`w-md py-sm ${isDisabled && "hidden"}`}
             ></img>
           </button>
         </div>

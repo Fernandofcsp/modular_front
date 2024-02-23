@@ -43,11 +43,11 @@ export const ProfilePage = () => {
 		const errors = validateUserFields(newName!, newEmail!, role!, changePassword, newPassword, rePassword);
 
 
-		if (errors.length > 0) {
-			errors.map(error => toast.error(error));
+    if (errors.length > 0) {
+      errors.map((error) => toast.error(error));
 
-			return;
-		}
+      return;
+    }
 
 		const data = JSON.stringify({
 			nickname: newName ? newName : undefined,
