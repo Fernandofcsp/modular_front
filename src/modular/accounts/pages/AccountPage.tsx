@@ -120,7 +120,7 @@ export const AccountPage = () => {
 				</form>
 				{
 					accountMovements.length > 0 ?
-						<AccountMovements movements={accountMovements} />
+						<AccountMovements idAccount={account.idAccount} movements={accountMovements} />
 					: <p>Aún no existen movimientos para esta cuenta</p>
 				}
 			</div>

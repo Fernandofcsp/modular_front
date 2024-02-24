@@ -8,17 +8,17 @@ export const EmployeeInformation = ( props : IEmployeeInformation) => {
 	const { created_date, updated_date, created_user_id } = props;
 	console.log(created_date, updated_date, created_user_id);
 	return (
-		<div className="flex justify-between pb-md">
-			<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">Fecha de creación: 
+		<div className="flex justify-start pb-md space-x-md">
+			<p className="block tracking-wide text-gray-900 text-xl  mb-sm">Fecha de creación: 
 				<span className="font-normal ml-sm">{created_date}</span>
 			</p>
 			{
 				updated_date &&
-					<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">Fecha de ultima modificación: 
+				<p className="block tracking-wide text-gray-900 text-xl  mb-sm">Fecha de ultima modificación: 
 						<span className="font-normal ml-sm">{updated_date}</span>
 					</p>
 			}
-			<p className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">ID responsable: 
+			<p className="block tracking-wide text-gray-900 text-xl  mb-sm">ID responsable: 
 				<span className="font-normal ml-sm">{created_user_id}</span>
 			</p>
 		</div>

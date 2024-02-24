@@ -21,7 +21,7 @@ export const FormField = <T extends string | number>(props: IField<T>) => {
   const { type, placeholder, label, value, onChange: setVal, disabled=false } = props;
   return (
     <div className="flex flex-col items-start px-sm w-full mb-sm md:mb-0">
-      <label className="block capitalize tracking-wide text-gray-900 text-xl mb-sm">
+      <label className="block tracking-wide text-gray-900 text-lg mb-sm">
         {label}
       </label>
       <input

@@ -7,21 +7,12 @@ import { EmployeeInformation } from "../components/EmployeeInformation";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
-import back from "../../../../public/assets/icons/back.png";
-import cancel from "../../../../public/assets/icons/cancel.png";
-import save from "../../../../public/assets/icons/salvar.png";
-import edit from "../../../../public/assets/icons/editar.png";
 import { useNavigate } from "react-router-dom";
 import { validateEmployeeFields } from "../helpers/validateEmployeeFields";
 import { BenefitsTable } from "../components/BenefitsTable";
-/*
-interface IErrorResponse {
-	location: string;
-	msg: string;
-	path: string;
-	type: string;
-	value: string;
-}*/
+import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../ui/moleculs";
+import back from "../../../../public/assets/icons/back.png";
+
 export const notify = (type: any) => {
 	switch (type) {
 		case "WARN":
@@ -44,6 +35,8 @@ export const notify = (type: any) => {
 			break;
 	}
 };
+
+
 export const EmployeePage = () => {
 	const { state } = useLocation();
 
@@ -69,19 +62,17 @@ export const EmployeePage = () => {
 	const [admisionDate, setAdmisionDate] = useState(admision_date);
 	const [newStatus, setNewStatus] = useState(status);
 	const token = userStore((state) => state.token);
-	const [isDisabled, setDisabled] = useState(true);
+	const [isDisabled, setIsDisabled] = useState(true);
 
 	const handleReset = () => {
-		setDisabled(true);
+		setIsDisabled(true);
 		setName(first_name);
 		setLastName1(last_name1);
 		setLastName2(lastName2);
 		setDailySalary(daily_salary);
-		setDisabled(true);
 	};
 
-	const saveEmployeeData = async (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+	const saveEmployeeData = async () => {
 		const errors = validateEmployeeFields(name, lastName1, lastName2, dailySalary, admisionDate);
 
 		if (errors.length > 0) {
@@ -123,33 +114,19 @@ export const EmployeePage = () => {
 			}
 		}
 	};
-	/*try {
-			const { data } = await axios.request(config);
-			console.log(data);
 
-			alert("Éxito");
-		} catch (error) {
-			const errors = (error as Error).response.data.errors;
-			errors.forEach((error: IErrorResponse) => {
-				alert(`${error.msg}  ${error.path}`);
-			});
-		}
-	};*/
 	return (
 		<Layout>
-			<div className="w-9/12">
-				<h3 className="text-titleMd mb-xl uppercase">
-					información del empleado: {`${first_name} ${lastName1} ${lastName2}`}
+			<div className="w-11/12">
+				<h3 className="text-headerTitle mb-xl">
+					Información del empleado: {`${first_name} ${lastName1} ${lastName2}`}
 				</h3>
 				<EmployeeInformation
 					created_date={created_date}
 					created_user_id={created_user_id}
 					updated_date={updated_date}
 				/>
-				<form
-					onSubmit={(event) => saveEmployeeData(event)}
-					className="mt-sm"
-				>
+				<form className="mt-sm">
 					<div className="flex w-full space-x-3xl mb-lg">
 						<div className="flex-1">
 							<div className="flex flex-row -mx-sm mb-md">
@@ -196,14 +173,14 @@ export const EmployeePage = () => {
 									type={inputType.date}
 								/>
 								<div className="flex flex-col items-start px-sm w-full mb-sm md:mb-0">
-									<label className="block uppercase tracking-wide text-gray-900 text-lg font-bold mb-sm">
+									<label className="block text-gray-900 text-lg tracking-wide mb-sm">
 										ESTADO
 									</label>
 									<select
 										disabled={isDisabled}
 										value={newStatus}
 										onChange={({ target }) => setNewStatus(target.value)}
-										className="block w-full bg-gray-50 text-gray-800 border rounded-md py-sm px-md mb-xsm leading-tight focus:outline-none focus:bg-white"
+										className="block w-full bg-gray-50 text-gray-800 text-lg border rounded-md py-sm px-md mb-xsm leading-tight focus:outline-none focus:bg-white"
 									>
 										<option value={1}>ACTIVO</option>
 										<option value={0}>INACTIVO</option>
@@ -211,40 +188,22 @@ export const EmployeePage = () => {
 								</div>
 							</div>
 						</div>
-						<BenefitsTable edit={isDisabled} benefits={benefits} />
+						<BenefitsTable idEmployee={employee_id} isDisabled={isDisabled} benefits={benefits} />
 					</div>
 					<div className="flex justify-end space-x-sm">
-						<button
-							type={isDisabled ? "submit" : "button"}
-							onClick={() => {
-								navigate("/Employees");
-							}}
-							className={`bg-blue-800 hover:bg-blue-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-            flex items-center gap-sm ${!isDisabled && "hidden"}`}
-						>
-							<span>Volver</span>
-							<img src={back} className="w-md "></img>
-						</button>
-						<button
-							type="button"
-							onClick={() => handleReset()}
-							className={`bg-red-800 hover:bg-red-600 hover:font-bold text-white font-semibold py-xsm px-lg rounded-md 
-							flex items-center gap-sm ${isDisabled && "hidden"}`}
-						>
-							<span>Cancelar</span>
-							<img src={cancel} className="w-md "></img>
-						</button>
-						<button
-							type={isDisabled ? "submit" : "button"}
-							onClick={() => setDisabled((value) => !value)}
-							className={` hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm ${!isDisabled
-								? `bg-green-800 hover:bg-green-600`
-								: `bg-gray-800 hover:bg-gray-600 `
-								}`}
-						>
-							<span>{!isDisabled ? "Guardar" : "Editar"}</span>
-							<img src={!isDisabled ? save : edit} className="w-md "></img>
-						</button>
+						{
+							isDisabled ? (
+								<>
+									<NavigateButton onClick={() => navigate("/employees")} title="Volver" image={back} />
+									<EditButton onClick={() => setIsDisabled(false)} title="Editar" />
+								</>
+							) : (
+								<>
+									<CancelButton onClick={() => handleReset()} title="Cancelar" />
+									<SaveButton onClick={() => saveEmployeeData()} title="Guardar" />
+								</>
+							)
+						}
 					</div>
 					<ToastContainer />
 				</form>

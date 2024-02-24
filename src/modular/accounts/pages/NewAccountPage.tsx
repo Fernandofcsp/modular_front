@@ -61,22 +61,7 @@ export const NewAccountPage = () => {
 			};
 
 			console.log(config);
-			/*
-			try {
-			const { data, status } = await axios.request(config);
-			console.log(data);
-			if (status == 200) {
-				notify("SUCCESS");
-				handleReset();
-			}
-			} catch (error: any) {
-			if (error.message == "Request failed with status code 400") {
-				notify("WARN");
-			} else {
-				notify("ERROR");
-			}
-		  
-		}*/
+			//Colocar petición HTTP
 		}
 	};
 
