@@ -10,6 +10,7 @@ import { FormField, inputType } from "../users/moleculs/FormField";
 import { ToastContainer, toast } from "react-toastify";
 import { validateUserFields } from "./helpers/validateUserFields";
 import { CancelButton, ChangePasswordButton, EditButton, NavigateButton, SaveButton } from "../../ui/moleculs";
+import back from "../../../public/assets/icons/back.png";
 
 
 export const ProfilePage = () => {
@@ -156,7 +157,7 @@ export const ProfilePage = () => {
 				</div>
 				<div className="flex justify-end space-x-sm">
 					{
-						isDisabled && <NavigateButton title={"Volver"} onClick={() => navigate("/")} />
+						isDisabled && <NavigateButton image={back} title={"Volver"} onClick={() => navigate("/")} />
 					}
 					{
 						!isDisabled && <CancelButton onClick={() => handleReset()} title="Cancelar" />

@@ -1,15 +1,12 @@
 import { useState } from "react";
-import Layout from "../../../ui/layout/Layout";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { validateAccountFields } from "../helpers/ValidateFields";
 import { apiUrl } from "../../../api";
 import { userStore } from "../../../store/userStore";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { NavigateButton, SaveButton } from "../../../ui/moleculs";
+import { CancelButton, SaveButton } from "../../../ui/moleculs";
 import { ToastContainer, toast } from "react-toastify";
-import back from "../../../../public/assets/icons/back.png";
 
 export const notify = (type: any) => {
 	switch (type) {
@@ -36,9 +33,16 @@ export const notify = (type: any) => {
 			break;
 	}
 };
-export const NewAccountPage = () => {
+
+interface INewMovementForm {
+	idAccount: number,
+	show: boolean,
+	setShow: (show: boolean) => void,
+}
+
+export const NewMovementForm = (props: INewMovementForm) => {
+	const { idAccount, show, setShow } = props;
 	const token = userStore((state) => state.token);
-	const navigate = useNavigate();
 	const [concept, setConcept] = useState("");
 	const [reference, setReference] = useState("");
 	const [quantity, setQuantity] = useState(0);
@@ -51,7 +55,7 @@ export const NewAccountPage = () => {
 		setDate("")
 	}
 
-	const saveAccount = async ( ) => {
+	const saveAccount = async () => {
 		const result = validateAccountFields(concept, reference, quantity, date);
 
 		if (result.length > 0) {
@@ -59,6 +63,7 @@ export const NewAccountPage = () => {
 			return;
 		} else {
 			const data = JSON.stringify({
+				idAccount: idAccount,
 				concept: concept,
 				reference: reference,
 				quantity: quantity,
@@ -77,67 +82,50 @@ export const NewAccountPage = () => {
 			};
 
 			console.log(config);
-			/*
-			try {
-			const { data, status } = await axios.request(config);
-			console.log(data);
-			if (status == 200) {
-				notify("SUCCESS");
-				handleReset();
-			}
-			} catch (error: any) {
-			if (error.message == "Request failed with status code 400") {
-				notify("WARN");
-			} else {
-				notify("ERROR");
-			}
-		  
-		}*/
+			//Colocar peticion HTTP
 		}
 	};
 
 	return (
-		<Layout>
-			<form className="w-9/12 mt-sm space-y-sm">
-				<h3 className="text-titleSm mb-xl uppercase">Crear nueva cuenta</h3>
-				<div className="flex flex-row space-x-sm">
-					<FormField
-						label="Concepto"
-						value={concept}
-						placeholder={"Concepto de la cuenta"}
-						onChange={setConcept}
-						type={inputType.text}
-					/>
-					<FormField
-						label="Referencia"
-						value={reference}
-						placeholder={"Referencia bancaria"}
-						onChange={setReference}
-						type={inputType.text}
-					/>
-				</div>
-				<div className="flex flex-row space-x-sm">
-					<FormField
-						label="Cantidad"
-						value={quantity}
-						placeholder="Cantidad de la cuenta"
-						onChange={setQuantity}
-						type={inputType.number}
-					/>
-					<FormField
-						label="Fecha"
-						value={date}
-						placeholder="Fecha de cuenta"
-						onChange={setDate}
-						type={inputType.date}
-					/>
-				</div>
-				<div className="flex justify-end space-x-sm">
-					<NavigateButton image={back} title="Volver" onClick={() => navigate("/accounts")} />
-					<SaveButton title="Guardar" onClick={() => saveAccount()} />
-				</div>
-				<ToastContainer />
-			</form>
-		</Layout>
+		<form className="w-10/12 mt-sm space-y-md">
+			<h3 className="text-lg mb-xl uppercase">Agregar movimiento</h3>
+			<div className="flex flex-row space-x-sm">
+				<FormField
+					label="Concepto"
+					value={concept}
+					placeholder={"Concepto de la cuenta"}
+					onChange={setConcept}
+					type={inputType.text}
+				/>
+				<FormField
+					label="Referencia"
+					value={reference}
+					placeholder={"Referencia bancaria"}
+					onChange={setReference}
+					type={inputType.text}
+				/>
+			</div>
+			<div className="flex flex-row space-x-sm">
+				<FormField
+					label="Cantidad"
+					value={quantity}
+					placeholder="Cantidad de la cuenta"
+					onChange={setQuantity}
+					type={inputType.number}
+				/>
+				<FormField
+					label="Fecha"
+					value={date}
+					placeholder="Fecha de cuenta"
+					onChange={setDate}
+					type={inputType.date}
+				/>
+			</div>
+			<div className="flex justify-end space-x-sm">
+				<CancelButton onClick={() => {handleReset(); setShow(false)}} title="Cancelar" />
+				<SaveButton title="Guardar" onClick={() => saveAccount()} />
+			</div>
+			<ToastContainer />
+		</form>
 	);
 };

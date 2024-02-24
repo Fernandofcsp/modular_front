@@ -3,16 +3,18 @@ import { IBenefits } from './EmployeesTable';
 import { BenefitForm } from '../moleculs';
 
 interface IBenefitsTable {
-	edit: boolean,
+	employeeId: number,
+	isDisabled: boolean,
 	benefits: IBenefits[]
 }
 export const BenefitsTable = (props: IBenefitsTable) => {
-	const { benefits, edit } = props;
+	const { employeeId, benefits, isDisabled } = props;
 	const [formBenefitVisible, setFormBenefitVisible] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [typeBenefit, setTypeBenefit] = useState("");
 	const [quantityBenefit, setQuantityBenefit] = useState(0);
-	const [newBenefit, setNewBenefit] = useState(true);
+	const [newBenefit, setNewBenefit] = useState(false);
+	const [editBenefit, setEditBenefit] = useState(false);
 
 	const deleteBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
 		event.preventDefault();
@@ -23,9 +25,10 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 		}
 	}
 
-	const editBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number, benefit: string, quantity: number) => {
+	const modifyBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number, benefit: string, quantity: number) => {
 		event.preventDefault();
 		setNewBenefit(false);
+		setEditBenefit(true);
 		setSelectedId(id);
 		setTypeBenefit(benefit);
 		setQuantityBenefit(quantity);
@@ -34,11 +37,16 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 
 	const createBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
-		setNewBenefit(false);
+		setNewBenefit(true);
 		setSelectedId(0);
 		setTypeBenefit("");
 		setQuantityBenefit(0);
 		setFormBenefitVisible(true);
+	}
+
+	const handleReset = () => {
+		setNewBenefit(false);
+		setEditBenefit(false);
 	}
 
 	return (
@@ -54,7 +62,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 								<p></p>
 							</th>
 							<th scope="col" className="px-md py-sm flex justify-end items-center">
-								<button hidden={edit} onClick={(event) => { createBenefit(event) }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-xsm px-xsm rounded disabled:bg-gray-800" disabled={edit}>
+								<button hidden={isDisabled} onClick={(event) => { createBenefit(event) }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" disabled={editBenefit}>
 									<img src='../../../assets/icons/mas.png' className='w-md' />
 								</button>
 							</th>
@@ -85,10 +93,10 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 											{e.quantity}
 										</td>
 										<td className="px-md py-sm space-x-xsm">
-											<button onClick={(event) => editBenefit(event, e.id, e.type, e.quantity)} className="bg-green-800 hover:bg-green-600 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={edit} disabled={newBenefit}>
+											<button onClick={(event) => modifyBenefit(event, e.id, e.type, e.quantity)} className="bg-green-800 hover:bg-green-600 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={isDisabled} disabled={newBenefit}>
 												<img src='../../../assets/icons/editar.png' className='w-md' />
 											</button>
-											<button onClick={(event) => deleteBenefit(event, e.id)} className="bg-red-800 hover:bg-red-900 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={edit} disabled={newBenefit}>
+											<button onClick={(event) => deleteBenefit(event, e.id)} className="bg-red-800 hover:bg-red-900 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={isDisabled} disabled={newBenefit}>
 												<img src='../../../assets/icons/delete.png' className='w-md' />
 											</button>
 										</td>
@@ -100,7 +108,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 				</table>
 			</div>
 			{
-				formBenefitVisible && <BenefitForm setVisible={setFormBenefitVisible} newBenefit={newBenefit} idBenefit={selectedId} benefitType={typeBenefit} benefitQuantity={quantityBenefit} />
+				formBenefitVisible && <BenefitForm idEmployee={employeeId} handleReset={handleReset} setVisible={setFormBenefitVisible} newBenefit={newBenefit} idBenefit={selectedId} benefitType={typeBenefit} benefitQuantity={quantityBenefit} />
 			}
 		</div>
 

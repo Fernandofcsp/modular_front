@@ -105,8 +105,8 @@ export const UserPage = () => {
 			{ validateStatus: (status: number) => status < 500 }
 		)
 			.then(({ data, status }) => {
-				console.log(data);
-				if (status != 200) throw ({ ...data, status });
+				if (status != 200 && status != 201) throw ({ ...data, status });
+				toast.success(data.message);
 				setDisabled(true);
 			})
 			.catch(error => toast.error(error.message + " " + error.status));
