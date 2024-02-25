@@ -8,7 +8,6 @@ import { selectedUserStore } from "../../../store/selectedUserStore";
 export const EmployessCheckPage = () => {
 	const {id: idSelectedUser, setId} = selectedUserStore((state) => state);
 	const [employeeId, setEmployeeId] = useState(idSelectedUser);
-	console.log(employeeId)
 	const [showNewInconsistencia, setShowNewInconsistencia] = useState(false);
 
 	useEffect(() => {
