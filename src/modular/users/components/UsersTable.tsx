@@ -23,8 +23,8 @@ interface IUser {
 export const UsersTable = () => {
 	const [users, setUsers] = useState<IUser[]>([]);
 
-	const getUsers = async () => {
-		await axios.get(
+	const getUsers = () => {
+		axios.get(
 			`${apiUrl}/users/`,
 			{ validateStatus: (status) => status < 500 }
 		)

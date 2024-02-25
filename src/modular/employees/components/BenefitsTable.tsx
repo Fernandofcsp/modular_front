@@ -1,20 +1,43 @@
-import { useState } from 'react';
-import { IBenefits } from './EmployeesTable';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { BenefitForm } from '../moleculs';
+import { IBenefits } from './EmployeesTable';
+import { apiUrl } from '../../../api';
 
 interface IBenefitsTable {
-	employeeId: number,
+	employeeId: number | string,
 	isDisabled: boolean,
-	benefits: IBenefits[]
 }
+
+
 export const BenefitsTable = (props: IBenefitsTable) => {
-	const { employeeId, benefits, isDisabled } = props;
+	const { employeeId, isDisabled } = props;
+	const [benefits, setBenefits] = useState<IBenefits[]>([]);
 	const [formBenefitVisible, setFormBenefitVisible] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [typeBenefit, setTypeBenefit] = useState("");
 	const [quantityBenefit, setQuantityBenefit] = useState(0);
 	const [newBenefit, setNewBenefit] = useState(false);
-	const [editBenefit, setEditBenefit] = useState(false);
+
+
+	useEffect(() => {
+		getBenefits();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+	
+
+	const getBenefits = () => {
+		axios.get<IBenefits[]>(
+			`${apiUrl}/benefits/`,
+			{ validateStatus: (status: number) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 200) throw ({ ...data, status });
+				setBenefits(data.filter(benefit => benefit.employee == employeeId));
+			})
+			.catch(error => toast.error(error.message + " " + error.status));
+	}
 
 	const deleteBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
 		event.preventDefault();
@@ -25,15 +48,6 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 		}
 	}
 
-	const modifyBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number, benefit: string, quantity: number) => {
-		event.preventDefault();
-		setNewBenefit(false);
-		setEditBenefit(true);
-		setSelectedId(id);
-		setTypeBenefit(benefit);
-		setQuantityBenefit(quantity);
-		setFormBenefitVisible(true);
-	}
 
 	const createBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
@@ -42,11 +56,6 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 		setTypeBenefit("");
 		setQuantityBenefit(0);
 		setFormBenefitVisible(true);
-	}
-
-	const handleReset = () => {
-		setNewBenefit(false);
-		setEditBenefit(false);
 	}
 
 	return (
@@ -62,7 +71,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 								<p></p>
 							</th>
 							<th scope="col" className="px-md py-sm flex justify-end items-center">
-								<button hidden={isDisabled} onClick={(event) => { createBenefit(event) }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" disabled={editBenefit}>
+								<button hidden={isDisabled} onClick={(event) => { createBenefit(event) }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800">
 									<img src='../../../assets/icons/mas.png' className='w-md' />
 								</button>
 							</th>
@@ -93,9 +102,6 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 											{e.quantity}
 										</td>
 										<td className="px-md py-sm space-x-xsm">
-											<button onClick={(event) => modifyBenefit(event, e.id, e.type, e.quantity)} className="bg-green-800 hover:bg-green-600 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={isDisabled} disabled={newBenefit}>
-												<img src='../../../assets/icons/editar.png' className='w-md' />
-											</button>
 											<button onClick={(event) => deleteBenefit(event, e.id)} className="bg-red-800 hover:bg-red-900 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={isDisabled} disabled={newBenefit}>
 												<img src='../../../assets/icons/delete.png' className='w-md' />
 											</button>
@@ -108,7 +114,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 				</table>
 			</div>
 			{
-				formBenefitVisible && <BenefitForm idEmployee={employeeId} handleReset={handleReset} setVisible={setFormBenefitVisible} newBenefit={newBenefit} idBenefit={selectedId} benefitType={typeBenefit} benefitQuantity={quantityBenefit} />
+				formBenefitVisible && <BenefitForm idEmployee={employeeId} setVisible={setFormBenefitVisible} idBenefit={selectedId} benefitType={typeBenefit} benefitQuantity={quantityBenefit} />
 			}
 		</div>
 

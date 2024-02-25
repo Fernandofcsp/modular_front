@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { FormField, inputType } from "../../users/moleculs";
-import { userStore } from "../../../store/userStore";
+//import { userStore } from "../../../store/userStore";
 import { useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../api";
@@ -38,64 +38,50 @@ const notify = (type: string) => {
 };
 export const CreateEmployeeForm = () => {
 	const navigate = useNavigate();
-	const token = userStore((state) => state.token);
+	//const token = userStore((state) => state.token);
 
 	const [firstName, setFirstName] = useState("");
-	const [lastName1, setLastName1] = useState("");
-	const [lastName2, setLastName2] = useState("");
-	const [dailySalary, setDailySalary] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [position, setPosition] = useState("");
+	const [dailySalary, setDailySalary] = useState(0);
 	const [admissionDate, setAdmissionDate] = useState("");
 
 	const handleReset = () => {
 		setFirstName("");
-		setLastName1("");
-		setLastName2("");
-		setDailySalary("");
+		setLastName("");
+		setPosition("");
+		setDailySalary(0);
 		setAdmissionDate("");
 	};
 
 
 	const saveEmployee = async () => {
-		const errors = validateEmployeeFields(firstName, lastName1, lastName2, dailySalary, admissionDate);
+		const errors = validateEmployeeFields(firstName, lastName, dailySalary, admissionDate);
 
 		if (errors.length > 0) {
 			errors.map(error => toast.error(error));
 			return;
 		}
 
-		const data = JSON.stringify({
+		const data = {
 			first_name: firstName,
-			last_name1: lastName1,
-			last_name2: lastName2,
-			daily_salary: parseInt(dailySalary),
+			last_name: lastName,
+			position_name: position,
+			daily_salary: dailySalary,
 			admision_date: admissionDate,
-		});
-
-		const config = {
-			method: "post",
-			url: `${apiUrl}/employees/create/`,
-			headers: {
-				"Accept-Encoding": "application/json",
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			data: data,
 		};
 
-		try {
-			const { data, status } = await axios.request(config);
-			console.log(data);
-			if (status == 200) {
-				notify("SUCCESS");
+		axios.post(
+			`${apiUrl}/employees/`,
+			data,
+			{ validateStatus: (status: number) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 201) throw ({ ...data, status });
+				toast.success("Creado con éxito");
 				handleReset();
-			}
-		} catch (error: any) {
-			if (error.message == "Request failed with status code 400") {
-				notify("WARN");
-			} else {
-				notify("ERROR");
-			}
-		}
+			})
+			.catch(error => toast.error(error.message));
 
 	};
 
@@ -110,21 +96,21 @@ export const CreateEmployeeForm = () => {
 					type={inputType.text}
 				/>
 				<FormField
-					label="Primer apellido"
-					value={lastName1}
-					placeholder="Primer apellido"
-					onChange={setLastName1}
-					type={inputType.text}
-				/>
-				<FormField
-					label="Segundo apellido"
-					value={lastName2}
-					placeholder="Segundo apellido"
-					onChange={setLastName2}
+					label="Apellidos"
+					value={lastName}
+					placeholder="Apellidos"
+					onChange={setLastName}
 					type={inputType.text}
 				/>
 			</div>
 			<div className="flex flex-row -mx-sm mb-md">
+				<FormField
+					label="Puesto"
+					value={position}
+					placeholder="Puesto"
+					onChange={setPosition}
+					type={inputType.text}
+				/>
 				<FormField
 					label="Salario diario"
 					value={dailySalary}

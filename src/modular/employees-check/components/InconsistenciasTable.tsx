@@ -1,37 +1,7 @@
 import { EmployeesTableHeadRow, EmployeesTableRow } from "../moleculs";
 
 
-const date = new Date();
-const inconsistencias = [
-	{
-		id: 1,
-		fecha: date,
-		tipo: 1,
-		fechaFinal: "",
-		minutes: 10,
-	},
-	{
-		id: 2,
-		fecha: date,
-		tipo: 0,
-		fechaFinal: "",
-		minutes: null
-	},
-	{
-		id: 3,
-		fecha: date,
-		tipo: 2,
-		fechaFinal: date,
-		minutes: null
-	},
-	{
-		id: 4,
-		fecha: date,
-		tipo: 3,
-		fechaFinal: date,
-		minutes: null
-	}
-]
+
 
 enum TableHeaders {
 	tipo = "Tipo",
