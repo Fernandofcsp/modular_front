@@ -13,3 +13,14 @@ export interface IEmployee {
   created_user_id: number;
   benefits: IBenefits[];
 }
+
+export interface IBenefit {
+  id: number;
+  type: string;
+  quantity: string;
+	is_active: boolean;
+  created_at: string;
+  updated_at: string;
+  created_by: string;
+  updated_by: string;
+}

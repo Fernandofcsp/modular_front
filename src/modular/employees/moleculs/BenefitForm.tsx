@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 interface IBenefitsForm {
 	idEmployee: number | string, 
 	setVisible: (value: boolean) => void,
+	setNewBenefit: (value: boolean) => void,
 	idBenefit?: number,
 	benefitType?: string,
 	benefitQuantity?: number
@@ -19,7 +20,7 @@ interface IBenefitsForm {
 
 
 export const BenefitForm = (props: IBenefitsForm) => {
-	const { idEmployee, setVisible, idBenefit = 0, benefitQuantity = 0, benefitType = "" } = props;
+	const { idEmployee, setVisible, setNewBenefit, idBenefit = 0, benefitQuantity = 0, benefitType = "" } = props;
 	const navigate = useNavigate();
 
 	const [id, setId] = useState(idBenefit);
@@ -88,7 +89,7 @@ export const BenefitForm = (props: IBenefitsForm) => {
 						<img src={save} className="w-md "></img>
 					</button>
 					<button
-						onClick={(event) => {event.preventDefault(); setVisible(false)}}
+						onClick={(event) => {event.preventDefault(); setNewBenefit(false); setVisible(false)}}
 						className='ml-xsm hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-red-800 hover:bg-red-600'
 					>
 						<img src={cancel} className="w-md "></img>

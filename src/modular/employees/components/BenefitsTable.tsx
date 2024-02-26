@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import { useState } from 'react';
 import { BenefitForm } from '../moleculs';
-import { IBenefits } from './EmployeesTable';
+import { IBenefit } from '../interfaces/EmployeeInterfaces';
+import axios from 'axios';
 import { apiUrl } from '../../../api';
+import { toast } from 'react-toastify';
 
 interface IBenefitsTable {
 	employeeId: number | string,
 	isDisabled: boolean,
+	benefits: IBenefit[]
 }
 
 
 export const BenefitsTable = (props: IBenefitsTable) => {
-	const { employeeId, isDisabled } = props;
-	const [benefits, setBenefits] = useState<IBenefits[]>([]);
+	const { employeeId, isDisabled, benefits } = props;
 	const [formBenefitVisible, setFormBenefitVisible] = useState(false);
 	const [selectedId, setSelectedId] = useState(0);
 	const [typeBenefit, setTypeBenefit] = useState("");
@@ -21,30 +21,26 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 	const [newBenefit, setNewBenefit] = useState(false);
 
 
-	useEffect(() => {
-		getBenefits();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-	
-
-	const getBenefits = () => {
-		axios.get<IBenefits[]>(
-			`${apiUrl}/benefits/`,
-			{ validateStatus: (status: number) => status < 500 }
-		)
-			.then(({ data, status }) => {
-				if (status != 200) throw ({ ...data, status });
-				setBenefits(data.filter(benefit => benefit.employee == employeeId));
-			})
-			.catch(error => toast.error(error.message + " " + error.status));
-	}
-
-	const deleteBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number) => {
+	const deleteBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number, benefit: string) => {
 		event.preventDefault();
 
-		if (confirm("¿Está seguro que desea eliminar el beneficio?")) {
-			alert("Eliminado " + id)
-			//Colocar peticion http para eliminar el beneficio
+		if (confirm(`¿Está seguro que desea eliminar el beneficio '${benefit}'`)) {
+			const data = {
+				isActive: false
+			}
+			axios.patch(
+				`${apiUrl}/benefits/${id}/`,
+				data,
+				{ validateStatus: (status: number) => status < 500 }
+			)
+				.then(
+					({ data, status }) => {
+						console.log(data);
+						if (status != 200) throw ({ ...data, status });
+						toast.success(data.message);
+					}
+				)
+				.catch(error => toast.error(error.message));
 		}
 	}
 
@@ -94,7 +90,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 						{
 							benefits.length > 0 && benefits.map(e => {
 								return (
-									<tr className="odd:bg-white">
+									<tr className="odd:bg-white" key={e.id}>
 										<th scope="row" className="px-md py-sm font-medium text-gray-900 whitespace-nowrap ">
 											{e.type}
 										</th>
@@ -102,7 +98,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 											{e.quantity}
 										</td>
 										<td className="px-md py-sm space-x-xsm">
-											<button onClick={(event) => deleteBenefit(event, e.id)} className="bg-red-800 hover:bg-red-900 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={isDisabled} disabled={newBenefit}>
+											<button onClick={(event) => deleteBenefit(event, e.id, e.type)} className="bg-red-800 hover:bg-red-900 text-white font-bold py-xsm px-sm rounded disabled:bg-gray-800" hidden={isDisabled} disabled={newBenefit}>
 												<img src='../../../assets/icons/delete.png' className='w-md' />
 											</button>
 										</td>
@@ -114,7 +110,7 @@ export const BenefitsTable = (props: IBenefitsTable) => {
 				</table>
 			</div>
 			{
-				formBenefitVisible && <BenefitForm idEmployee={employeeId} setVisible={setFormBenefitVisible} idBenefit={selectedId} benefitType={typeBenefit} benefitQuantity={quantityBenefit} />
+				formBenefitVisible && <BenefitForm idEmployee={employeeId} setVisible={setFormBenefitVisible} idBenefit={selectedId} benefitType={typeBenefit} benefitQuantity={quantityBenefit} setNewBenefit={setNewBenefit} />
 			}
 		</div>
 

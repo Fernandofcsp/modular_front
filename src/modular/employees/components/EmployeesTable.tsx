@@ -10,7 +10,7 @@ enum TableHeaders {
 	id = "ID",
 	name = "Nombre",
 	admisionDate = "Fecha de ingreso",
-	status = "Status",
+	status = "Estatus",
 	ver = "Ver"
 }
 
