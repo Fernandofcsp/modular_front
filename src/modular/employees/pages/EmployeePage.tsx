@@ -13,6 +13,8 @@ import { BenefitsTable } from "../components/BenefitsTable";
 import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../ui/moleculs";
 import back from "../../../../public/assets/icons/back.png";
 import { IEmployee } from "../components";
+import moment from "moment";
+import { IBenefit } from "../interfaces/EmployeeInterfaces";
 
 export const notify = (type: any) => {
 	switch (type) {
@@ -52,7 +54,7 @@ export const EmployeePage = () => {
 		daily_salary: 0,
 		first_name: "",
 		last_name: "",
-		status: false,
+		is_active: false,
 		updated_at: "",
 		updated_by: 0
 	});
@@ -64,6 +66,7 @@ export const EmployeePage = () => {
 	const [admisionDate, setAdmisionDate] = useState("");
 	const [status, setStatus] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(true);
+	const [benefits, setBenefits] = useState<IBenefit[]>([]);
 
 	useEffect(() => {
 		getEmployee();
@@ -73,18 +76,20 @@ export const EmployeePage = () => {
 
 	const getEmployee = () => {
 		axios.get(
-			`${apiUrl}/employees/${id}`,
+			`${apiUrl}/benefits/get-by-employee?employee=${id}`,
 			{ validateStatus: (status) => status < 500 }
 		)
 			.then(({ data, status }) => {
 				if (status != 200) throw ({ ...data, status });
-				setInitialState(data);
-				setName(data.first_name);
-				setLastName(data.last_name);
-				setPosition(data.position_name);
-				setDailySalary(data.daily_salary);
-				setAdmisionDate(data.admision_date);
-				setStatus(data.status);
+				const { employee, benefits } = data;
+				setBenefits(benefits);
+				setInitialState(employee);
+				setName(employee.first_name);
+				setLastName(employee.last_name);
+				setPosition(employee.position_name);
+				setDailySalary(employee.daily_salary);
+				setAdmisionDate(moment(employee.admision_date, "DD/MM/YYYY").format("YYYY-MM-DD"));
+				setStatus(employee.is_active);
 			})
 			.catch(error => toast.error(error.message + " " + error.status));
 	}
@@ -94,7 +99,7 @@ export const EmployeePage = () => {
 		setName(initialState.first_name);
 		setLastName(initialState.last_name);
 		setDailySalary(initialState.daily_salary);
-		setAdmisionDate(initialState.admision_date);
+		setAdmisionDate(moment(initialState.admision_date, "DD/MM/YYYY").format("YYYY-MM-DD"));
 	};
 
 	const saveEmployeeData = () => {
@@ -105,13 +110,23 @@ export const EmployeePage = () => {
 			return;
 		}
 
+		// const data = {
+		// 	first_name: name,
+		// 	last_name: lastName,
+		// 	daily_salary: +dailySalary,
+		// 	position_name: position,
+		// 	admision_date: admisionDate,
+		// 	is_active: Boolean(status),
+		// };
 		const data = {
-			first_name: name,
-			last_name: lastName,
-			daily_salary: dailySalary,
-			admision_date: admisionDate,
-			status: status,
+			"first_name": name,
+			"last_name": lastName,
+			"daily_salary": +dailySalary,
+			"admision_date": moment(admisionDate).format("DD/MM/YYYY"),
+			"position_name": position,
+			"is_active": true
 		};
+
 
 		axios.patch(
 			`${apiUrl}/employees/${id}/`,
@@ -123,7 +138,7 @@ export const EmployeePage = () => {
 				toast.success("Actualizado exitoso");
 				setIsDisabled(true);
 			})
-			.catch(error => toast.error(error.message + " " + error.status));
+			.catch(error => toast.error(error.message));
 	};
 
 	return (
@@ -163,7 +178,7 @@ export const EmployeePage = () => {
 									label="Puesto"
 									value={position}
 									placeholder={initialState.position_name}
-									onChange={setLastName}
+									onChange={setPosition}
 									type={inputType.text}
 									disabled={isDisabled}
 								/>
@@ -201,7 +216,7 @@ export const EmployeePage = () => {
 								</div>
 							</div>
 						</div>
-						<BenefitsTable employeeId={id!} isDisabled={isDisabled} />
+						<BenefitsTable employeeId={initialState.id} benefits={benefits.filter(benefit => benefit.is_active === true)} isDisabled={isDisabled} />
 					</div>
 					<div className="flex justify-end space-x-sm">
 						{

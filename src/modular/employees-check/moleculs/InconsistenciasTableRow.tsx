@@ -1,39 +1,37 @@
+import moment from "moment";
 import { Link } from "react-router-dom";
 
 interface IRow {
 	id : number,
-	tipo : number,
-	fechaInicio : Date,
-	fechaFin : Date | string,
-	minutes : number | null
+	tipo : string,
+	fechaInicio : string,
+	fechaFin : string,
+	minutes ?: number | null
 }
 
-const tiposInconsistencia = ["Falta", "Retardo", "Vacaciones", "Incapacidad"];
 
 export const EmployeesTableRow = ( props : IRow ) => {
-	const { fechaInicio, fechaFin, minutes, tipo } = props;
+	const { id, fechaInicio, fechaFin, minutes, tipo } = props;
 	return (
 		<tr className="bg-white border-b">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
-				{tiposInconsistencia[tipo]}
+				{tipo}
 			</th>
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
 				{fechaInicio.toString()}
 			</th>
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
 				{
-					tipo === 0 || tipo === 1 ?
-						"N/A" :
-						fechaFin.toString()
+					tipo !== "Retardo" ? fechaFin : "N/A"
 				}
 			</th>
 			<td className="px-md py-md">
 				{
-					tipo === 1 ? minutes : "N/A"
+					tipo === "Retardo" ? minutes : tipo === "Falta" ? "N/A" : moment(fechaFin, "DD/MM/YYYY").diff(moment(fechaInicio, "DD/MM/YYYY"), 'days')
 				}
 			</td>
 			<td className="px-md py-md text-blue-700">
-				<Link className="text-blue-700 font-bold" state={props} to={`/inconsistency-detail`}>Detalle</Link>
+				<Link className="text-blue-700 font-bold" to={`/inconsistency-detail/${id}`}>Detalle</Link>
 			</td>
 		</tr>
 	)

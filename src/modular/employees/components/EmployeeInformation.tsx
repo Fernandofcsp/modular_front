@@ -6,7 +6,6 @@ interface IEmployeeInformation {
 
 export const EmployeeInformation = ( props : IEmployeeInformation) => {
 	const { created_date, updated_date, created_user_id } = props;
-	console.log(created_date, updated_date, created_user_id);
 	return (
 		<div className="flex flex-col justify-start pb-md">
 			<p className="block tracking-wide text-gray-900 text-xl  mb-sm">Fecha de creación: 

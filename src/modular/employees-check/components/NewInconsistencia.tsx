@@ -1,13 +1,14 @@
 import { NewInconsistenciaForm } from "."
 
 export interface INewInconsistency {
+	idEmployee: number,
 	setShow: (show: boolean) => void
 }
 
-export const NewInconsistencia = ({ setShow }: INewInconsistency) => {
+export const NewInconsistencia = ({ idEmployee, setShow }: INewInconsistency) => {
 	return (
 		<div className="mt-sm">
-			<NewInconsistenciaForm setShow={setShow} />
+			<NewInconsistenciaForm idEmployee={idEmployee} setShow={setShow} />
 		</div>
 	)
 }
