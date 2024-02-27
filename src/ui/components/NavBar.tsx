@@ -14,7 +14,7 @@ const NavBar = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className="w-full h-[14vh] p-md flex flex-row items-center bg-white text-[#1B202D] justify-between border-y-2 rounded-lg">
+		<div className="w-full h-[14vh] p-md flex flex-row items-center bg-white text-[#1B202D] justify-between border-y-2 rounded-md">
 			<div className="w-full flex justify-end">
 				<h2 className="text-lg justify-end normal-case text-blueLetter mr-sm"> {name} </h2>
 			</div>

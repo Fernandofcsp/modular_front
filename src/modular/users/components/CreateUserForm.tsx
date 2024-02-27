@@ -54,7 +54,6 @@ export const CreateUserForm = () => {
 
 		if(errors.length > 0){
 			errors.map(error => toast.error(error));
-
 			return;
 		}
 

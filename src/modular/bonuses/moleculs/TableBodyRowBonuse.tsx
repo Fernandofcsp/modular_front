@@ -43,7 +43,7 @@ export const TableBodyRowBonuse = (props: IRow) => {
       <td className="bg-white border-b">{row.sum_minutes_delay}</td>
       <td className="bg-white border-b">{row.absences}</td>
       <td className="bg-white border-b">
-        ${new Intl.NumberFormat().format(row.base_calculo)}
+        {row.base_calculo}
       </td>
       <td className="bg-white border-b">
         ${new Intl.NumberFormat().format(row.bono)}

@@ -35,28 +35,32 @@ export const LoginPage = () => {
 			return;
 		}
 
-		const jsonData = {
+		const data = {
 			email: email,
 			password: password
 		};
 
 		await axios.post<ILoginResponseUser>(
 			`${apiUrl}/users/login/`,
-			jsonData,
+			data,
 			{ validateStatus: (status) => status < 500 }
 		)
 			.then(({ data, status }) => {
 				console.log(data);
 				if (status != 200) throw ({ ...data, status });
-
-				setValue("token", 'HHHH');
-				setValue("id", `${data.user.id}`);
-				setValue("email", data.user.email);
-				setValue("name", data.user.user_name);
-				setValue("rol", data.user.role);
-				navigate("/");
+				if( data.user.is_active ){
+					setValue("token", 'HHHH');
+					setValue("id", `${data.user.id}`);
+					setValue("email", data.user.email);
+					setValue("name", data.user.user_name);
+					setValue("rol", data.user.role);
+					navigate("/");
+				}else{
+					toast.error("El usuario esta inactivo, consulte a soporte.");
+				}
+				
 			})
-			.catch(error => toast.error(error.message + " " + error.status));
+			.catch(error => toast.error(error.message));
 	}
 
 	return (
