@@ -37,12 +37,12 @@ export const notify = (type: any) => {
 	}
 };
 export const UserPage = () => {
+
 	const { id } = useParams();
 	const [user, setUser] = useState({
 		user_name: "",
 		email: "",
 		role: "",
-		isActive: false,
 	});
 	//const token = userStore((state) => state.token);
 	const navigate = useNavigate();
@@ -53,6 +53,12 @@ export const UserPage = () => {
 	const [isDisabled, setDisabled] = useState(true);
 	const [changePassword, setChangePassword] = useState(false);
 	const [role, setRole] = useState("");
+  const [isActive, setIsActive] = useState(false); // Suponiendo que isActive se inicializa como false
+
+  const handleSelectChange = (event : any) => {
+    const selectedValue = event.target.value;
+    setIsActive(selectedValue === 'true'); // Convertir el valor seleccionado a booleano y actualizar isActive
+  };
 
 	const getUser = async () => {
 		await axios.get(
@@ -65,6 +71,7 @@ export const UserPage = () => {
 				setNewName(data.user_name);
 				setNewEmail(data.email);
 				setRole(data.role);
+        setIsActive(data.is_active);
 			})
 			.catch(error => toast.error(error.message + " " + error.status));
 	};
@@ -97,6 +104,7 @@ export const UserPage = () => {
 			email: newEmail != user.email ? newEmail : undefined,
 			password: changePassword ? newPassword : undefined,
 			role: role,
+      is_active: isActive,
 		};
 
 		axios.patch(
@@ -158,7 +166,7 @@ export const UserPage = () => {
 
 				<div className="flex flex-row -mx-sm mb-md">
 					<div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
-						<label className="block mb-sm text-xl capitalize text-gray-900">
+						<label className="">
 							Rol de usuario
 						</label>
 						<select
@@ -172,7 +180,24 @@ export const UserPage = () => {
 							<option value="admin">Administrador</option>
 						</select>
 					</div>
+          <div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
+						<label className="">
+							Estado
+						</label>
+						<select
+							disabled={isDisabled}
+							onChange={handleSelectChange}
+							value={isActive.toString()}
+							className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md block w-full p-sm"
+						>
+							<option value="true">Activo</option>
+							<option value="false">Inactivo</option>
+							
+						</select>
+					</div>
+          
 				</div>
+        
 				<div className="flex justify-end space-x-sm">
 					{
 						isDisabled ? (

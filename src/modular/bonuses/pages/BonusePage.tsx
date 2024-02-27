@@ -51,7 +51,6 @@ const initialState: IBonuse = {
 };
 
 export const BonusePage = () => {
-  const navigate = useNavigate();
   const { state } = useLocation();
   const id = state.bonuse_id;
   const [bonuse, setBonuse] = useState<IBonuse>(initialState);

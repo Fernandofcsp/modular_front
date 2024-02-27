@@ -20,7 +20,7 @@ import back from "../../../public/assets/icons/back.png";
 
 export const ProfilePage = () => {
   const { id, name, email, rol } = userStore((state) => state);
-  const token = userStore((state) => state.token);
+//   const token = userStore((state) => state.token);
   const navigate = useNavigate();
   const setValue = userStore((state) => state.setValue);
 
@@ -130,7 +130,7 @@ export const ProfilePage = () => {
         )}
         <div className="flex flex-row -mx-sm mb-md">
           <div className="flex flex-col items-start px-sm w-1/2 mb-sm md:mb-0">
-            <label className="block mb-sm text-xl capitalize text-gray-900">
+            <label className="">
               Rol de usuario
             </label>
             <select

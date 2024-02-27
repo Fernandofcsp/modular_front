@@ -27,12 +27,7 @@ export const TableBodyRow = (props: IBodyItem) => {
           <td className="text-green-500">Activo</td>
         )}
       </td>
-      <td className="px-md py-md">
-        {rol}
-      </td>
-      <td className="px-md py-md">
-        {isActive ? "Activo" : "Inactivo"}
-      </td>
+
       <td className="px-md py-md">
         <NavLink className="text-blue-700 font-bold" to={`/user/${id}`}>Detalle</NavLink>
       </td>
