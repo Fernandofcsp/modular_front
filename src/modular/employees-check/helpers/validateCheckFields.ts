@@ -6,7 +6,7 @@ interface IValidateFields {
 }
 
 export const validateCheckFields = (
-  inconsistencyType: number,
+  inconsistencyType: string,
   initialDate: string,
   minutes: number,
   endDate?: string | undefined
@@ -15,7 +15,10 @@ export const validateCheckFields = (
   let reset = false;
 
   switch (inconsistencyType) {
-    case 0:
+		case "Seleccione":
+			errors.push("Debes seleccionar una inconsistencia y completar los campos")
+			break;
+    case "Falta":
       if (initialDate === "") errors.push("Debes seleccionar una fecha");
 
       if (moment(initialDate).isAfter(moment())) {
@@ -28,7 +31,7 @@ export const validateCheckFields = (
         reset = true;
       }
       break;
-    case 1:
+    case "Retardo":
       if (initialDate === "") errors.push("Debes seleccionar una fecha válida");
       if (minutes <= 0) errors.push("Ingrese un numero de minutos correcto");
       if (moment(initialDate).isSameOrAfter(moment())) {
@@ -36,7 +39,7 @@ export const validateCheckFields = (
         reset = true;
       }
       break;
-    case 2:
+    case "Vacaciones":
       if (initialDate === "" || endDate === "")
         errors.push("Debes seleccionar fechas válidas");
       if (moment(initialDate).isAfter(moment(endDate))) {
@@ -45,7 +48,7 @@ export const validateCheckFields = (
         break;
       }
       break;
-    case 3:
+    case "Incapacidad":
       if (initialDate === "" || endDate === "")
         errors.push("Debes seleccionar fechas válidas");
       if (moment(initialDate).isAfter(moment(endDate))) {

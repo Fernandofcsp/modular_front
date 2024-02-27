@@ -6,15 +6,16 @@ import { selectedUserStore } from "../../../store/selectedUserStore";
 
 
 export const EmployessCheckPage = () => {
-	const {id: idSelectedUser, setId} = selectedUserStore((state) => state);
+	const { id: idSelectedUser, setId } = selectedUserStore((state) => state);
 	const [employeeId, setEmployeeId] = useState(idSelectedUser);
 	const [showNewInconsistencia, setShowNewInconsistencia] = useState(false);
 
 	useEffect(() => {
+		console.log(employeeId)
 		setId(employeeId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ employeeId ])
-	
+	}, [employeeId])
+
 	return (
 		<Layout>
 			<div className="flex flex-col justify-end">
@@ -23,13 +24,10 @@ export const EmployessCheckPage = () => {
 					employeeId !== -1 && <NewInconsistencyButton setShowNewInconsistencia={setShowNewInconsistencia} showInconsistencia={showNewInconsistencia} />
 				}
 				{
-					employeeId !== -1 && <InconsistenciasTable id={employeeId} />
-				}
-				{
 					showNewInconsistencia ?
 						employeeId === -1 ? <p className="text-red-600 text-end mb-sm mt-md">Por favor seleccione un empleado</p>
-							: <NewInconsistencia setShow={setShowNewInconsistencia}/>
-						: ""
+							: <NewInconsistencia idEmployee={idSelectedUser} setShow={setShowNewInconsistencia} />
+						: employeeId !== -1 && <InconsistenciasTable id={employeeId} />
 				}
 			</div>
 		</Layout>

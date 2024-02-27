@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../api";
-import { userStore } from "../../../store/userStore";
+//import { userStore } from "../../../store/userStore";
+import { toast } from "react-toastify";
 
 interface IEmployee {
-  employee_id: number;
+  id: number;
   first_name: string;
-  last_name1: string;
+  last_name: string;
 }
 
 interface IEmployeeSelectProps {
@@ -15,35 +16,23 @@ interface IEmployeeSelectProps {
 }
 
 export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) => {
-  const token = userStore((state) => state.token);
+  //const token = userStore((state) => state.token);
 	const [employees, setEmployees] = useState<IEmployee[]>([]);
 
-  const getUsers = async () => {
-		setEmployees([{ employee_id: 1, first_name: "Francisco", last_name1: "Saldivar" }, { employee_id: 2, first_name: "Raul", last_name1: "Saldivar" }, { employee_id: 3, first_name: "Omar", last_name1: "Saldivar" }])
-
-    /*try {
-			
-      //const { data } = await axios.request<IEmployeesResponse>(config);
-			const { data } = await axios.get<IEmployee[]>(
-        `${apiUrl}/employees`,
-        {
-          headers: {
-            "Accept-Encoding": "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          params: { take: 20, skip: 0 },
-        }
-      );
-			setEmployees([{ employee_id: 1, first_name: "Francisco", last_name1: "Saldivar" }])
-      //setEmployees(data);
-    } catch (error) {
-      console.log(error);
-    }*/
-  };
+	const getEmployees = () => {
+		axios.get(
+			`${apiUrl}/employees/`,
+			{ validateStatus: (status) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 200) throw ({ ...data, status });
+				setEmployees(data);
+			})
+			.catch(error => toast.error(error.message + " " + error.status));
+	}
 
   useEffect(() => {
-    getUsers();
+    getEmployees();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -59,8 +48,8 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) 
         </option>
         {employees.map((employee) => {
           return (
-            <option key={employee.employee_id} value={employee.employee_id}>
-              {employee.first_name + " " + employee.last_name1}
+            <option key={employee.id} value={employee.id}>
+              {employee.first_name + " " + employee.last_name}
             </option>
           );
         })}
