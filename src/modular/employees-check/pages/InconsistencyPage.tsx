@@ -84,7 +84,7 @@ export const InconsistencyPage = () => {
 
 		const data = {
 			id: id,
-			type: inconsistency,
+			type: type,
 			initial_date: moment(initialDate, "YYYY/MM/DD").format("DD/MM/YYYY"),
 			final_date: type === "Falta" || type === "Retardo" ? moment(initialDate, "YYYY/MM/DD").format("DD/MM/YYYY") : moment(finalDate, "YYYY/MM/DD").format("DD/MM/YYYY"),
 			minutes: type === "Retardo" ? +minutes : 0
@@ -98,8 +98,9 @@ export const InconsistencyPage = () => {
 			{ validateStatus: (status: number) => status < 500 }
 		)
 			.then(({ data, status }) => {
-				if (status != 201) throw ({ ...data, status });
+				if (status != 200) throw ({ ...data, status });
 				toast.success("Actualizado con éxito");
+				setEdit(false);
 			})
 			.catch(error => toast.error(error.message));
 	};

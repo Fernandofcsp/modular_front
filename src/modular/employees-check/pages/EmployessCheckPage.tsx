@@ -11,7 +11,6 @@ export const EmployessCheckPage = () => {
 	const [showNewInconsistencia, setShowNewInconsistencia] = useState(false);
 
 	useEffect(() => {
-		console.log(employeeId)
 		setId(employeeId);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [employeeId])

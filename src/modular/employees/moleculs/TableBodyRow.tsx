@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 interface IBodyItem {
 	id: number,
 	name: string,
+	puesto: string,
 	admision_date: string,
 	status: boolean,
 }
 
 export const TableBodyRow = (props: IBodyItem) => {
-	const { id, name, status, admision_date } = props;
-	console.log(props)
+	const { id, name, puesto, status, admision_date } = props;
+
 	return (
 		<tr className="bg-white border-b">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
@@ -17,6 +18,9 @@ export const TableBodyRow = (props: IBodyItem) => {
 			</th>
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
 				{name}
+			</th>
+			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
+				{puesto}
 			</th>
 			<td className="px-md py-md">
 				{admision_date.toString().split("T")[0]}

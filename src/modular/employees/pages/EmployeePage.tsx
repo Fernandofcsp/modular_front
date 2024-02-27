@@ -216,7 +216,7 @@ export const EmployeePage = () => {
 								</div>
 							</div>
 						</div>
-						<BenefitsTable employeeId={initialState.id} benefits={benefits.filter(benefit => benefit.is_active === true)} isDisabled={isDisabled} />
+						<BenefitsTable employeeId={initialState.id} benefits={benefits /*benefits.filter(benefit => benefit.is_active)*/} isDisabled={isDisabled} />
 					</div>
 					<div className="flex justify-end space-x-sm">
 						{

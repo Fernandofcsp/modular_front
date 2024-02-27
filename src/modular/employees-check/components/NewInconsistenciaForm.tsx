@@ -30,7 +30,7 @@ export const NewInconsistenciaForm = ({ idEmployee, setShow }: INewInconsistency
 			employee: idEmployee,
 			type: inconsistency,
 			initial_date: moment(initialDate, "YYYY/MM/DD").format("DD/MM/YYYY"),
-			final_date: inconsistency === "Falta" || inconsistency === "Retardo" ? moment(initialDate, "YYYY/MM/DD").format("DD/MM/YYYY") : moment(endDate, "YYYY/MM/DD").format("DD/MM/YYYY"),
+			final_date: (inconsistency == "Falta" || inconsistency == "Retardo") ? moment(initialDate, "YYYY/MM/DD").format("DD/MM/YYYY") : moment(endDate, "YYYY/MM/DD").format("DD/MM/YYYY"),
 			minutes: inconsistency === "Retardo" ? +minutes : 0
 		};
 

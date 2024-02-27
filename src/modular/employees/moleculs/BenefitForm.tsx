@@ -81,18 +81,18 @@ export const BenefitForm = (props: IBenefitsForm) => {
 					type={inputType.number}
 					disabled={false}
 				/>
-				<div className="flex mt-md justify-end">
-					<button
-						onClick={(event) => createBenefit(event)}
-						className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'
-					>
-						<img src={save} className="w-md "></img>
-					</button>
+				<div className="flex mt-md justify-end space-x-sm mr-sm">
 					<button
 						onClick={(event) => {event.preventDefault(); setNewBenefit(false); setVisible(false)}}
-						className='ml-xsm hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-red-800 hover:bg-red-600'
+						className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center bg-red-800 hover:bg-red-600'
 					>
 						<img src={cancel} className="w-md "></img>
+					</button>
+					<button
+						onClick={(event) => createBenefit(event)}
+						className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center bg-green-800 hover:bg-green-600'
+					>
+						<img src={save} className="w-md "></img>
 					</button>
 				</div>
 			</form>
