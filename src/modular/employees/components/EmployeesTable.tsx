@@ -28,7 +28,7 @@ export interface IEmployee {
 	position_name: string;
 	daily_salary: number;
 	admision_date: string;
-	status: boolean;
+	is_active: boolean;
 	created_at: string;
 	created_by: number;
 	updated_at: string;
@@ -80,7 +80,7 @@ export const EmployeesTable = () => {
 								id={employee.id}
 								admision_date={employee.admision_date}
 								name={`${employee.first_name} ${employee.last_name}`}
-								status={employee.status}
+								status={employee.is_active}
 							/>
 						})
 					}

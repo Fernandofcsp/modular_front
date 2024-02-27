@@ -54,7 +54,7 @@ export const EmployeePage = () => {
 		daily_salary: 0,
 		first_name: "",
 		last_name: "",
-		status: false,
+		is_active: false,
 		updated_at: "",
 		updated_by: 0
 	});
@@ -89,7 +89,7 @@ export const EmployeePage = () => {
 				setPosition(employee.position_name);
 				setDailySalary(employee.daily_salary);
 				setAdmisionDate(moment(employee.admision_date, "DD/MM/YYYY").format("YYYY-MM-DD"));
-				setStatus(employee.status);
+				setStatus(employee.is_active);
 			})
 			.catch(error => toast.error(error.message + " " + error.status));
 	}
@@ -110,13 +110,23 @@ export const EmployeePage = () => {
 			return;
 		}
 
+		// const data = {
+		// 	first_name: name,
+		// 	last_name: lastName,
+		// 	daily_salary: +dailySalary,
+		// 	position_name: position,
+		// 	admision_date: admisionDate,
+		// 	is_active: Boolean(status),
+		// };
 		const data = {
-			first_name: name,
-			last_name: lastName,
-			daily_salary: dailySalary,
-			admision_date: admisionDate,
-			status: status,
+			"first_name": name,
+			"last_name": lastName,
+			"daily_salary": +dailySalary,
+			"admision_date": moment(admisionDate).format("DD/MM/YYYY"),
+			"position_name": position,
+			"is_active": true
 		};
+
 
 		axios.patch(
 			`${apiUrl}/employees/${id}/`,
@@ -128,7 +138,7 @@ export const EmployeePage = () => {
 				toast.success("Actualizado exitoso");
 				setIsDisabled(true);
 			})
-			.catch(error => toast.error(error.message + " " + error.status));
+			.catch(error => toast.error(error.message));
 	};
 
 	return (
