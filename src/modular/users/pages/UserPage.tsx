@@ -91,7 +91,7 @@ export const UserPage = () => {
 	};
 
 	const updateUser = () => {
-		const errors = validateUserFields(newName, newEmail, role, newPassword, rePassword);
+		const errors = validateUserFields(newName, newEmail, role);
 
 		if (errors.length > 0) {
 			errors.map(error => toast.error(error));

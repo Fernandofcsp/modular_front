@@ -3,6 +3,7 @@ import { TableBodyRow, TableHeadItem } from "../moleculs";
 import axios from 'axios';
 import { apiUrl } from "../../../api";
 import { toast } from "react-toastify";
+import { userStore } from "../../../store/userStore";
 
 enum TableHeaders {
 	name = "Nombre",
@@ -21,6 +22,7 @@ interface IUser {
 }
 
 export const UsersTable = () => {
+	const idUser = userStore(state => state.id);
 	const [users, setUsers] = useState<IUser[]>([]);
 
 	const getUsers = () => {
@@ -56,7 +58,7 @@ export const UsersTable = () => {
 				</thead>
 				<tbody>
 					{
-						users.map((user, i) => {
+						users.filter(user => user.id != idUser).map((user, i) => {
 							return <TableBodyRow key={i} id={user.id} name={user.user_name} email={user.email} rol={user.role} isActive={user.is_active} />
 						})
 					}

@@ -39,14 +39,14 @@ export const CreateUserForm = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("");
-	const [role, setRole] = useState("");
+	const [role, setRole] = useState("read");
 
 	const handleReset = () => {
 		setName("");
 		setEmail("");
 		setPassword("");
 		setPassword2("");
-		setRole("");
+		setRole("read");
 	};
 
 	const saveUser = async () => {

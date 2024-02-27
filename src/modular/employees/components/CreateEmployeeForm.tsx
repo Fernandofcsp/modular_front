@@ -7,6 +7,7 @@ import { apiUrl } from "../../../api";
 import { ToastContainer, toast } from "react-toastify";
 import { validateEmployeeFields } from "../helpers/validateEmployeeFields";
 import { CancelButton, SaveButton } from "../../../ui/moleculs";
+import moment from "moment";
 
 const notify = (type: string) => {
 	switch (type) {
@@ -66,9 +67,9 @@ export const CreateEmployeeForm = () => {
 		const data = {
 			first_name: firstName,
 			last_name: lastName,
-			position_name: position,
 			daily_salary: dailySalary,
-			admision_date: admissionDate,
+			position_name: position,
+			admision_date: moment(admissionDate).format("DD/MM/YYYY"),
 		};
 
 		axios.post(

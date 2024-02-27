@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 enum TableHeaders {
 	id = "ID",
 	name = "Nombre",
+	puesto = "Puesto",
 	admisionDate = "Fecha de ingreso",
 	status = "Estatus",
 	ver = "Ver"
@@ -80,6 +81,7 @@ export const EmployeesTable = () => {
 								id={employee.id}
 								admision_date={employee.admision_date}
 								name={`${employee.first_name} ${employee.last_name}`}
+								puesto={employee.position_name}
 								status={employee.is_active}
 							/>
 						})

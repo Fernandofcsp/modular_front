@@ -19,7 +19,7 @@ export const TableBodyRow = (props: IBodyItem) => {
         {name}
       </th>
       <td className="px-md py-md">{email}</td>
-      <td className="px-md py-md">{rol}</td>
+      <td className="px-md py-md">{rol.toUpperCase()}</td>
       <td className="px-md py-md">
         {!isActive ? (
           <td className="text-red-500">Inactivo</td>
