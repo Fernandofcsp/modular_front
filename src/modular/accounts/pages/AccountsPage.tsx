@@ -56,7 +56,7 @@ export function AccountsPage() {
         {initialDateToFilter !== "" && endDateToFilter !== "" ? (
           data.length > 0 ? (
             <div className="space-y-md mt-sm">
-              <p className="text-end">Total de cuentas: {data.length}</p>
+							<p className="text-end mr-sm">Total de cuentas: <span className="text-blueLetter">{data.length}</span></p>
               <AccountsTable accountsData={data} />
             </div>
           ) : (

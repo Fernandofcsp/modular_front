@@ -1,4 +1,8 @@
 import { MovementTableHeader, MovementTableRow } from "../moleculs";
+import { NavigateButton } from '../../../ui/moleculs/NavigateButton';
+import { useState } from "react";
+import mas from "../../../../public/assets/icons/mas.png";
+import { NewMovementForm } from "./NewMovementForm";
 
 export interface IMovement {
 	movementId: number,
@@ -14,16 +18,25 @@ export interface IMovement {
 }
 
 export interface IAccountMovements {
+	idAccount: number,
 	movements: IMovement[]
 }
 
 const tableHeaders = ["ID cuenta","ID movimiento", "Referencia", "Concepto", "Cantidad", "Fecha movimiento", "Fecha creación", "Creado por", "Fecha actualización", "Actualizado por", "Más"];
 
 export const AccountMovements = (props: IAccountMovements) => {
-	const { movements } = props;
+	const { idAccount, movements } = props;
+
+	const [newMovement, setNewMovement] = useState(false);
 	return (
 		<div className="flex flex-col my-sm">
-			<p className="text-xl">Movimientos de la cuenta</p>
+			<div className="flex justify-between w-10/12">
+				<p className="text-xl">Movimientos de la cuenta</p>
+				<NavigateButton image={mas} title="Nuevo" onClick={() => setNewMovement(true)} />
+			</div>
+			{
+				newMovement && <NewMovementForm idAccount={idAccount} setShow={setNewMovement} show={newMovement}/>
+			}
 			<div className="w-10/12 overflow-x-auto shadow-lg my-md">
 				<table className="text-md text-left text-gray-500 rounded-xl">
 					<thead className="bg-gray-50">
@@ -56,7 +69,6 @@ export const AccountMovements = (props: IAccountMovements) => {
 					</tbody>
 				</table>
 			</div>
-			
 		</div>
 	)
 }

@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 import { FormField, inputType } from "../../users/moleculs";
 import save from "../../../../public/assets/icons/salvar.png";
 import cancel from "../../../../public/assets/icons/cancel.png";
+import { validateBenefitFields } from "../helpers/validateBenefitFields";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { apiUrl } from "../../../api";
+import { useNavigate } from "react-router-dom";
 
 interface IBenefitsForm {
-	newBenefit: boolean,
+	idEmployee: number | string, 
 	setVisible: (value: boolean) => void,
 	idBenefit?: number,
 	benefitType?: string,
@@ -14,7 +19,8 @@ interface IBenefitsForm {
 
 
 export const BenefitForm = (props: IBenefitsForm) => {
-	const { setVisible, newBenefit, idBenefit = 0, benefitQuantity = 0, benefitType = "" } = props;
+	const { idEmployee, setVisible, idBenefit = 0, benefitQuantity = 0, benefitType = "" } = props;
+	const navigate = useNavigate();
 
 	const [id, setId] = useState(idBenefit);
 	const [type, setType] = useState(benefitType);
@@ -29,18 +35,30 @@ export const BenefitForm = (props: IBenefitsForm) => {
 
 	const createBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
+		const errors = validateBenefitFields(type, quantity);
 
-		alert("Creado")
-		//Colocar peticion http para eliminar el beneficio
-	}
-
-	const updateBenefit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		event.preventDefault();
-
-		if (confirm("¿Está seguro que desea actualizar el beneficio?")) {
-			alert("Actualizado ")
-			//Colocar peticion http para eliminar el beneficio
+		if(errors.length > 0){
+			errors.map(error => toast.error(error));
+			return;
 		}
+
+		const data = {
+			"employee": idEmployee,
+			"type": type,
+			"quantity": quantity,
+		}
+
+		axios.post(
+			`${apiUrl}/benefits/`,
+			data,
+			{ validateStatus: (status: number) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 201) throw ({ ...data, status });
+				toast.success("Creado con éxito");
+				navigate(0);
+			})
+			.catch(error => toast.error(error.message));
 	}
 
 	return (
@@ -64,7 +82,7 @@ export const BenefitForm = (props: IBenefitsForm) => {
 				/>
 				<div className="flex mt-md justify-end">
 					<button
-						onClick={(event) => { newBenefit ? createBenefit(event) : updateBenefit(event)}}
+						onClick={(event) => createBenefit(event)}
 						className='hover:font-bold text-white font-semibold py-xsm px-lg rounded-md flex items-center gap-sm bg-green-800 hover:bg-green-600'
 					>
 						<img src={save} className="w-md "></img>

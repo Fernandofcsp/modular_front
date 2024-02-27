@@ -33,7 +33,7 @@ export const ModularRoutes = () => {
       <Route path="/employees" element={<EmployeesPage />} />
 
       {/* Página de detalle de empleado */}
-			<Route path="/employee" element={<EmployeePage />} />
+			<Route path="/employee/:id" element={<EmployeePage />} />
 
       {/* Página de checador de empleado */}
 			<Route path="/employees-check" element={<EmployessCheckPage />} />

@@ -5,6 +5,7 @@ interface IUser {
 	name: string | null;
 	email: string | null;
 	id: string | null;
+  isActive: boolean | null;
 	token: string | null;
 	rol: string | null;
 }
@@ -20,6 +21,7 @@ const initialState: IUser = {
   email: null,
   name: null,
   rol: null,
+  isActive: null,
   token: null
 };
 
