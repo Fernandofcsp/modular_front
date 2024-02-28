@@ -88,7 +88,7 @@ export const NewMovementForm = (props: INewMovementForm) => {
 
 	return (
 		<form className="w-10/12 mt-sm space-y-md">
-			<h3 className="text-lg mb-xl uppercase">Agregar movimiento</h3>
+			<h3 className="text-lg mb-xl">Agregar movimiento</h3>
 			<div className="flex flex-row space-x-sm">
 				<FormField
 					label="Concepto"

@@ -4,8 +4,10 @@ import { AdminOptions, UsersTable } from "../components";
 export const UsersPage = () => {
   return (
     <Layout>
-			<div>
-				<AdminOptions />
+			<div className="w-full space-y-md">
+				<div className="flex justify-end w-full">
+					<AdminOptions />
+				</div>
 				<UsersTable />
 			</div>
     </Layout>

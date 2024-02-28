@@ -29,7 +29,7 @@ export default {
       titleLg: "48px",
       headerTitle: "30px",
       titleXl: "64px",
-			buttons: "18px"
+      buttons: "18px",
     },
     extend: {
       margin: {
@@ -40,6 +40,7 @@ export default {
         logInBackground: "#FFFFEF",
         dashboard: "#F2F4F4",
         blueLetter: "#0D5AFF",
+        excelButton: "#1c6e41",
       },
     },
   },

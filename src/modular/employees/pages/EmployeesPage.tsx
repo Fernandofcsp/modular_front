@@ -1,29 +1,19 @@
 import Layout from "../../../ui/layout/Layout";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { EmployeesTable } from "../components";
+import { CreateExcelButton, NavigateButton } from "../../../ui/moleculs";
 
 export const EmployeesPage = () => {
-  const [filterEmployee, setFilter] = useState<boolean>(false); // Inicializa filter como false (valor booleano)
-
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    const booleanValue = value === "1"; // Convierte "1" a true y "0" a false
-    setFilter(booleanValue);
-  };
+	const navigate = useNavigate();
   return (
     <Layout>
-      <div>
-        <div className="flex justify-end items-center py-md gap-md">
-          <button className="text-white text-lg uppercase bg-blue-800  px-md py-xsm rounded-md hover:bg-blue-600">
-          <NavLink
-            to={"/newEmployee"}
-            
-          >
-            Nuevo empleado
-          </NavLink>
-          </button>
-        </div>
+			<div className="flex flex-col space-y-md">
+				<div className="flex justify-end w-full">
+					<div className="flex flex-col justify-end space-y-sm">
+						<CreateExcelButton onClick={() => console.log("Creando excel...")} />
+						<NavigateButton title='Nuevo usuario' onClick={() => navigate("/newEmployee")} />
+					</div>
+				</div>
         <EmployeesTable />
       </div>
     </Layout>

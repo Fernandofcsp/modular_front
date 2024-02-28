@@ -7,6 +7,7 @@ import { userStore } from "../../../store/userStore";
 import Layout from "../../../ui/layout/Layout";
 import { BonuseTable } from "../components/BonuseTable";
 import { BonuseData } from "../dataBonuse";
+import { CreateExcelButton } from "../../../ui/moleculs";
 
 interface IBonuse {
   bonuseDetail_id: string;
@@ -75,7 +76,12 @@ export const BonusePage = () => {
   return (
     <Layout>
       <div className=" ">
-        <h2 className="text-titleMd">Detalle de bono</h2>
+				<div className="flex justify-end w-full">
+					<div className="flex flex-col justify-end space-y-xsm">
+						<CreateExcelButton onClick={() => console.log("Creando excel...")} />
+					</div>
+				</div>
+        <h2 className="text-headerTitle">Detalle de bono</h2>
         <div className="flex justify-end mb-md">
         </div>
         <BonuseTable bonuseData={BonuseData} />
