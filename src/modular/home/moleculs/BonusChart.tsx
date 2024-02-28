@@ -36,7 +36,8 @@ export const BonusChart = () => {
 	}, [selectedYear])
 
 	const getData = () => {
-		for (let i = 0; i < 10; i++) {
+		setBonus([]);
+		for (let i = 0; i < 12; i++) {
 			setBonus(value => [...value, Math.floor(Math.random() * (140000 - 100000 + 1)) + 100000]);
 			setMonths(meses);
 		}
