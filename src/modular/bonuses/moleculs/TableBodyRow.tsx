@@ -32,7 +32,7 @@ export const TableBodyRow = (props: IBonusesRow) => {
 				${new Intl.NumberFormat().format(totalBonos)}
 			</td>
 			<td className="px-md py-md">
-				<Link to={`/bonuse`} state={bonuses_id}><p className="text-blue-600">Más</p></Link>
+				<Link to={`/bonuse/${bonuses_id}`} state={bonuses_id}><p className="text-blue-600">Más</p></Link>
 			</td>
 		</tr>
 	)

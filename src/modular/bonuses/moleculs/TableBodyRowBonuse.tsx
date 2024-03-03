@@ -29,7 +29,7 @@ export const TableBodyRowBonuse = (props: IRow) => {
       
       <td
         scope="row"
-        className="px-md py-md font-medium text-gray-900 whitespace-nowrap "
+        className="py-md px-md font-medium text-gray-900 whitespace-nowrap "
       >
         {row.first_name + " " + row.last_name}
       </td>
