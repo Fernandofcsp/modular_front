@@ -3,24 +3,32 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Layout from "../../../ui/layout/Layout";
 import { AccountsTable } from "../components";
-import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
-import { accountsData } from "../data";
 import { CreateExcelButton, NavigateButton } from "../../../ui/moleculs";
 import { AccountsFormField } from "../moleculs/AccountsFormField";
+import axios from "axios";
+import { apiUrl } from "../../../api";
+import { toast } from "react-toastify";
+import { IAccount } from "../interfaces/interfaces";
 
 export function AccountsPage() {
 	const navigate = useNavigate();
 
 	const [initialDateToFilter, setInitialDateToFilter] = useState("2022-01-01");
 	const [endDateToFilter, setEndDateToFilter] = useState("2024-01-01");
-	const [data, setData] = useState(accountsData);
+	const [accounts, setAccounts] = useState<IAccount[]>([]);
 
+	useEffect(() => {
+		getAccounts();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	/*
 	useEffect(() => {
 		if (initialDateToFilter === "" || endDateToFilter === "") return;
 
 		//Filtrar registros por fecha
-		setData(
+		setAccounts(
 			accountsData.filter((data) =>
 				moment(data.fecha).isBetween(
 					moment(initialDateToFilter),
@@ -28,7 +36,19 @@ export function AccountsPage() {
 				)
 			)
 		);
-	}, [initialDateToFilter, endDateToFilter]);
+	}, [initialDateToFilter, endDateToFilter]);*/
+
+	const getAccounts = () => {
+		axios.get(
+			`${apiUrl}/accounts/`,
+			{ validateStatus: (status) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 200) throw ({ ...data, status });
+				setAccounts(data);
+			})
+			.catch(error => toast.error(error.message));
+	}
 
 	return (
 		<Layout>
@@ -52,15 +72,27 @@ export function AccountsPage() {
 					</div>
 					<div className="flex justify-end w-full">
 						<div className="flex flex-col justify-end space-y-sm">
-							{ data.length > 0 && <CreateExcelButton onClick={() => console.log("Creando excel...")} /> }
-							<NavigateButton title='Nueva cuenta' onClick={() => navigate("/newEmployee")} />
+							{accounts.length > 0 && <CreateExcelButton onClick={() => console.log("Creando excel...")} />}
+							<NavigateButton title='Nueva cuenta' onClick={() => navigate("/newAccount")} />
 						</div>
 					</div>
-					{initialDateToFilter !== "" && endDateToFilter !== "" ? (
-						data.length > 0 ? (
+					{
+						accounts.length > 0 ? (
 							<div className="space-y-md mt-sm">
-								<p className="text-end mr-sm">Total de cuentas: <span className="text-blueLetter">{data.length}</span></p>
-								<AccountsTable accountsData={data} />
+								<p className="text-end mr-sm">Total de cuentas: <span className="text-blueLetter">{accounts.length}</span></p>
+								<AccountsTable accounts={accounts} />
+							</div>
+						) : (
+							<p className="text-red-600 text-end">
+								No hay registros entre las fechas seleccionadas
+							</p>
+						)
+					}
+					{/* {initialDateToFilter !== "" && endDateToFilter !== "" ? (
+						accounts.length > 0 ? (
+							<div className="space-y-md mt-sm">
+								<p className="text-end mr-sm">Total de cuentas: <span className="text-blueLetter">{accounts.length}</span></p>
+								<AccountsTable accounts={accounts} />
 							</div>
 						) : (
 							<p className="text-red-600 text-end">
@@ -69,7 +101,7 @@ export function AccountsPage() {
 						)
 					) : (
 						""
-					)}
+					)} */}
 				</div>
 			</div>
 		</Layout>

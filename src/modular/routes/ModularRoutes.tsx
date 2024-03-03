@@ -48,7 +48,7 @@ export const ModularRoutes = () => {
       <Route path="/accounts" element={<AccountsPage />} />
 
       {/* Página para editar una cuenta */}
-      <Route path="/account" element={<AccountPage />} />
+      <Route path="/account/:id" element={<AccountPage />} />
 
       {/* Página para crear usuario */}
       <Route path="/createUser" element={<CreateUserPage />} />
@@ -57,7 +57,7 @@ export const ModularRoutes = () => {
       <Route path="/accounts" element={<AccountsPage />} />
 
       {/* Página para crear cuentas */}
-      <Route path="/new-account" element={<NewAccountPage />} />
+      <Route path="/newAccount" element={<NewAccountPage />} />
 
       {/* Página de bonos */}
 			<Route path="/bonuses" element={<BonusesPage />} />

@@ -3,7 +3,7 @@ import Layout from "../../../ui/layout/Layout";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { apiUrl } from "../../../api";
-import { userStore } from "../../../store/userStore";
+//import { userStore } from "../../../store/userStore";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { NavigateButton, SaveButton } from "../../../ui/moleculs";
@@ -36,7 +36,7 @@ export const notify = (type: any) => {
 	}
 };
 export const NewAccountPage = () => {
-	const token = userStore((state) => state.token);
+	//const token = userStore((state) => state.token);
 	const navigate = useNavigate();
 	const [accountName, setAccountName] = useState("");
 
@@ -45,23 +45,21 @@ export const NewAccountPage = () => {
 			toast.error("Ingrese un nombre válido para la cuenta");
 			return;
 		} else {
-			const data = JSON.stringify({
-				accountName,
-			});
-
-			const config = {
-				method: "post",
-				url: `${apiUrl}/accounts/create`,
-				headers: {
-					"Accept-Encoding": "application/json",
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				data: data,
+			const data = {
+				name: accountName,
 			};
 
-			console.log(config);
-			//Colocar petición HTTP
+			axios.post(
+				`${apiUrl}/accounts/`,
+				data,
+				{ validateStatus: (status: number) => status < 500 }
+			)
+				.then(({ data, status }) => {
+					if (status != 201) throw ({ ...data, status });
+					toast.success("Creado con éxito");
+					setAccountName("");
+				})
+				.catch(error => toast.error(error.message));
 		}
 	};
 
