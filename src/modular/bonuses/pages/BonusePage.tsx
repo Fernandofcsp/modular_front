@@ -1,14 +1,13 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { useEffect, useState } from "react";
 import { userStore } from "../../../store/userStore";
-
 import Layout from "../../../ui/layout/Layout";
 import { BonuseTable } from "../components/BonuseTable";
 import { BonuseData } from "../dataBonuse";
-import { CreateExcelButton } from "../../../ui/moleculs";
-
+import { CreateExcelButton, NavigateButton } from "../../../ui/moleculs";
+import back from "../../../../public/assets/icons/back.png"
 interface IBonuse {
   bonuseDetail_id: string;
   bonuse_id: string;
@@ -54,6 +53,8 @@ const initialState: IBonuse = {
 export const BonusePage = () => {
   const { state } = useLocation();
   const id = state.bonuse_id;
+  const navigate = useNavigate();
+
   const [bonuse, setBonuse] = useState<IBonuse>(initialState);
   const token = userStore((state) => state.token);
 
@@ -76,12 +77,16 @@ export const BonusePage = () => {
   return (
     <Layout>
       <div className=" ">
-				<div className="flex justify-end w-full">
+				<div className="flex flex-2 justify-end w-full space-x-xsm">
 					<div className="flex flex-col justify-end space-y-xsm">
 						<CreateExcelButton onClick={() => console.log("Creando excel...")} />
 					</div>
+          <div className="flex flex-row justify-end space-x-xsm">
+          <NavigateButton onClick={() => navigate("/bonuses")} title='Volver' image={back}  />
+					</div>
+
 				</div>
-        <h2 className="text-headerTitle">Detalle de bono</h2>
+        {/* <h2 className="text-headerTitle">Detalle de bono</h2> */}
         <div className="flex justify-end mb-md">
         </div>
         <BonuseTable bonuseData={BonuseData} />

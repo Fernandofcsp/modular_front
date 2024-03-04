@@ -5,7 +5,7 @@ interface IBodyItem {
     name: string,
     email?: string, 
     rol: string,
-    isActive: string
+    isActive: boolean
 }
 
 export const TableBodyRow = (props: IBodyItem) => {
