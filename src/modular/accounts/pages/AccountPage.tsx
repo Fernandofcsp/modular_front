@@ -1,88 +1,78 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../ui/layout/Layout";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { useEffect, useState } from "react";
-import { userStore } from "../../../store/userStore";
+import { ToastContainer, toast } from "react-toastify";
+//import { userStore } from "../../../store/userStore";
 import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../ui/moleculs";
-import { toast } from "react-toastify";
 import back from "../../../../public/assets/icons/back.png";
 import { AccountMovements, IMovement } from "../components";
-import { movements } from "../helpers/data";
-
-interface IAccount {
-	idAccount: number,
-	accountName: string;
-}
+import { IAccount } from "../interfaces/interfaces";
 
 const initialState: IAccount = {
-	idAccount: 0,
-	accountName: "",
+	id: 0,
+	name: "",
+	created_at: "",
+	created_by: 0
 };
 
 export const AccountPage = () => {
 	const navigate = useNavigate();
-	const { state } = useLocation();
-	const id = state.id;
+	const { id } = useParams();
 	const [account, setAccount] = useState<IAccount>(initialState);
 	const [accountMovements, setAccountMovements] = useState<IMovement[]>([]);
-	const token = userStore((state) => state.token);
+	//const token = userStore((state) => state.token);
 
 	const [accountName, setAccountName] = useState("");
 	const [isDisabled, setDisabled] = useState(true);
 
 	const handleReset = () => {
-		setAccountName(account.accountName);
+		setAccountName(account.name);
 		setDisabled(true);
 	};
 
-	const getAccount = async () => {
-		try {
-			const { data } = await axios.get(`${apiUrl}/account/${id}`);
-			setAccount(data);
-		} catch (error) {
-			console.log(error);
-		}
+	const getAccount = () => {
+		axios.get(
+			`${apiUrl}/accounts/${id}`,
+			{ validateStatus: (status: number) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 200) throw ({ ...data, status });
+				setAccount(data);
+				setAccountName(data.name)
+			})
+			.catch(error => toast.error(error.message));
 	};
 
 	useEffect(() => {
-		setAccountMovements(movements);
-		//getAccount();
+		getAccount();
+		//getAccountMovements();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const updateAccount = async () => {
-		toast.error("Error")
+	const updateAccount = () => {
 		if (accountName === "" || accountName.length <= 0) {
 			toast.error("El nombre de la cuenta no puede estar vacío");
 			return;
 		} else {
-			const data = JSON.stringify({
-				accountName
-			});
-
-			const config = {
-				method: "patch",
-				url: `${apiUrl}/accounts/update/${id}`,
-				headers: {
-					"Accept-Encoding": "application/json",
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				data: data,
+			const data = {
+				name: accountName,
 			};
 
-			console.log(config);
-			/*
-			try {
-				const { data } = await axios.request(config);
-				console.log(data);
-				navigate("/account");
-			} catch (error) {
-				console.log(error);
-			}*/
+			axios.patch(
+				`${apiUrl}/accounts/${id}/`,
+				data,
+				{ validateStatus: (status: number) => status < 500 }
+			)
+				.then(({ data, status }) => {
+					if (status != 200 && status != 201) throw ({ ...data, status });
+					setDisabled(true);
+					toast.success("Actualizado con éxito");
+				})
+				.catch(error => toast.error(error.message));
 		}
 	};
 
@@ -120,9 +110,10 @@ export const AccountPage = () => {
 				</form>
 				{
 					accountMovements.length > 0 ?
-						<AccountMovements idAccount={account.idAccount} movements={accountMovements} />
+						<AccountMovements idAccount={account.id} movements={accountMovements} />
 					: <p>Aún no existen movimientos para esta cuenta</p>
 				}
+				<ToastContainer />
 			</div>
 		</Layout>
 	);

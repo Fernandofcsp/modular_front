@@ -1,21 +1,17 @@
 import { TableHeadItem } from "../../users/moleculs";
+import { IAccounts } from "../interfaces/interfaces";
 import { TableBodyRow } from "../moleculs";
-import { IAccountsData } from '../data';
 
 enum TableHeaders {
 	id = "ID",
+	name = "Nombre",
 	date = "Fecha",
-	referency = "Referencia",
-	concept = "Concepto",
-	total = "Total",
+	createdBy = "Creador",
 	mas = "Más"
 }
 
-interface ITableProps{
-	accountsData: IAccountsData[]
-}
 
-export const AccountsTable = ({ accountsData } : ITableProps) => {
+export const AccountsTable = ({ accounts } : IAccounts) => {
 	//console.log(accountsData);
 	return (
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg h-[400px]">
@@ -34,14 +30,13 @@ export const AccountsTable = ({ accountsData } : ITableProps) => {
 				</thead>
 				<tbody>
 					{
-						accountsData.map((data, i) => {
+						accounts.map((account, i) => {
 							return <TableBodyRow
 								key={i}
-								date={data.fecha}
-								id={data.id}
-								referency={data.referencia}
-								concept={data.concepto}
-								total={data.total}
+								name={account.name}
+								created_at={account.created_at}
+								id={account.id}
+								created_by={account.created_by}
 							/>
 						})
 					}
