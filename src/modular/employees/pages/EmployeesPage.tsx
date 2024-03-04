@@ -11,7 +11,7 @@ export const EmployeesPage = () => {
 				<div className="flex justify-end w-full">
 					<div className="flex flex-col justify-end space-y-sm">
 						<CreateExcelButton onClick={() => console.log("Creando excel...")} />
-						<NavigateButton title='Nuevo usuario' onClick={() => navigate("/newEmployee")} />
+						<NavigateButton title='Nuevo empleado' onClick={() => navigate("/newEmployee")} />
 					</div>
 				</div>
         <EmployeesTable />

@@ -26,7 +26,7 @@ export const EmployessCheckPage = () => {
 						<div className="flex flex-col justify-end space-y-sm">
 							<EmployeesSelector employee_id={employeeId} setId={setEmployeeId} />
 							<CreateExcelButton onClick={() => console.log("Creando excel...")} />
-							<NavigateButton title='Nuevo usuario' onClick={() => navigate("/newEmployee")} />
+							<NavigateButton title='Nuevo empleado' onClick={() => navigate("/newEmployee")} />
 						</div>
 					</div>
 

@@ -10,31 +10,6 @@ import { NavigateButton, SaveButton } from "../../../ui/moleculs";
 import { ToastContainer, toast } from "react-toastify";
 import back from "../../../../public/assets/icons/back.png";
 
-export const notify = (type: any) => {
-	switch (type) {
-		case "WARN":
-			toast.error(
-				"Datos incompletos ",
-				{
-					position: toast.POSITION.TOP_RIGHT,
-					className: "mt-3xl",
-				}
-			);
-			break;
-		case "ERROR":
-			toast.error(
-				"Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
-				{ position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
-			);
-			break;
-		case "SUCCESS":
-			toast.success("Datos de cuenta actualizados", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-	}
-};
 export const NewAccountPage = () => {
 	//const token = userStore((state) => state.token);
 	const navigate = useNavigate();

@@ -3,36 +3,12 @@ import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { validateAccountFields } from "../helpers/ValidateFields";
 import { apiUrl } from "../../../api";
-import { userStore } from "../../../store/userStore";
+//import { userStore } from "../../../store/userStore";
 import axios from "axios";
 import { CancelButton, SaveButton } from "../../../ui/moleculs";
 import { ToastContainer, toast } from "react-toastify";
+import moment from "moment";
 
-export const notify = (type: any) => {
-	switch (type) {
-		case "WARN":
-			toast.error(
-				"Datos incompletos ",
-				{
-					position: toast.POSITION.TOP_RIGHT,
-					className: "mt-3xl",
-				}
-			);
-			break;
-		case "ERROR":
-			toast.error(
-				"Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
-				{ position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
-			);
-			break;
-		case "SUCCESS":
-			toast.success("Datos de cuenta actualizados", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-	}
-};
 
 interface INewMovementForm {
 	idAccount: number,
@@ -41,8 +17,8 @@ interface INewMovementForm {
 }
 
 export const NewMovementForm = (props: INewMovementForm) => {
-	const { idAccount, show, setShow } = props;
-	const token = userStore((state) => state.token);
+	const { idAccount, setShow } = props;
+	//const token = userStore((state) => state.token);
 	const [concept, setConcept] = useState("");
 	const [reference, setReference] = useState("");
 	const [quantity, setQuantity] = useState(0);
@@ -62,33 +38,32 @@ export const NewMovementForm = (props: INewMovementForm) => {
 			result.map(error => toast.error(error));
 			return;
 		} else {
-			const data = JSON.stringify({
-				idAccount: idAccount,
+			const data = {
+				account: idAccount,
 				concept: concept,
 				reference: reference,
-				quantity: quantity,
-				date: date,
-			});
-
-			const config = {
-				method: "post",
-				url: `${apiUrl}/account/create`,
-				headers: {
-					"Accept-Encoding": "application/json",
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-				data: data,
+				amount: quantity,
+				date: moment(date, "YYYY-MM-DD").format("DD/MM/YYYY")
 			};
 
-			console.log(config);
-			//Colocar peticion HTTP
+			axios.post(
+				`${apiUrl}/movements/`,
+				data,
+				{ validateStatus: (status: number) => status < 500 }
+			)
+				.then(({ data, status }) => {
+					if (status != 201) throw ({ ...data, status });
+					console.log(data);
+					toast.success("Creado con éxito");
+					handleReset();
+				})
+				.catch(error => toast.error(error.message));
 		}
 	};
 
 	return (
 		<form className="w-10/12 mt-sm space-y-md">
-			<h3 className="text-lg mb-xl">Agregar movimiento</h3>
+			<h3 className="text-lg mb-xl">Nuevo movimiento</h3>
 			<div className="flex flex-row space-x-sm">
 				<FormField
 					label="Concepto"
@@ -114,15 +89,15 @@ export const NewMovementForm = (props: INewMovementForm) => {
 					type={inputType.number}
 				/>
 				<FormField
-					label="Fecha"
+					label="Fecha del movimiento"
 					value={date}
-					placeholder="Fecha de cuenta"
+					placeholder="Fecha del movimiento"
 					onChange={setDate}
 					type={inputType.date}
 				/>
 			</div>
 			<div className="flex justify-end space-x-sm">
-				<CancelButton onClick={() => {handleReset(); setShow(false)}} title="Cancelar" />
+				<CancelButton onClick={() => {handleReset(); setShow(false)}} title="Cerrar" />
 				<SaveButton title="Guardar" onClick={() => saveAccount()} />
 			</div>
 			<ToastContainer />
