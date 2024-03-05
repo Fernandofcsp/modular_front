@@ -43,7 +43,7 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) 
         value={employee_id}
         onChange={({ target }) => {setId(parseInt(target.value))}}
       >
-        <option defaultChecked value={-1}>
+        <option value={-1}>
           Seleccione
         </option>
         {employees.map((employee) => {
