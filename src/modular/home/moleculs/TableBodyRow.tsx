@@ -1,27 +1,16 @@
-export interface IMovementRow {
-	reference: string,
-	concept: string,
-	date: string,
-	account: string,
-	total: string
-}
+import { IMovement } from "../../accounts/interfaces/interfaces";
 
-export const TableBodyRow = (props: IMovementRow) => {
-	const { reference, concept, date, account, total } = props;
+export const TableBodyRow = (props: IMovement) => {
+	const { reference, concept, date, amount, account } = props;
 
 	return (
 		<tr className="bg-white border-b">
-			<th
-				scope="row"
-				className="px-md py-md font-medium text-gray-900 whitespace-nowrap "
-			>
-				{account}
-			</th>
+			<td className="px-md py-md">{account.name}</td>
 			<td className="px-md py-md">{reference}</td>
 			<td className="px-md py-md">{concept}</td>
 			<td className="px-md py-md">{date}</td>
 
-			<td className="px-md py-md">{total}</td>
+			<td className="px-md py-md">$ {new Intl.NumberFormat().format(amount)}</td>
 		</tr>
 	)
 }
