@@ -11,7 +11,6 @@ export const EmployessCheckPage = () => {
 	const { id: idSelectedUser, setId } = selectedUserStore((state) => state);
 	const [employeeId, setEmployeeId] = useState(idSelectedUser);
 	const [showNewInconsistencia, setShowNewInconsistencia] = useState(false);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		setId(employeeId);
@@ -25,16 +24,20 @@ export const EmployessCheckPage = () => {
 					<div className="flex justify-end w-full">
 						<div className="flex flex-col justify-end space-y-sm">
 							<EmployeesSelector employee_id={employeeId} setId={setEmployeeId} />
-							<CreateExcelButton onClick={() => console.log("Creando excel...")} />
-							<NavigateButton title='Nuevo empleado' onClick={() => navigate("/newEmployee")} />
+							{
+								employeeId !== -1 && (
+									<>
+										<CreateExcelButton onClick={() => console.log("Creando excel...")} />
+										<NewInconsistencyButton setShowNewInconsistencia={setShowNewInconsistencia} showInconsistencia={showNewInconsistencia} />
+									</>
+								) 
+							}
 						</div>
 					</div>
 
 				</div>
 				{
-					showNewInconsistencia ?
-						employeeId === -1 ? <p className="text-red-600 text-end mb-sm mt-md">Por favor seleccione un empleado</p>
-							: <NewInconsistencia idEmployee={idSelectedUser} setShow={setShowNewInconsistencia} />
+					showNewInconsistencia ? <NewInconsistencia idEmployee={idSelectedUser} setShow={setShowNewInconsistencia} />
 						: employeeId !== -1 && <InconsistenciasTable id={employeeId} />
 				}
 			</div>

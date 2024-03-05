@@ -42,7 +42,7 @@ export const InconsistenciasTable = ({ id } : IInconsistenciasTable) => {
 	return (
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg mt-sm">
 			{
-				inconsistencies.length > 0 &&
+				inconsistencies.length > 0 ?
 				<table className="w-full text-md text-left text-gray-500">
 					<thead className="text-md text-gray-700 uppercase bg-gray-50 sticky top-0">
 						<tr>
@@ -59,6 +59,7 @@ export const InconsistenciasTable = ({ id } : IInconsistenciasTable) => {
 						}
 					</tbody>
 				</table>
+				: <p className="my-lg mx-md">Aún no existen inconsistencias registradas para este empleado</p>
 			}
 		</div>
 	)
