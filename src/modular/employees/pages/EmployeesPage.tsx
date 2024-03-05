@@ -9,9 +9,9 @@ export const EmployeesPage = () => {
     <Layout>
 			<div className="flex flex-col space-y-md">
 				<div className="flex justify-end w-full">
-					<div className="flex flex-col justify-end space-y-sm">
+					<div className="flex flex-row justify-end space-x-sm">
 						<CreateExcelButton onClick={() => console.log("Creando excel...")} />
-						<NavigateButton title='Nuevo empleado' onClick={() => navigate("/newEmployee")} />
+						<NavigateButton title='Nuevo Empleado' onClick={() => navigate("/newEmployee")} />
 					</div>
 				</div>
         <EmployeesTable />

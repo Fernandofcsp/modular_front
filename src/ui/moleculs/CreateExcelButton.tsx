@@ -9,7 +9,7 @@ export const CreateExcelButton = (props: IExcelButton) => {
 	return (
 		<button
 			onClick={(event) => { event.preventDefault(); onClick() }}
-			className={'flex justify-center items-center space-x-md text-buttons focus:outline-none text-white bg-excelButton hover:bg-green-800 focus:ring-4 focus:ring-green-300 rounded-lg px-lg py-xsm'}
+			className={'flex flex-2 focus:outline-none text-white bg-excelButton hover:bg-green-800 focus:ring-4 focus:ring-blue-300 px-5 py-2.5 me-2 mb-2 justify-center items-center space-x-sm text-buttons rounded-lg px-lg py-xsm'}
 		>
 			<span>{"Exportar a Excel"}</span>
 			<img src={excel} className="w-md"></img>

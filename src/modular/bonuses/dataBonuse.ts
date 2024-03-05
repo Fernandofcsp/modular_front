@@ -34,7 +34,7 @@ export interface IBonuseData {
         bono : 2000,
         bono_completo : 2500,
         diferencia : 500,
-        date : "20/01/2024",
+        date : "15/01/2024",
         created_date : "15/01/2024",
         updated_date : "15/01/2024",
         created_user_id: "1",

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { apiUrl } from "../../../api";
 import { toast } from "react-toastify";
 import { userStore } from "../../../store/userStore";
-
+import { FilterStatusButton } from "../../../ui/moleculs/FilterStatusButton";
 enum TableHeaders {
 	name = "Nombre",
 	email = "Correo",
@@ -18,12 +18,18 @@ interface IUser {
 	user_name: string,
 	email: string,
 	role: string,
-	is_active: string
+	is_active: boolean
 }
 
-export const UsersTable = () => {
+
+export const UsersTable=() => {
 	const idUser = userStore(state => state.id);
 	const [users, setUsers] = useState<IUser[]>([]);
+	const [estatus, setEstatus] = useState<boolean | null>(true);
+
+  const handleStatusChange = (value: boolean | null ) => {
+    setEstatus(value);
+  };
 
 	const getUsers = () => {
 		axios.get(
@@ -41,8 +47,12 @@ export const UsersTable = () => {
 		getUsers();
 	}, [])
 
+
 	return (
+		<div>
+			<FilterStatusButton onChange={handleStatusChange} />
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
+			
 			<table className="w-full text-md text-left text-gray-500">
 				<caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
 					Usuarios del sistema
@@ -58,13 +68,15 @@ export const UsersTable = () => {
 				</thead>
 				<tbody>
 					{
-						users.filter(user => user.id != idUser).map((user, i) => {
-							return <TableBodyRow key={i} id={user.id} name={user.user_name} email={user.email} rol={user.role} isActive={user.is_active} />
+						users.filter(user => user.id != idUser && user.is_active == estatus).map((user, i) => {
+							
+
+							return <TableBodyRow key={i} id={user.id} name={user.user_name} email={user.email} rol={user.role} isActive={user.is_active } />
 						})
 					}
 				</tbody>
 			</table>
 		</div>
-
+		</div>
 	)
 }

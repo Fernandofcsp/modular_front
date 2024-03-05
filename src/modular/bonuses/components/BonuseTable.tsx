@@ -2,6 +2,7 @@ import { TableHeadItem } from "../../users/moleculs";
 import { TableBodyRowBonuse } from "../moleculs/TableBodyRowBonuse";
 import { IBonuseData } from "../dataBonuse";
 
+
 enum TableHeaders {
   first_name = "Nombre",
   daily_salary = "Salario Diario",
@@ -18,9 +19,11 @@ enum TableHeaders {
 
 interface ITableProps {
   bonuseData: IBonuseData[];
+
 }
 
 export const BonuseTable = ({ bonuseData }: ITableProps) => {
+
   return (
 
     <div className="overflow-scroll w-full relative overflow-x-auto shadow-lg sm:rounded-lg h-[400px] mt-md mb-md rounded-lg"
