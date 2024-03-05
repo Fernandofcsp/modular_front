@@ -124,7 +124,7 @@ export const EmployeePage = () => {
 			"daily_salary": +dailySalary,
 			"admision_date": moment(admisionDate).format("DD/MM/YYYY"),
 			"position_name": position,
-			"is_active": true
+			"is_active": status,
 		};
 
 

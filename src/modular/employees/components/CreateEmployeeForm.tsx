@@ -9,34 +9,7 @@ import { validateEmployeeFields } from "../helpers/validateEmployeeFields";
 import { CancelButton, SaveButton } from "../../../ui/moleculs";
 import moment from "moment";
 
-const notify = (type: string) => {
-	switch (type) {
-		case "WARN":
-			toast.error("Datos incompletos o incorrectos", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-		case "ERROR":
-			toast.error(
-				"Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
-				{ position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
-			);
-			break;
-		case "SUCCESS":
-			toast.success("Creación de empleado exitoso", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-		case "INVALIDDATE":
-			toast.error("La fecha no debe ser mayor a la actual", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-	}
-};
+
 export const CreateEmployeeForm = () => {
 	const navigate = useNavigate();
 	//const token = userStore((state) => state.token);
