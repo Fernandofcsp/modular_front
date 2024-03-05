@@ -1,9 +1,15 @@
 import { IMovement } from "../interfaces/interfaces";
 
+interface IRowMovements {
+	movement: IMovement,
+	setSelectedMovement: (movement: IMovement) => void,
+	setNewMovement: (value: boolean) => void,
+	setEditMovement: (value: boolean) => void
+}
 
-
-export const MovementTableRow = (props: IMovement) => {
-	const { reference, amount, concept, created_at, date, id } = props;
+export const MovementTableRow = (props: IRowMovements) => {
+	const { setSelectedMovement, setNewMovement, setEditMovement } = props
+	const { reference, amount, concept, created_at, date, id } = props.movement;
 	return (
 		<tr className="bg-white border-b-2 text-center">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
@@ -25,7 +31,7 @@ export const MovementTableRow = (props: IMovement) => {
 				{created_at}
 			</td>
 			<td className="px-md py-md">
-				Editar
+				<p className="hover:cursor-pointer text-blueLetter" onClick={() => { setNewMovement(false), setEditMovement(true), setSelectedMovement(props.movement) }}>Editar</p>
 			</td>
 		</tr>
 	)
