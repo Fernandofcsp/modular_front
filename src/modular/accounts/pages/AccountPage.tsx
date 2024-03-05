@@ -9,8 +9,8 @@ import { FormField } from "../../employees-check/moleculs";
 import { inputType } from "../../users/moleculs";
 import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../ui/moleculs";
 import back from "../../../../public/assets/icons/back.png";
-import { AccountMovements, IMovement } from "../components";
-import { IAccount } from "../interfaces/interfaces";
+import { IAccount, IMovement } from "../interfaces/interfaces";
+import { AccountMovements } from "../components";
 
 const initialState: IAccount = {
 	id: 0,
@@ -47,8 +47,21 @@ export const AccountPage = () => {
 			.catch(error => toast.error(error.message));
 	};
 
+	const getMovements = () => {
+		axios.get(
+			`${apiUrl}/movements/get-by-account?account=${id}`,
+			{ validateStatus: (status: number) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 200) throw ({ ...data, status });
+				setAccountMovements(data);
+			})
+			.catch(error => toast.error(error.message));
+	}
+
 	useEffect(() => {
 		getAccount();
+		getMovements();
 		//getAccountMovements();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -108,11 +121,7 @@ export const AccountPage = () => {
 						}
 					</div>
 				</form>
-				{
-					accountMovements.length > 0 ?
-						<AccountMovements idAccount={account.id} movements={accountMovements} />
-					: <p>Aún no existen movimientos para esta cuenta</p>
-				}
+				<AccountMovements idAccount={account.id} movements={accountMovements} />
 				<ToastContainer />
 			</div>
 		</Layout>
