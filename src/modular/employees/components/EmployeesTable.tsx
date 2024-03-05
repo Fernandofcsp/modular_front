@@ -49,10 +49,11 @@ export const EmployeesTable = () => {
 
 	const getUsers = () => {
 		axios.get(
-			`${apiUrl}/employees/`,
+			`${apiUrl}/employees/?all=true`,
 			{ validateStatus: (status) => status < 500 }
 		)
 			.then(({ data, status }) => {
+				
 				if (status != 200) throw ({ ...data, status });
 				setEmployees(data);
 			})
