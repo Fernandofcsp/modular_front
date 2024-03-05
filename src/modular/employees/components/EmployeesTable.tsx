@@ -4,6 +4,7 @@ import { TableHeadItem } from '../../users/moleculs';
 import { TableBodyRow } from '../moleculs/TableBodyRow';
 import { apiUrl } from '../../../api';
 import { toast } from 'react-toastify';
+import { FilterStatusButton } from '../../../ui/moleculs/FilterStatusButton';
 //import { userStore } from '../../../store/userStore';
 
 enum TableHeaders {
@@ -40,6 +41,11 @@ export interface IEmployee {
 export const EmployeesTable = () => {
 	//const token = userStore(state => state.token);
 	const [employees, setEmployees] = useState<IEmployee[]>([]);
+	const [estatus, setEstatus] = useState<boolean | null>(true);
+
+	const handleStatusChange = (value: boolean | null ) => {
+		setEstatus(value);
+	  };
 
 	const getUsers = () => {
 		axios.get(
@@ -58,6 +64,8 @@ export const EmployeesTable = () => {
 	}, []); // Solo se ejecuta al montar el componente, no es necesario volver a ejecutarlo cuando cambia el filtro
 
 	return (
+		<div>
+		<FilterStatusButton onChange={handleStatusChange} />
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
 			<table className="w-full text-md text-left text-gray-500">
 				<caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
@@ -75,7 +83,7 @@ export const EmployeesTable = () => {
 				<tbody>
 					{
 
-						employees.map((employee, i) => {
+						employees.filter(employee => employee.is_active == estatus).map((employee, i) => {
 							return <TableBodyRow
 								key={i}
 								id={employee.id}
@@ -88,6 +96,7 @@ export const EmployeesTable = () => {
 					}
 				</tbody>
 			</table>
+		</div>
 		</div>
 	);
 }
