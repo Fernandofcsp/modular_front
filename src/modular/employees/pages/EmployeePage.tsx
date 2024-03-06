@@ -16,29 +16,6 @@ import { IEmployee } from "../components";
 import moment from "moment";
 import { IBenefit } from "../interfaces/EmployeeInterfaces";
 
-export const notify = (type: any) => {
-	switch (type) {
-		case "WARN":
-			toast.error("Datos incompletos o incorrectos", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-		case "ERROR":
-			toast.error(
-				"Error en el sistema, intentelo mas tarde, si el problema persiste, consulte a soporte.",
-				{ position: toast.POSITION.TOP_RIGHT, className: "mt-3xl" }
-			);
-			break;
-		case "SUCCESS":
-			toast.success("Edición de empleado exitoso", {
-				position: toast.POSITION.TOP_RIGHT,
-				className: "mt-3xl",
-			});
-			break;
-	}
-};
-
 
 export const EmployeePage = () => {
 	const { id } = useParams();
@@ -70,26 +47,38 @@ export const EmployeePage = () => {
 
 	useEffect(() => {
 		getEmployee();
+		getBenefits();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 	
 
-	const getEmployee = () => {
+	const getBenefits = () => {
 		axios.get(
-			`${apiUrl}/benefits/get-by-employee?employee=${id}`,
+			`${apiUrl}/benefits/get-by-employee/?employee=${id}`,
 			{ validateStatus: (status) => status < 500 }
 		)
 			.then(({ data, status }) => {
 				if (status != 200) throw ({ ...data, status });
-				const { employee, benefits } = data;
+				const { benefits } = data;
 				setBenefits(benefits);
-				setInitialState(employee);
-				setName(employee.first_name);
-				setLastName(employee.last_name);
-				setPosition(employee.position_name);
-				setDailySalary(employee.daily_salary);
-				setAdmisionDate(moment(employee.admision_date, "DD/MM/YYYY").format("YYYY-MM-DD"));
-				setStatus(employee.is_active);
+			})
+			.catch(error => toast.error(error.message + " " + error.status));
+	}
+
+	const getEmployee = () => {
+		axios.get(
+			`${apiUrl}/employees/${id}`,
+			{ validateStatus: (status) => status < 500 }
+		)
+			.then(({ data, status }) => {
+				if (status != 200) throw ({ ...data, status });
+				setInitialState(data);
+				setName(data.first_name);
+				setLastName(data.last_name);
+				setPosition(data.position_name);
+				setDailySalary(data.daily_salary);
+				setAdmisionDate(moment(data.admision_date, "DD/MM/YYYY").format("YYYY-MM-DD"));
+				setStatus(data.is_active);
 			})
 			.catch(error => toast.error(error.message + " " + error.status));
 	}
@@ -109,15 +98,7 @@ export const EmployeePage = () => {
 			errors.map(error => toast.error(error));
 			return;
 		}
-
-		// const data = {
-		// 	first_name: name,
-		// 	last_name: lastName,
-		// 	daily_salary: +dailySalary,
-		// 	position_name: position,
-		// 	admision_date: admisionDate,
-		// 	is_active: Boolean(status),
-		// };
+		
 		const data = {
 			"first_name": name,
 			"last_name": lastName,

@@ -3,8 +3,7 @@ import Layout from "../../../ui/layout/Layout";
 import { InconsistenciasTable, NewInconsistencia } from "../components";
 import { EmployeesSelector, NewInconsistencyButton } from "../moleculs";
 import { selectedUserStore } from "../../../store/selectedUserStore";
-import { CreateExcelButton, NavigateButton } from "../../../ui/moleculs";
-import { useNavigate } from "react-router-dom";
+import { CreateExcelButton } from "../../../ui/moleculs";
 
 
 export const EmployessCheckPage = () => {
