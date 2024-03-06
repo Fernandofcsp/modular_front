@@ -92,7 +92,7 @@ export const NewMovementForm = (props: INewMovementForm) => {
 					toast.success("Actualizado con éxito");
 					setTimeout(() => {
 						navigate(0);
-					}, 4500);
+					}, 0);
 				})
 				.catch(error => toast.error(error.message));
 		}
