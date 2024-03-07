@@ -11,6 +11,7 @@ import { CancelButton, EditButton, NavigateButton, SaveButton } from "../../../u
 import back from "../../../../public/assets/icons/back.png";
 import { IAccount, IMovement } from "../interfaces/interfaces";
 import { AccountMovements } from "../components";
+import { movementsFilterStore } from "../../../store/selectedYearMonthStore";
 
 const initialState: IAccount = {
 	id: 0,
@@ -21,9 +22,12 @@ const initialState: IAccount = {
 
 export const AccountPage = () => {
 	const navigate = useNavigate();
+	const { month, year } = movementsFilterStore(state => state);
 	const { id } = useParams();
 	const [account, setAccount] = useState<IAccount>(initialState);
 	const [accountMovements, setAccountMovements] = useState<IMovement[]>([]);
+	const [selectedYear, setSelectedYear] = useState(year);
+	const [selectedMonth, setSelectedMonth] = useState(month);
 	//const token = userStore((state) => state.token);
 
 	const [accountName, setAccountName] = useState("");
@@ -49,7 +53,7 @@ export const AccountPage = () => {
 
 	const getMovements = () => {
 		axios.get(
-			`${apiUrl}/movements/get-by-account?account=${id}`,
+			`${apiUrl}/movements?account=${id}&month=${selectedMonth}&year=${selectedYear}`,
 			{ validateStatus: (status: number) => status < 500 }
 		)
 			.then(({ data, status }) => {
@@ -62,9 +66,8 @@ export const AccountPage = () => {
 	useEffect(() => {
 		getAccount();
 		getMovements();
-		//getAccountMovements();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [selectedYear, selectedMonth]);
 
 	const updateAccount = () => {
 		if (accountName === "" || accountName.length <= 0) {
@@ -121,7 +124,7 @@ export const AccountPage = () => {
 						}
 					</div>
 				</form>
-				<AccountMovements idAccount={account.id} movements={accountMovements} />
+				<AccountMovements year={selectedYear} month={selectedMonth} setYear={setSelectedYear} setMonth={setSelectedMonth} idAccount={account.id} movements={accountMovements} />
 				<ToastContainer />
 			</div>
 		</Layout>

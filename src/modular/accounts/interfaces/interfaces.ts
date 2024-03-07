@@ -26,5 +26,9 @@ export interface IMovement {
 
 export interface IMovements {
 	idAccount: number,
+	year: number,
+	month: number,
+	setYear: (year: number) => void,
+	setMonth: (month: number) => void,
 	movements: IMovement[]
 }

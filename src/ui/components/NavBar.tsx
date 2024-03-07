@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import profile from "../../../public/assets/icons/profile.png";
+import { movementsFilterStore } from "../../store/selectedYearMonthStore";
 
 const classNames = (...classes: string[]) => {
 	return classes.filter(Boolean).join(" ");
@@ -11,6 +12,7 @@ const classNames = (...classes: string[]) => {
 const NavBar = () => {
 	const { name } = userStore((state) => state);
 	const logout = userStore((state) => state.logout);
+	const resetFilter = movementsFilterStore((state) => state.clear);
 	const navigate = useNavigate();
 
 	return (
@@ -68,6 +70,7 @@ const NavBar = () => {
 									)}
 									onClick={() => {
 										logout();
+										resetFilter();
 										navigate("/login");
 									}}
 								>

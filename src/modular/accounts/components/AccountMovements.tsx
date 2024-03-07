@@ -6,12 +6,17 @@ import { NewMovementForm } from "./NewMovementForm";
 import { CreateExcelButton } from "../../../ui/moleculs";
 import { IMovement, IMovements } from "../interfaces/interfaces";
 import moment from "moment";
+import { movementsFilterStore } from "../../../store/selectedYearMonthStore";
 
 const tableHeaders = ["ID", "Referencia", "Concepto", "Cantidad", "Fecha movimiento", "Fecha creación", "Más"];
 
-export const AccountMovements = (props: IMovements) => {
-	const { idAccount, movements } = props;
+const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
+
+export const AccountMovements = (props: IMovements) => {
+	const { idAccount, movements, setMonth, setYear, year, month } = props;
+
+	const { setValue } = movementsFilterStore(state => state);
 	const [newMovement, setNewMovement] = useState(false);
 	const [editMovement, setEditMovement] = useState(false);
 	const [selectedMovement, setSelectedMovement] = useState<IMovement>();
@@ -27,13 +32,30 @@ export const AccountMovements = (props: IMovements) => {
 					<div className="flex flex-col space-y-sm">
 						{movements.length > 0 && <CreateExcelButton onClick={() => console.log("Creando excel...")} />}
 						<NavigateButton image={mas} title="Nuevo" onClick={() => setNewMovement(true)} />
+							<select 
+								className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md p-sm"
+								defaultValue={month}
+								onChange={(event) => { setMonth(+event.target.value), setValue('month', +event.target.value)}}>
+							{
+								months.map((month, i) => <option key={i} value={i+1}>{month}</option>)
+							}
+						</select>
+							<select 
+								className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md p-sm" 
+								defaultValue={year} 
+								onChange={(event) => { setYear(+event.target.value); setValue('year', +event.target.value)}}>
+							<option value={2021}>2021</option>
+							<option value={2022}>2022</option>
+							<option value={2023}>2023</option>
+							<option value={2024}>2024</option>
+						</select>
 					</div>
 				}
 			</div>
 			{
-				(newMovement || editMovement) ? 
+				(newMovement || editMovement) ?
 					newMovement ? <NewMovementForm idAccount={idAccount} setShow={setNewMovement} show={newMovement} />
-						: <NewMovementForm idAccount={idAccount} setShow={setNewMovement} show={newMovement} edit movementData={selectedMovement}/>
+						: <NewMovementForm idAccount={idAccount} setShow={setNewMovement} show={newMovement} edit movementData={selectedMovement} />
 					: movements.length > 0 ? (
 						<div className="w-10/12 overflow-x-auto shadow-lg my-md">
 							<table className="w-full text-md text-left text-gray-500 rounded-xl">
@@ -69,7 +91,7 @@ export const AccountMovements = (props: IMovements) => {
 								</tbody>
 							</table>
 						</div>
-					) : <p className="mt-lg text">Aún no existen movimientos para esta cuenta</p>
+					) : <p className="mt-lg text">No hay movimientos con los filtros seleccionados</p>
 			}
 		</div>
 	)
