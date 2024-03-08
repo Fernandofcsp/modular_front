@@ -4,7 +4,7 @@ export const TableBodyRow = (props: IMovement) => {
 	const { reference, concept, date, amount, account } = props;
 
 	return (
-		<tr className="bg-white border-b">
+		<tr className="bg-white border-b text-center">
 			<td className="px-md py-md">{account.name}</td>
 			<td className="px-md py-md">{reference}</td>
 			<td className="px-md py-md">{concept}</td>

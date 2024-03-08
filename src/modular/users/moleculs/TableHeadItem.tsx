@@ -5,7 +5,7 @@ interface IHeadItem {
 
 export const TableHeadItem = (props: IHeadItem) => {
   return (
-    <th scope="col" className="px-md py-sm w-auto">
+    <th scope="col" className="px-md py-sm w-auto text-center">
       {props.title}
     </th>
   )
