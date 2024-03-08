@@ -15,7 +15,7 @@ export const SelectorCreateBonuse = (props: ISelectorCreateBonuse) => {
   const { title, image } = props;
 
   const [showSelectors, setShowSelectors] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(1);
 
   const [selectedYear, setSelectedYear] = useState(moment().format("YYYY"));
   const months = [
@@ -50,7 +50,8 @@ export const SelectorCreateBonuse = (props: ISelectorCreateBonuse) => {
         toast.success("Calculado con exito");
         setShowSelectors(false);
       })
-      .catch((error) => toast.error(error.message));
+      .catch((error) => toast.error(error.message+"El bono ya existe"));
+      setShowSelectors(false);
       
   };
 
