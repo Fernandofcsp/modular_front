@@ -13,7 +13,7 @@ interface IRow {
 export const EmployeesTableRow = ( props : IRow ) => {
 	const { id, fechaInicio, fechaFin, minutes, tipo } = props;
 	return (
-		<tr className="bg-white border-b">
+		<tr className="bg-white border-b text-center">
 			<th scope="row" className="px-md py-md font-medium text-gray-900 whitespace-nowrap ">
 				{tipo}
 			</th>

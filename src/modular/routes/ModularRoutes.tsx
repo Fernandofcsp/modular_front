@@ -62,7 +62,7 @@ export const ModularRoutes = () => {
       {/* Página de bonos */}
 			<Route path="/bonuses" element={<BonusesPage />} />
       {/* Página para ver bonos del mes */}
-      <Route path="/bonuse/:id" element={<BonusePage />} />
+      <Route path="/bonuse/:month/:year" element={<BonusePage />} />
 
 
       {/* <Route path="*" element={<NotFoundPage />} /> */}

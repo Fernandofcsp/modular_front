@@ -11,7 +11,7 @@ interface IBodyItem {
 export const TableBodyRow = (props: IBodyItem) => {
   const { id, name, email, rol, isActive } = props;
   return (
-    <tr className="bg-white border-b">
+    <tr className="bg-white border-b text-center">
       <th
         scope="row"
         className="px-md py-md font-medium text-gray-900 whitespace-nowrap "
@@ -22,9 +22,9 @@ export const TableBodyRow = (props: IBodyItem) => {
       <td className="px-md py-md">{rol.toUpperCase()}</td>
       <td className="px-md py-md">
         {!isActive ? (
-          <td className="text-red-500">Inactivo</td>
+          <p className="text-red-500">Inactivo</p>
         ) : (
-          <td className="text-green-500">Activo</td>
+          <p className="text-green-500">Activo</p>
         )}
       </td>
 
