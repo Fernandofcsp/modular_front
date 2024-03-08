@@ -37,23 +37,21 @@ export const EmployeesSelector = ({ employee_id, setId }: IEmployeeSelectProps) 
   }, []);
 
   return (
-    <div className="flex items-end justify-end">
       <select
         className="py-sm px-md rounded-md"
         value={employee_id}
         onChange={({ target }) => {setId(parseInt(target.value))}}
       >
-        <option value={-1}>
+        <option className="py-xsm px-sm" value={-1}>
           Seleccione
         </option>
         {employees.map((employee) => {
           return (
-            <option key={employee.id} value={employee.id}>
+            <option className="py-xsm px-sm" key={employee.id} value={employee.id}>
               {employee.first_name + " " + employee.last_name}
             </option>
           );
         })}
       </select>
-    </div>
   );
 };

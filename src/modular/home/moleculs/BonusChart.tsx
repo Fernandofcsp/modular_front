@@ -11,7 +11,7 @@ import { IBonuses } from "../../bonuses/interfaces";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
 export const BonusChart = () => {
-	const [selectedYear, setSelectedYear] = useState(moment().year());
+	const [selectedYear, setSelectedYear] = useState(2021);
 	const [bonuses, setBonuses] = useState<IBonuses[]>([]);
 
 	useEffect(() => {

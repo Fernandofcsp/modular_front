@@ -5,6 +5,9 @@ import { apiUrl } from "../../../api";
 import { toast } from "react-toastify";
 import { userStore } from "../../../store/userStore";
 import { FilterStatusButton } from "../../../ui/moleculs/FilterStatusButton";
+import * as XLSX from 'xlsx';
+import { CreateExcelButton } from "../../../ui/moleculs";
+
 enum TableHeaders {
 	name = "Nombre",
 	email = "Correo",
@@ -31,6 +34,13 @@ export const UsersTable=() => {
     setEstatus(value);
   };
 
+	const exportarAExcel = () => {
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.json_to_sheet(users);
+		XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+		XLSX.writeFile(wb, `file.xlsx`);
+	};
+
 	const getUsers = () => {
 		axios.get(
 			`${apiUrl}/users/`,
@@ -50,7 +60,10 @@ export const UsersTable=() => {
 
 	return (
 		<div>
-			<FilterStatusButton onChange={handleStatusChange} />
+			<div className="flex flex-row justify-end space-x-md my-md">
+				<FilterStatusButton onChange={handleStatusChange} />
+				{ users.length > 0 && <CreateExcelButton onClick={() => exportarAExcel()} /> }
+			</div>
 		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
 			
 			<table className="w-full text-md text-left text-gray-500">

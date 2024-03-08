@@ -95,7 +95,7 @@ export const AccountPage = () => {
 	return (
 		<Layout>
 			<div>
-				<form className="w-10/12 mt-sm">
+				<form className="w-full mt-sm">
 					<h3 className="text-headerTitle mb-xl">Modificar cuenta</h3>
 					<div className="flex flex-row space-x-sm">
 						<FormField

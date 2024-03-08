@@ -3,7 +3,6 @@ import Layout from "../../../ui/layout/Layout";
 import { InconsistenciasTable, NewInconsistencia } from "../components";
 import { EmployeesSelector, NewInconsistencyButton } from "../moleculs";
 import { selectedUserStore } from "../../../store/selectedUserStore";
-import { CreateExcelButton } from "../../../ui/moleculs";
 
 
 export const EmployessCheckPage = () => {
@@ -21,15 +20,10 @@ export const EmployessCheckPage = () => {
 			<div className="flex flex-col justify-end">
 				<div className="flex flex-col space-y-md">
 					<div className="flex justify-end w-full">
-						<div className="flex flex-col justify-end space-y-sm">
+						<div className="flex flex-col justify-end space-y-md mb-sm">
 							<EmployeesSelector employee_id={employeeId} setId={setEmployeeId} />
 							{
-								employeeId !== -1 && (
-									<>
-										<CreateExcelButton onClick={() => console.log("Creando excel...")} />
-										<NewInconsistencyButton setShowNewInconsistencia={setShowNewInconsistencia} showInconsistencia={showNewInconsistencia} />
-									</>
-								) 
+								employeeId !== -1 && <NewInconsistencyButton setShowNewInconsistencia={setShowNewInconsistencia} showInconsistencia={showNewInconsistencia} />
 							}
 						</div>
 					</div>

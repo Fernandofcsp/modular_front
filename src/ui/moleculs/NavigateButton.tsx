@@ -12,12 +12,12 @@ export const NavigateButton = (props : IBackButton) => {
 			onClick={() => {
 				onClick();
 			}}
-			className={"flex flex-2 focus:outline-none text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 px-5 py-2.5 me-2 mb-2 justify-center items-center space-x-sm text-buttons rounded-lg px-lg py-xsm"}
+			className={"flex focus:outline-none text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 px-lg py-sm justify-center items-center space-x-sm text-buttons rounded-lg"}
 		>
 			<span>{ title }</span>
 			{
 				image && <img src={image} className="w-md "></img>
 			}
 		</button>
-	)
+	) 
 }

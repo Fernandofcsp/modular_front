@@ -5,8 +5,8 @@ import { TableBodyRow } from "../moleculs";
 enum TableHeaders {
 	id = "ID",
 	name = "Nombre",
-	date = "Fecha",
-	createdBy = "Creador",
+	date = "Fecha y hora",
+	//createdBy = "Creador",
 	mas = "Más"
 }
 
