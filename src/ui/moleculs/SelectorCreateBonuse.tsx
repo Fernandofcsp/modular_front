@@ -15,7 +15,7 @@ export const SelectorCreateBonuse = (props: ISelectorCreateBonuse) => {
   const { title, image } = props;
 
   const [showSelectors, setShowSelectors] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState(1);
+  const [selectedMonth, setSelectedMonth] = useState(0);
 
   const [selectedYear, setSelectedYear] = useState(moment().format("YYYY"));
   const months = [
@@ -37,22 +37,28 @@ export const SelectorCreateBonuse = (props: ISelectorCreateBonuse) => {
   };
 
   const handleSubmit = () => {
+    if (selectedMonth === 0) return toast.error("Seleccione un mes");
+
+    if (
+      !confirm(
+        "¿Está seguro de calcular el bono? Una vez generado ya no se podrá volver a crear o modificar"
+      )
+    )
+      return;
     axios
       .post(
         `${apiUrl}/bonus/create-bonus/?month=${selectedMonth}&year=${selectedYear}`,
         {
-          validateStatus: (status : number) => status < 500,
+          validateStatus: (status: number) => status < 500,
         }
       )
       .then(({ data, status }) => {
         if (status !== 201) throw { ...data, status };
-        console.log(data);
         toast.success("Calculado con exito");
         setShowSelectors(false);
       })
-      .catch((error) => toast.error(error.message+"El bono ya existe"));
-      setShowSelectors(false);
-      
+      .catch((error) => toast.error(error.message + " El bono ya existe"));
+        setShowSelectors(false);
   };
 
   const years = Array.from({ length: 5 }, (_, index) => 2021 + index);
@@ -75,6 +81,7 @@ export const SelectorCreateBonuse = (props: ISelectorCreateBonuse) => {
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
           >
+            <option value={0}>Seleccione un mes</option>
             {months.map((month, index) => (
               <option key={index} value={index + 1}>
                 {month}
