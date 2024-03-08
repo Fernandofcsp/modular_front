@@ -14,7 +14,7 @@ enum TableHeaders {
 export const AccountsTable = ({ accounts } : IAccounts) => {
 	//console.log(accountsData);
 	return (
-		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg h-[400px]">
+		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
 			<table className="w-full text-md text-left text-gray-500">
 				<caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
 					Cuentas
