@@ -5,6 +5,8 @@ import { TableBodyRow } from '../moleculs/TableBodyRow';
 import { apiUrl } from '../../../api';
 import { toast } from 'react-toastify';
 import { FilterStatusButton } from '../../../ui/moleculs/FilterStatusButton';
+import { CreateExcelButton } from '../../../ui/moleculs';
+import * as XLSX from 'xlsx';
 //import { userStore } from '../../../store/userStore';
 
 enum TableHeaders {
@@ -43,9 +45,9 @@ export const EmployeesTable = () => {
 	const [employees, setEmployees] = useState<IEmployee[]>([]);
 	const [estatus, setEstatus] = useState<boolean | null>(true);
 
-	const handleStatusChange = (value: boolean | null ) => {
+	const handleStatusChange = (value: boolean | null) => {
 		setEstatus(value);
-	  };
+	};
 
 	const getUsers = () => {
 		axios.get(
@@ -53,12 +55,19 @@ export const EmployeesTable = () => {
 			{ validateStatus: (status) => status < 500 }
 		)
 			.then(({ data, status }) => {
-				
+
 				if (status != 200) throw ({ ...data, status });
 				setEmployees(data);
 			})
 			.catch(error => toast.error(error.message + " " + error.status));
 	}
+
+	const exportarAExcel = () => {
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.json_to_sheet(employees);
+		XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+		XLSX.writeFile(wb, `file.xlsx`);
+	};
 
 	useEffect(() => {
 		getUsers();
@@ -66,38 +75,41 @@ export const EmployeesTable = () => {
 
 	return (
 		<div>
-		<FilterStatusButton onChange={handleStatusChange} />
-		<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
-			<table className="w-full text-md text-left text-gray-500">
-				<caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
-					Empleados
-				</caption>
-				<thead className="text-md text-gray-700 uppercase bg-gray-50 sticky top-0">
-					<tr>
+			<div className='flex flex-row space-x-sm justify-end mb-md'>
+				<FilterStatusButton onChange={handleStatusChange} />
+				{ employees.length > 0 && <CreateExcelButton onClick={() => exportarAExcel()} /> }
+			</div>
+			<div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
+				<table className="w-full text-md text-left text-gray-500">
+					<caption className="px-md py-sm text-xl font-semibold text-left text-gray-900 bg-white">
+						Empleados
+					</caption>
+					<thead className="text-md text-gray-700 uppercase bg-gray-50 sticky top-0">
+						<tr>
+							{
+								Object.entries(TableHeaders).map((e, i) => {
+									return <TableHeadItem key={i} title={e[1]} />
+								})
+							}
+						</tr>
+					</thead>
+					<tbody>
 						{
-							Object.entries(TableHeaders).map((e, i) => {
-								return <TableHeadItem key={i} title={e[1]} />
+
+							employees.filter(employee => employee.is_active == estatus).map((employee, i) => {
+								return <TableBodyRow
+									key={i}
+									id={employee.id}
+									admision_date={employee.admision_date}
+									name={`${employee.first_name} ${employee.last_name}`}
+									puesto={employee.position_name}
+									status={employee.is_active}
+								/>
 							})
 						}
-					</tr>
-				</thead>
-				<tbody>
-					{
-
-						employees.filter(employee => employee.is_active == estatus).map((employee, i) => {
-							return <TableBodyRow
-								key={i}
-								id={employee.id}
-								admision_date={employee.admision_date}
-								name={`${employee.first_name} ${employee.last_name}`}
-								puesto={employee.position_name}
-								status={employee.is_active}
-							/>
-						})
-					}
-				</tbody>
-			</table>
-		</div>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	);
 }

@@ -10,6 +10,7 @@ import axios from "axios";
 import { apiUrl } from "../../../api";
 import { toast } from "react-toastify";
 import { IAccount } from "../interfaces/interfaces";
+import * as XLSX from 'xlsx';
 
 export function AccountsPage() {
 	const navigate = useNavigate();
@@ -37,6 +38,14 @@ export function AccountsPage() {
 			)
 		);
 	}, [initialDateToFilter, endDateToFilter]);*/
+
+	const exportarAExcel = () => {
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.json_to_sheet(accounts);
+		XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+		XLSX.writeFile(wb, `file.xlsx`);
+	};
+
 
 	const getAccounts = () => {
 		axios.get(
@@ -72,8 +81,8 @@ export function AccountsPage() {
 					</div> */}
 					<div className="flex justify-end w-full">
 						<div className="flex flex-col justify-end space-y-sm">
-							{accounts.length > 0 && <CreateExcelButton onClick={() => console.log("Creando excel...")} />}
 							<NavigateButton title='Nueva cuenta' onClick={() => navigate("/newAccount")} />
+							{accounts.length > 0 && <CreateExcelButton onClick={() => exportarAExcel()} />}
 						</div>
 					</div>
 					{

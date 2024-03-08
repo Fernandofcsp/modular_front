@@ -7,6 +7,7 @@ import { CreateExcelButton } from "../../../ui/moleculs";
 import { IMovement, IMovements } from "../interfaces/interfaces";
 import moment from "moment";
 import { movementsFilterStore } from "../../../store/selectedYearMonthStore";
+import * as XLSX from 'xlsx';
 
 const tableHeaders = ["ID", "Referencia", "Concepto", "Cantidad", "Fecha movimiento", "Fecha creación", "Más"];
 
@@ -21,43 +22,49 @@ export const AccountMovements = (props: IMovements) => {
 	const [editMovement, setEditMovement] = useState(false);
 	const [selectedMovement, setSelectedMovement] = useState<IMovement>();
 
+	const exportarAExcel = () => {
+		const wb = XLSX.utils.book_new();
+		const ws = XLSX.utils.json_to_sheet(movements);
+		XLSX.utils.book_append_sheet(wb, ws, 'Datos');
+		XLSX.writeFile(wb, `file.xlsx`);
+	};
 
 
 	return (
-		<div className="flex flex-col my-2xl">
-			<div className="flex justify-between w-10/12">
-				<p className="text-xl">Movimientos de la cuenta</p>
-				{
-					(!newMovement && !editMovement) &&
-					<div className="flex flex-col space-y-sm">
-						{movements.length > 0 && <CreateExcelButton onClick={() => console.log("Creando excel...")} />}
-						<NavigateButton image={mas} title="Nuevo" onClick={() => setNewMovement(true)} />
-							<select 
-								className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md p-sm"
-								defaultValue={month}
-								onChange={(event) => { setMonth(+event.target.value), setValue('month', +event.target.value)}}>
-							{
-								months.map((month, i) => <option key={i} value={i+1}>{month}</option>)
-							}
-						</select>
-							<select 
-								className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md p-sm" 
-								defaultValue={year} 
-								onChange={(event) => { setYear(+event.target.value); setValue('year', +event.target.value)}}>
-							<option value={2021}>2021</option>
-							<option value={2022}>2022</option>
-							<option value={2023}>2023</option>
-							<option value={2024}>2024</option>
-						</select>
-					</div>
-				}
+		<div className="flex flex-col my-lg space-y-sm">
+			{
+				(!newMovement && !editMovement) &&
+				<div className="flex flex-row space-x-sm justify-end">
+					{movements.length > 0 && <CreateExcelButton onClick={() => exportarAExcel()} />}
+					<NavigateButton image={mas} title="Nuevo" onClick={() => setNewMovement(true)} />
+				</div>
+			}
+			<div className="flex space-x-sm justify-end">
+				<select
+					className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md p-sm"
+					defaultValue={month}
+					onChange={(event) => { setMonth(+event.target.value), setValue('month', +event.target.value) }}>
+					{
+						months.map((month, i) => <option key={i} value={i + 1}>{month}</option>)
+					}
+				</select>
+				<select
+					className="focus:bg-white bg-gray-50 text-gray-800 text-lg rounded-md p-sm"
+					defaultValue={year}
+					onChange={(event) => { setYear(+event.target.value); setValue('year', +event.target.value) }}>
+					<option value={2021}>2021</option>
+					<option value={2022}>2022</option>
+					<option value={2023}>2023</option>
+					<option value={2024}>2024</option>
+				</select>
 			</div>
 			{
 				(newMovement || editMovement) ?
 					newMovement ? <NewMovementForm idAccount={idAccount} setShow={setNewMovement} show={newMovement} />
 						: <NewMovementForm idAccount={idAccount} setShow={setNewMovement} show={newMovement} edit movementData={selectedMovement} />
 					: movements.length > 0 ? (
-						<div className="w-10/12 overflow-x-auto shadow-lg my-md">
+						<div className="w-full overflow-x-auto shadow-lg my-md">
+							<p className="text-xl p-sm">Movimientos de la cuenta</p>
 							<table className="w-full text-md text-left text-gray-500 rounded-xl">
 								<thead className="bg-gray-50">
 									<tr>

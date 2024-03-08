@@ -15,9 +15,9 @@ export const TableBodyRow = (props: IAccount) => {
 			<td className="px-md py-md">
 				{created_at}
 			</td>
-			<td className="px-md py-md">
+			{/* <td className="px-md py-md">
 				{created_by}
-			</td>
+			</td> */}
 			<td className="px-md py-md">
 				<Link to={`/account/${id}`} state={id}><p className="text-blue-600">Más</p></Link>
 			</td>
