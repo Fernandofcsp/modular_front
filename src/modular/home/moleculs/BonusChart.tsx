@@ -6,18 +6,19 @@ import { YearSelector } from "./YearSelector";
 import axios from "axios";
 import { apiUrl } from "../../../api";
 import { toast } from "react-toastify";
+import { IBonuses } from "../../bonuses/interfaces";
 
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
 export const BonusChart = () => {
 	const [selectedYear, setSelectedYear] = useState(moment().year());
-	const [months, setMonths] = useState<string[]>([]);
-	const [bonus, setBonus] = useState<number[]>([]);
+	const [bonuses, setBonuses] = useState<IBonuses[]>([]);
 
 	useEffect(() => {
 		getData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedYear])
+
 
 	const getData = () => {
 		axios.get(
@@ -26,19 +27,17 @@ export const BonusChart = () => {
 		)
 			.then(({ data, status }) => {
 				if (status != 200) throw ({ ...data, status });
-				console.log(selectedYear, data);
-				setMonths(data.months);
-				setBonus(data.bonus);
+				setBonuses(data);
 			})
 			.catch(error => toast.error(error.message + " " + error.status)); 
 	}
 
 	const data = {
-		labels: months,
+		labels: bonuses.map(bonuse => bonuse.bonus.month),
 		datasets: [
 			{
 				label: 'Bono por mes',
-				data: bonus,
+				data: bonuses.map(bonuse => bonuse.bonus.total_bonus),
 				backgroundColor: 'rgba(75, 192, 192, 0.6)',
 				borderColor: 'rgba(75, 192, 192, 1)',
 				borderWidth: 1,
