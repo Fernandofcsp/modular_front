@@ -8,22 +8,6 @@ import { apiUrl } from "../../../api";
 import { toast } from "react-toastify";
 
 
-const meses = [
-	'Enero',
-	'Febrero',
-	'Marzo',
-	'Abril',
-	'Mayo',
-	'Junio',
-	'Julio',
-	'Agosto',
-	'Septiembre',
-	'Octubre',
-	'Noviembre',
-	'Diciembre'
-];
-
-
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
 export const BonusChart = () => {
 	const [selectedYear, setSelectedYear] = useState(moment().year());
@@ -36,22 +20,17 @@ export const BonusChart = () => {
 	}, [selectedYear])
 
 	const getData = () => {
-		setBonus([]);
-		for (let i = 0; i < 12; i++) {
-			setBonus(value => [...value, Math.floor(Math.random() * (140000 - 100000 + 1)) + 100000]);
-			setMonths(meses);
-		}
-		/*
 		axios.get(
-			`${apiUrl}/bouneses/${selectedYear}`,
+			`${apiUrl}/bonus/get-by-year?year=${selectedYear}`,
 			{ validateStatus: (status: number) => status < 500 }
 		)
 			.then(({ data, status }) => {
 				if (status != 200) throw ({ ...data, status });
+				console.log(selectedYear, data);
 				setMonths(data.months);
 				setBonus(data.bonus);
 			})
-			.catch(error => toast.error(error.message + " " + error.status)); */
+			.catch(error => toast.error(error.message + " " + error.status)); 
 	}
 
 	const data = {

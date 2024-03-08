@@ -21,3 +21,31 @@ export interface IInconsistency {
   created_at?: number;
   updated_at?: number;
 }
+
+export interface IBonuses {
+  bonus: IBonus;
+  details: IBonuseDetail[];
+}
+
+export interface IBonus {
+  id: number;
+  year: number;
+  month: number;
+  porcentage: string;
+  total_sales: string;
+  total_bonus: string;
+}
+
+
+export interface IBonuseDetail {
+  id: number;
+  daily_salary: string;
+  sum_benefits: string;
+  absences: number;
+  gain_bonus: string;
+  total_bonus: string;
+  bonus: number;
+  employee: number;
+  created_by: null;
+  updated_by: null;
+}

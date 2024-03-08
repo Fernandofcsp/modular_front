@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
 import { FormButtons, FormField, InconsistenciesSelector } from "../moleculs";
 import { inputType } from "../../users/moleculs";
 import { validateCheckFields } from "../helpers/validateCheckFields";
 import { INewInconsistency } from ".";
-import moment from "moment";
 import { apiUrl } from "../../../api";
-import axios from "axios";
 //import { userStore } from "../../../store/userStore";
-import { ToastContainer, toast } from "react-toastify";
 
 export const NewInconsistenciaForm = ({ idEmployee, setShow }: INewInconsistency) => {
 	//const token = userStore(state => state.token);
 
-	const save = async () => {
+	const save = () => {
 		const { errors, reset } = validateCheckFields(inconsistency, initialDate, minutes, endDate);
 
 		if (errors.length > 0) {
@@ -34,7 +34,6 @@ export const NewInconsistenciaForm = ({ idEmployee, setShow }: INewInconsistency
 			minutes: inconsistency === "Retardo" ? +minutes : 0
 		};
 
-		console.log(data);
 
 		axios.post(
 			`${apiUrl}/inconcistences/`,

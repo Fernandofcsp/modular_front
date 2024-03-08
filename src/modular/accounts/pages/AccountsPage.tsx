@@ -54,7 +54,7 @@ export function AccountsPage() {
 		<Layout>
 			<div className="w-full flex flex-col">
 				<div className="flex flex-col space-y-md">
-					<div className="flex flex-row space-x-md justify-end items-end">
+					{/* <div className="flex flex-row space-x-md justify-end items-end">
 						<AccountsFormField
 							label="Fecha inicial"
 							onChange={setInitialDateToFilter}
@@ -69,7 +69,7 @@ export function AccountsPage() {
 							value={endDateToFilter}
 							placeholder=""
 						/>
-					</div>
+					</div> */}
 					<div className="flex justify-end w-full">
 						<div className="flex flex-col justify-end space-y-sm">
 							{accounts.length > 0 && <CreateExcelButton onClick={() => console.log("Creando excel...")} />}
