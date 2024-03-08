@@ -80,6 +80,7 @@ export const EmployeePage = () => {
 			{ validateStatus: (status) => status < 500 }
 		)
 			.then(({ data, status }) => {
+				
 				if (status != 200) throw ({ ...data, status });
 				const { employee, benefits } = data;
 				setBenefits(benefits);
