@@ -5,8 +5,10 @@
   "homepage": "https://fernandofcsp.github.io/modular_front/",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run dev",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+   
     
     "dev": "vite",
     "build": "tsc && vite build",
