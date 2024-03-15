@@ -5,13 +5,13 @@
   "homepage": "https://fernandofcsp.github.io/modular_front/",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
-    "build": "vite build",
     "dev": "vite",
+    "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-},
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "axios": "^1.5.0",
@@ -44,6 +44,7 @@
     "postcss": "^8.4.25",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
-    "vite": "^4.3.9"
+    "vite": "^4.3.9",
+    "vite-plugin-gh-pages": "^0.4.1"
   }
 }
