@@ -9,9 +9,9 @@ export const AppRouter = () => {
   return (
     <Routes>
       {/* Login */}
-      <Route path="/login" element={ id === null ? <LoginPage /> : <ModularRoutes /> } />
+      <Route path="login" element={ id === null ? <LoginPage /> : <ModularRoutes /> } />
       {/* Not found page */}
-      <Route path="/login/*" element={ <NotFoundPage /> } />
+      <Route path="login/*" element={ <NotFoundPage /> } />
 
       {/* Modular app */}
       <Route path="/*" element={ id !== null ? <ModularRoutes /> : <LoginPage /> } />
