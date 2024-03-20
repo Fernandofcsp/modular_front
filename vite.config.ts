@@ -3,5 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "https://fernandofcsp.github.io/modular_front/", 
+  base: "/modular_front/", // Esto es lo que necesitas cambiar
 });
